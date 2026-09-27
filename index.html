@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Conditional Error Recognition</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif;background:#111;color:#fff}
+body{display:flex;justify-content:center;min-height:100vh}
+.app{width:100%;max-width:560px;min-height:100vh;background:#f4f4f4;color:#111;position:relative;overflow:hidden}
+.screen{display:none;min-height:100vh;padding:24px 18px}
+.screen.active{display:flex;flex-direction:column}
+#loading{background:#111;color:#fff;justify-content:center;align-items:center;text-align:center}
+.logo{font-size:34px;font-weight:900;letter-spacing:1px}
+.sub{opacity:.7;margin-top:8px}
+.loader{width:82%;height:12px;border:2px solid #fff;border-radius:20px;margin-top:28px;overflow:hidden}
+.loaderbar{height:100%;width:0;background:#fff;transition:width.15s}
+#start{background:#fff;justify-content:center;align-items:center;text-align:center}
+.title{font-size:30px;font-weight:900;line-height:1.05;margin-bottom:8px;margin-top:16px}
+.desc{color:#666;margin-bottom:25px}
+.start-form{width:100%;text-align:left;margin-top:10px}
+label{font-weight:bold;margin:12px 0 6px;display:block}
+input{width:100%;padding:15px;border:2px solid #222;border-radius:10px;font-size:17px;outline:none}
+button{border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:800;cursor:pointer}
+.primary{background:#111;color:#fff;width:100%;margin-top:24px}
+.school-logo{width:110px;height:110px;object-fit:contain;display:block;margin:0 auto 12px auto}
+.school-name{font-weight:900;font-size:18px;margin-top:8px;color:#111}
+.teacher-name{font-size:14px;color:#666;margin-top:4px;margin-bottom:8px}
+#quiz{background:#f4f4f4;padding:0}
+.quizHead{background:#111;color:#fff;padding:16px 18px;position:sticky;top:0;z-index:5}
+.headrow{display:flex;justify-content:space-between;align-items:center}
+.qnum{font-weight:900;font-size:18px}
+.timer{font-family:monospace;font-size:18px}
+.progress{height:6px;background:#444;margin:12px -18px -16px}
+.progress i{display:block;height:100%;background:#fff;width:0}
+.quizbody{padding:24px 18px}
+.badge{display:inline-block;background:#ddd;border-radius:20px;padding:7px 11px;font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:16px}
+.instruction{font-weight:bold;margin-bottom:20px;color:#444}
+.sentence{font-size:20px;line-height:1.8;text-align:center;padding:20px 5px;background:#fff;border-radius:14px;box-shadow:0 3px 15px #0001}
+.part{display:inline-block;padding:2px 4px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer;border-radius:4px}
+.part:hover,.part:active{background:#ddd}
+.letter{font-size:11px;color:#777;vertical-align:top;text-decoration:none;margin-right:2px;font-weight:bold}
+.hint{text-align:center;color:#777;margin:18px 0;font-size:14px}
+#feedback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
+.feedbackBox{width:min(90%,430px);background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}
+.feedbackBox img{width:100%;max-height:45vh;object-fit:contain;border-radius:12px;background:#eee}
+.feedbackTitle{font-size:25px;font-weight:900;margin:12px 0 4px}
+.feedbackText{color:#555;margin-bottom:12px;line-height:1.4}
+.next{width:100%;background:#111;color:#fff}
+#result{background:#fff;justify-content:center;text-align:center;position:relative;overflow:hidden;transition:background 0.5s}
+.scoreCircle{width:180px;height:180px;border:12px solid #111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;position:relative;z-index:2;background:#fff}
+.score{font-size:52px;font-weight:900;line-height:1}
+.small{color:#666}
+.resultName{font-size:24px;font-weight:900;margin-top:8px;position:relative;z-index:2}
+.breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px;position:relative;z-index:2}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}
+.row:last-child{border:0}
+.restart{background:#111;color:#fff;width:100%;margin-top:20px;position:relative;z-index:2}
+#result.perfect{ background: radial-gradient(circle at center, #fff8dc 0%, #ffdf6e 40%, #ffb700 100%)!important; }
+.glitter{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
+#result.perfect.glitter{display:block}
+.glitter span{position:absolute;width:8px;height:8px;background:#fff;border-radius:50%;animation:glitterAnim 2s infinite linear;opacity:0.8}
+@keyframes glitterAnim{0%{transform:translateY(100vh) scale(0);opacity:0}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
+@media(max-width:380px){.sentence{font-size:18px}.title{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="loading" class="screen active">
+  <div class="logo">CONDITIONAL ERROR</div>
+  <div class="sub" id="loadText">Checking required files...</div>
+  <div class="loader"><div class="loaderbar" id="loaderBar"></div></div>
+</section>
+<section id="start" class="screen">
+  <div style="width:100%">
+    <img src="logo.png" alt="Logo SMK" class="school-logo" onerror="this.style.display='none'">
+    <div class="school-name">SMK Negeri 6 Samarinda</div>
+    <div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div>
+    <div class="title">Conditional<br>Error Recognition</div>
+    <div class="desc">Zero, First, Second & Third Conditional</div>
+    <div class="start-form">
+      <label for="studentName">Name</label>
+      <input id="studentName" autocomplete="off" placeholder="Enter your name">
+      <label for="studentClass">Class</label>
+      <input id="studentClass" autocomplete="off" placeholder="e.g. XII GP 1">
+      <button class="primary" id="startBtn">START GAME</button>
+    </div>
+  </div>
+</section>
+<section id="quiz" class="screen">
+  <div class="quizHead">
+    <div class="headrow"><div class="qnum" id="qNum">Question 1 / 20</div><div class="timer" id="timer">00:00</div></div>
+    <div class="progress"><i id="progressBar"></i></div>
+  </div>
+  <div class="quizbody">
+    <div class="badge" id="typeBadge">First Conditional</div>
+    <div class="instruction">Choose the underlined part (A–E) that contains the error.</div>
+    <div class="sentence" id="sentence"></div>
+    <div class="hint">Tap one of the five underlined parts.</div>
+  </div>
+</section>
+<section id="result" class="screen">
+  <div class="glitter" id="glitterBox"></div>
+  <div style="position:relative;z-index:2">
+    <div class="small">RESULT</div>
+    <div class="resultName" id="resultName"></div>
+    <div class="small" id="resultClass"></div>
+    <div class="scoreCircle" id="scoreCircle">
+      <div class="score" id="finalScore">0</div>
+      <div class="small" id="percentageSmall">/ 100</div>
+    </div>
+    <div id="percentage" style="font-weight:800;font-size:16px;color:#555;margin-top:-10px"></div>
+    <div class="breakdown">
+      <div class="row"><span>Correct</span><strong id="correctCount">0</strong></div>
+      <div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div>
+      <div class="row"><span>Score Detail</span><strong id="scoreDetail">0 / 20</strong></div>
+    </div>
+    <button class="restart" onclick="location.reload()">PLAY AGAIN</button>
+  </div>
+</section>
+<div id="feedback">
+  <div class="feedbackBox">
+    <img id="feedbackImg" alt="feedback"><div class="feedbackTitle" id="feedbackTitle"></div><div class="feedbackText" id="feedbackText"></div><button class="next" id="nextBtn">NEXT QUESTION</button>
+  </div>
+</div>
+<audio id="correctAudio" preload="auto" src="1.mp3"></audio>
+<audio id="wrongAudio" preload="auto" src="-1.mp3"></audio>
+<audio id="perfectAudio" preload="auto" src="perfect.mp3"></audio>
+</div>
+<script>
+const CORRECT_IMG="1.gif"; const WRONG_IMG="-1.gif"; const CORRECT_AUDIO="1.mp3"; const WRONG_AUDIO="-1.mp3"; const PERFECT_AUDIO="perfect.mp3";
+const questions=[
+  {type:"Zero Conditional", parts:["If","you heat water","to 100°C,","it boil","quickly."], answer:3, correct:"boils", exp:"it = singular -> boils"},
+  {type:"Zero Conditional", parts:["If plants","does not get","enough sunlight,","they grow","poorly."], answer:1, correct:"do not get", exp:"plants jamak -> do not"},
+  {type:"Zero Conditional", parts:["When ice","reaches 0°C,","it usually","melt into","water."], answer:3, correct:"melts into", exp:"it singular -> melts"},
+  {type:"Zero Conditional", parts:["If people","eats too much","sugar, they","often gain","weight."], answer:1, correct:"eat too much", exp:"people jamak -> eat"},
+  {type:"Zero Conditional", parts:["Water freezes","if the temperature","fall below","zero degrees","Celsius."], answer:2, correct:"falls below", exp:"temperature singular -> falls"},
+  {type:"First Conditional", parts:["If it rains","tomorrow, we","will stays","at home","all day."], answer:2, correct:"will stay", exp:"will + V1"},
+  {type:"First Conditional", parts:["If she studies","hard tonight,","she will","passes the","exam tomorrow."], answer:3, correct:"pass the", exp:"will + V1 : pass"},
+  {type:"First Conditional", parts:["If I will finish","my homework early,","I will","watch a movie","tonight."], answer:0, correct:"I finish", exp:"If clause tidak boleh pakai will"},
+  {type:"First Conditional", parts:["If they arrives","early, we","will start","the meeting","immediately."], answer:0, correct:"If they arrive", exp:"They jamak -> arrive"},
+  {type:"First Conditional", parts:["If you don't hurry,","you will","missing the","bus at the","station."], answer:2, correct:"miss the", exp:"will + V1 : miss"},
+  {type:"Second Conditional", parts:["If I was","rich, I would","travel around","the world","every year."], answer:0, correct:"If I were", exp:"Second Conditional pakai were"},
+  {type:"Second Conditional", parts:["If he had","more free time,","he would","learns another","language."], answer:3, correct:"learn another", exp:"would + V1"},
+  {type:"Second Conditional", parts:["If I would have","more money, I","would buy","a new laptop","for school."], answer:0, correct:"I had", exp:"If clause pakai Past Simple"},
+  {type:"Second Conditional", parts:["If she lived","closer to school,","she would","walking there","every day."], answer:3, correct:"walk there", exp:"would + V1 : walk"},
+  {type:"Second Conditional", parts:["If we knew","the answer, we","will tell","you immediately","about it."], answer:2, correct:"would tell", exp:"If+Past -> would"},
+  {type:"Third Conditional", parts:["If they had left","earlier, they","would have","arrive on","time."], answer:3, correct:"arrived on", exp:"would have + V3"},
+  {type:"Third Conditional", parts:["If I had known","about the problem,","I would have","help you","earlier."], answer:3, correct:"helped you", exp:"would have + V3 : helped"},
+  {type:"Third Conditional", parts:["If she had studied","harder, she","would has","passed the","exam."], answer:2, correct:"would have", exp:"harus would have"},
+  {type:"Third Conditional", parts:["If we had","seen the sign,","we would not","have turn","there."], answer:3, correct:"have turned", exp:"have + V3 : turned"},
+  {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tidak pakai more"}
+];
+let current=0,score=0,answered=false,student="",klass="",startedAt=0,timerInt=null;
+const $=id=>document.getElementById(id);
+const screens=["loading","start","quiz","result"];
+function show(id){screens.forEach(x=>$(x).classList.toggle("active",x===id));}
+function createGlitter(){
+  const box=$("glitterBox"); box.innerHTML="";
+  for(let i=0;i<30;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.animationDelay=(Math.random()*2)+"s"; s.style.animationDuration=(1.5+Math.random()*1.5)+"s"; s.style.background=i%2==0?"#fff":"#ffeb3b"; s.style.top=Math.random()*20+"%"; box.appendChild(s); }
+}
+function preloadAssets(){
+  const assets=[{src:CORRECT_IMG,type:"image"},{src:WRONG_IMG,type:"image"},{src:CORRECT_AUDIO,type:"audio"},{src:WRONG_AUDIO,type:"audio"},{src:PERFECT_AUDIO,type:"audio"}];
+  let loaded=0,failed=false;
+  $("loadText").textContent="Loading 0 / "+assets.length+" files...";
+  function update(){ loaded++; const percent=Math.round((loaded/assets.length)*100); $("loaderBar").style.width=percent+"%"; $("loadText").textContent="Loading "+loaded+" / "+assets.length+" files..."; if(loaded===assets.length &&!failed){ $("loadText").textContent="All files loaded. Starting..."; $("loaderBar").style.width="100%"; setTimeout(()=>show("start"),500); } }
+  function fail(src){ if(src===PERFECT_AUDIO){ update(); return; } if(failed)return; failed=true; $("loaderBar").style.width="100%"; $("loaderBar").style.background="#d00"; $("loadText").innerHTML='<strong style="color:#ff5555">FAILED TO LOAD</strong><br><span style="font-size:14px">'+src+'</span><br><br><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;font-weight:bold">RETRY</button>'; }
+  assets.forEach(asset=>{ if(asset.type==="image"){ const img=new Image(); img.onload=()=>{ if(img.decode){ img.decode().then(update).catch(update); }else{ update(); } }; img.onerror=()=>fail(asset.src); img.src=asset.src; }else{ const audio=new Audio(); audio.preload="auto"; let finished=false; const success=()=>{ if(finished)return; if(audio.readyState>=3){ finished=true; update(); } }; audio.addEventListener("canplay",success); audio.addEventListener("canplaythrough",success); audio.addEventListener("error",()=>{ if(!finished)fail(asset.src); }); audio.src=asset.src; audio.load(); if(audio.readyState>=3)success(); setTimeout(()=>{ if(!finished){ finished=true; update(); }},2500); } });
+}
+preloadAssets();
+$("startBtn").onclick=()=>{ student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Please enter your name and class.");return;} current=0;score=0;startedAt=Date.now();show("quiz");renderQuestion();startTimer(); };
+function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),r=s%60; $("timer").textContent=String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"); },250); }
+function renderQuestion(){ answered=false; const q=questions[current]; $("qNum").textContent=`Question ${current+1} / ${questions.length}`; $("typeBadge").textContent=q.type; $("progressBar").style.width=((current)/questions.length*100)+"%"; $("sentence").innerHTML=q.parts.map((p,i)=>`<span class="part" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${p}</span>`).join(" "); document.querySelectorAll(".part").forEach(el=>el.onclick=()=>answer(Number(el.dataset.i))); }
+function answer(index){ if(answered)return; answered=true; const q=questions[current], correct=index===q.answer; if(correct)score++; showFeedback(correct,q,index); }
+function showFeedback(correct,q,index){ $("feedback").style.display="flex"; const img=$("feedbackImg"); img.src=correct?CORRECT_IMG:WRONG_IMG; img.src=""; setTimeout(()=>img.src=correct?CORRECT_IMG:WRONG_IMG,10); $("feedbackTitle").textContent=correct?"CORRECT!":"WRONG!"; $("feedbackText").innerHTML= correct? "Great!<br><b>"+q.exp+"</b>" : `Correct is <b>${String.fromCharCode(65+q.answer)} - ${q.correct}</b><br>${q.exp}`; const audio=$(correct?"correctAudio":"wrongAudio"); audio.src=correct?CORRECT_AUDIO:WRONG_AUDIO; audio.currentTime=0; audio.play().catch(()=>{}); $("nextBtn").textContent=current===questions.length-1?"SHOW SCORE":"NEXT QUESTION"; audio.onended=()=>{ if($("feedback").style.display==="flex"){ $("nextBtn").click(); } }; }
+$("nextBtn").onclick=()=>{ const a1=$("correctAudio"),a2=$("wrongAudio"); a1.pause();a2.pause(); $("feedback").style.display="none"; if(current<questions.length-1){current++;renderQuestion();} else finish(); };
+function finish(){
+  clearInterval(timerInt); $("progressBar").style.width="100%";
+  const total=questions.length; const nilai=Math.round(score/total*100);
+  $("resultName").textContent=student; $("resultClass").textContent=klass;
+  $("finalScore").textContent=nilai;
+  $("percentage").textContent = nilai===100? "PERFECT SCORE! 🎉" : "";
+  $("correctCount").textContent=score; $("wrongCount").textContent=total-score; $("scoreDetail").textContent=score+" / "+total;
+  show("result");
+  if(nilai===100){
+    $("result").classList.add("perfect");
+    $("scoreCircle").style.borderColor="#b8860b"; $("scoreCircle").style.background="#fff8dc";
+    createGlitter(); const pAudio=$("perfectAudio"); pAudio.currentTime=0; pAudio.play().catch(()=>{});
+  }else{ $("result").classList.remove("perfect"); }
+}
+</script>
+</body>
+</html>
