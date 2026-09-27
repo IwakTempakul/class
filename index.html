@@ -37,7 +37,6 @@ label{font-weight:bold;margin:12px 0 6px;display:block;text-align:left}
 .quizbody{padding:24px 18px}
 .badge{display:inline-block;background:#ddd;border-radius:20px;padding:7px 11px;font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:16px}
 .instruction{font-weight:bold;margin-bottom:20px;color:#444}
-/* FIX SOAL BERANTAKAN */
 .sentence{font-size:19px;line-height:2.3;text-align:center;padding:22px 14px;background:#fff;border-radius:14px;box-shadow:0 3px 15px #0001;word-spacing:2px}
 .part{display:inline;padding:4px 3px 6px 3px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:7px;cursor:pointer;border-radius:6px;white-space:nowrap;line-height:2.8}
 .part.selected{background:#111;color:#fff;text-decoration:none}
@@ -53,9 +52,15 @@ label{font-weight:bold;margin:12px 0 6px;display:block;text-align:left}
 #result{background:#fff;justify-content:center;text-align:center;position:relative;overflow:hidden}
 .scoreCircle{width:180px;height:180px;border:12px solid #111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;position:relative;z-index:2;background:#fff}
 .score{font-size:52px;font-weight:900;line-height:1}
-.breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px}
+.breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px;position:relative;z-index:2}
 .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}
-.restart{background:#111;color:#fff;width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px 18px;font-weight:800}
+.restart{background:#111;color:#fff;width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px 18px;font-weight:800;position:relative;z-index:2}
+/* BG EMAS PERFECT - KEMBALI */
+#result.perfect{ background: radial-gradient(circle at center, #fff8dc 0%, #ffdf6e 40%, #ffb700 100%)!important; }
+.glitter{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
+#result.perfect .glitter{display:block}
+.glitter span{position:absolute;width:8px;height:8px;border-radius:50%;animation:glitterAnim 2s infinite linear;opacity:0.9}
+@keyframes glitterAnim{0%{transform:translateY(100vh) scale(0);opacity:0}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
 </style>
 </head>
 <body>
@@ -63,7 +68,7 @@ label{font-weight:bold;margin:12px 0 6px;display:block;text-align:left}
 <section id="loading" class="screen active"><div style="font-weight:900;font-size:28px">CONDITIONAL ERROR</div><div id="loadText">Checking files...</div><div class="loader"><div class="loaderbar" id="loaderBar"></div></div><div id="loadDetail" style="margin-top:15px;font-size:12px;opacity:.6"></div></section>
 <section id="start" class="screen"><div style="width:100%"><img id="schoolLogo" src="logo.png" class="school-logo grayscale"><div class="school-name">SMK Negeri 6 Samarinda</div><div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div><div class="title">Conditional<br>Error Recognition</div><div style="color:#666;margin-bottom:25px">Zero, First, Second & Third Conditional</div><div class="start-form"><label>Name</label><input id="studentName" placeholder="Enter your name"><label>Class</label><input id="studentClass" placeholder="e.g. XII GP 1"><button class="primary hidden" id="startBtn">START GAME</button></div></div></section>
 <section id="quiz" class="screen"><div class="quizHead"><div class="headrow"><div id="qNum"></div><div id="timer">00:00</div></div><div class="progress"><i id="progressBar"></i></div></div><div class="quizbody"><div class="badge" id="typeBadge"></div><div class="instruction">Choose the underlined part (A–E) that contains the error.</div><div class="sentence" id="sentence"></div><div class="hint">Tap the sentence OR tap A–E below</div><div class="abc-options" id="abcOptions"></div></div></section>
-<section id="result" class="screen"><div style="position:relative;z-index:2"><div>RESULT</div><div id="resultName" style="font-size:24px;font-weight:900;margin-top:8px"></div><div id="resultClass" style="color:#666"></div><div class="scoreCircle" id="scoreCircle"><div class="score" id="finalScore">0</div><div style="color:#666">/ 100</div></div><div id="percentage" style="font-weight:800;color:#555"></div><div class="breakdown"><div class="row"><span>Correct</span><strong id="correctCount">0</strong></div><div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div><div class="row"><span>Detail</span><strong id="scoreDetail">0 / 20</strong></div></div><button class="restart" onclick="location.reload()">PLAY AGAIN</button></div></section>
+<section id="result" class="screen"><div class="glitter" id="glitterBox"></div><div style="position:relative;z-index:2"><div>RESULT</div><div id="resultName" style="font-size:24px;font-weight:900;margin-top:8px"></div><div id="resultClass" style="color:#666"></div><div class="scoreCircle" id="scoreCircle"><div class="score" id="finalScore">0</div><div style="color:#666">/ 100</div></div><div id="percentage" style="font-weight:800;color:#555"></div><div class="breakdown"><div class="row"><span>Correct</span><strong id="correctCount">0</strong></div><div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div><div class="row"><span>Detail</span><strong id="scoreDetail">0 / 20</strong></div></div><button class="restart" onclick="location.reload()">PLAY AGAIN</button></div></section>
 <div id="feedback"><div class="feedbackBox"><img id="feedbackImg"><div id="feedbackTitle" style="font-size:25px;font-weight:900;margin:12px 0 4px"></div><div id="feedbackText" style="color:#555;margin-bottom:12px"></div><button class="next" id="nextBtn">NEXT</button></div></div>
 <audio id="correctAudio" preload="auto"></audio><audio id="wrongAudio" preload="auto"></audio><audio id="perfectAudio" preload="auto"></audio><audio id="appearAudio" preload="auto"></audio>
 </div>
@@ -157,6 +162,7 @@ const questions=[
   {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tanpa more"}
 ];
 let current=0,score=0,answered=false,student="",klass="",startedAt=0,timerInt=null;
+function createGlitter(){ const box=$("glitterBox"); box.innerHTML=""; for(let i=0;i<35;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%"; s.style.animationDelay=(Math.random()*2)+"s"; s.style.animationDuration=(1.2+Math.random()*1.8)+"s"; s.style.background=i%2==0?"#fff":"#ffeb3b"; s.style.width=(5+Math.random()*8)+"px"; s.style.height=s.style.width; box.appendChild(s); } }
 $("startBtn").onclick=()=>{ if(!unlocked) return; student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Isi nama dan kelas");return;} current=0;score=0;startedAt=Date.now();showScreen("quiz");renderQuestion();startTimer(); };
 function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),r=s%60; $("timer").textContent=String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"); },250); }
 function renderQuestion(){
@@ -165,7 +171,6 @@ function renderQuestion(){
   $("qNum").textContent=`Question ${current+1} / ${questions.length}`;
   $("typeBadge").textContent=q.type;
   $("progressBar").style.width=(current/questions.length*100)+"%";
-  // FIX: join dengan spasi + render rapi
   $("sentence").innerHTML=q.parts.map((p,i)=>`<span class="part" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${p}</span>`).join(" ");
   $("abcOptions").innerHTML = ["A","B","C","D","E"].map((l,i)=>`<div class="abc-btn" data-i="${i}">${l}</div>`).join("");
   document.querySelectorAll(".part").forEach(el=>{ el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); handleAnswer(Number(el.dataset.i)); }, {once:true}); });
@@ -179,7 +184,18 @@ function finish(){
   clearInterval(timerInt);
   const total=questions.length; const nilai=Math.round(score/total*100);
   $("resultName").textContent=student; $("resultClass").textContent=klass; $("finalScore").textContent=nilai; $("percentage").textContent=nilai===100?"PERFECT SCORE! 🎉":""; $("correctCount").textContent=score; $("wrongCount").textContent=total-score; $("scoreDetail").textContent=score+" / "+total; showScreen("result");
-  if(nilai===100){ $("perfectAudio").src="perfect.mp3"; $("perfectAudio").play().catch(()=>{}); }
+  if(nilai===100){
+    $("result").classList.add("perfect");
+    $("scoreCircle").style.borderColor="#b8860b";
+    $("scoreCircle").style.background="#fff8dc";
+    createGlitter();
+    $("perfectAudio").src="perfect.mp3";
+    $("perfectAudio").play().catch(()=>{});
+  } else {
+    $("result").classList.remove("perfect");
+    $("scoreCircle").style.borderColor="#111";
+    $("scoreCircle").style.background="#fff";
+  }
 }
 checkFilesStrict();
 </script>
