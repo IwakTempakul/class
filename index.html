@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Conditional Error Recognition</title>
+<title>Conditional Error Recognition - MOBILE FIX</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif;background:#111;color:#fff}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif;background:#111;color:#fff;-webkit-tap-highlight-color: transparent;}
 body{display:flex;justify-content:center;min-height:100vh}
 .app{width:100%;max-width:560px;min-height:100vh;background:#f4f4f4;color:#111;position:relative;overflow:hidden}
 .screen{display:none;min-height:100vh;padding:24px 18px}
@@ -16,15 +16,14 @@ body{display:flex;justify-content:center;min-height:100vh}
 .loaderbar{height:100%;width:0;background:#fff;transition:width.15s}
 #start{background:#fff;justify-content:center;align-items:center;text-align:center}
 .title{font-size:30px;font-weight:900;line-height:1.05;margin-bottom:8px;margin-top:16px}
-.desc{color:#666;margin-bottom:25px}
-.start-form{width:100%;text-align:left;margin-top:10px}
-label{font-weight:bold;margin:12px 0 6px;display:block}
-input{width:100%;padding:15px;border:2px solid #222;border-radius:10px;font-size:17px;outline:none}
-button{border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:800;cursor:pointer}
-.primary{background:#111;color:#fff;width:100%;margin-top:24px}
 .school-logo{width:110px;height:110px;object-fit:contain;display:block;margin:0 auto 12px auto}
-.school-name{font-weight:900;font-size:18px;margin-top:8px;color:#111}
+.school-name{font-weight:900;font-size:18px;margin-top:8px}
 .teacher-name{font-size:14px;color:#666;margin-top:4px;margin-bottom:8px}
+.primary{background:#111;color:#fff;width:100%;margin-top:24px;border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:800;cursor:pointer}
+input{width:100%;padding:15px;border:2px solid #222;border-radius:10px;font-size:17px;outline:none}
+label{font-weight:bold;margin:12px 0 6px;display:block;text-align:left}
+.start-form{width:100%;text-align:left;margin-top:10px}
+
 #quiz{background:#f4f4f4;padding:0}
 .quizHead{background:#111;color:#fff;padding:16px 18px;position:sticky;top:0;z-index:5}
 .headrow{display:flex;justify-content:space-between;align-items:center}
@@ -34,27 +33,28 @@ button{border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:
 .badge{display:inline-block;background:#ddd;border-radius:20px;padding:7px 11px;font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:16px}
 .instruction{font-weight:bold;margin-bottom:20px;color:#444}
 .sentence{font-size:20px;line-height:1.8;text-align:center;padding:20px 5px;background:#fff;border-radius:14px;box-shadow:0 3px 15px #0001}
-.part{display:inline-block;padding:2px 4px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer;border-radius:4px;transition:all.15s}
-.part:hover,.part.selected{background:#111;color:#fff}
+.part{display:inline-block;padding:2px 4px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer;border-radius:4px}
+.part.selected{background:#111;color:#fff}
 .letter{font-size:11px;color:#777;vertical-align:top;margin-right:2px;font-weight:bold}
 .hint{text-align:center;color:#777;margin:18px 0 10px;font-size:14px}
+
 .abc-options{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
-.abc-btn{width:52px;height:52px;border-radius:50%;border:3px solid #111;background:#fff;color:#111;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all.15s;box-shadow:0 2px 6px #0001}
-.abc-btn:hover{background:#111;color:#fff;transform:scale(1.05)}
+.abc-btn{width:54px;height:54px;border-radius:50%;border:3px solid #111;background:#fff;color:#111;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform.1s, background.1s, color.1s}
+.abc-btn:active{transform:scale(0.92)}
 .abc-btn.selected{background:#111!important;color:#fff!important}
+
 #feedback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
 .feedbackBox{width:min(90%,430px);background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}
 .feedbackBox img{width:100%;max-height:45vh;object-fit:contain;border-radius:12px;background:#eee}
 .feedbackTitle{font-size:25px;font-weight:900;margin:12px 0 4px}
 .feedbackText{color:#555;margin-bottom:12px;line-height:1.4}
-.next{width:100%;background:#111;color:#fff}
+.next{width:100%;background:#111;color:#fff;border:0;border-radius:12px;padding:15px 18px;font-weight:800}
 #result{background:#fff;justify-content:center;text-align:center;position:relative;overflow:hidden}
 .scoreCircle{width:180px;height:180px;border:12px solid #111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;position:relative;z-index:2;background:#fff}
 .score{font-size:52px;font-weight:900;line-height:1}
 .breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px;position:relative;z-index:2}
 .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}
-.row:last-child{border:0}
-.restart{background:#111;color:#fff;width:100%;margin-top:20px;position:relative;z-index:2}
+.restart{background:#111;color:#fff;width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px 18px;font-weight:800}
 #result.perfect{ background: radial-gradient(circle at center, #fff8dc 0%, #ffdf6e 40%, #ffb700 100%)!important; }
 .glitter{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
 #result.perfect.glitter{display:block}
@@ -64,15 +64,15 @@ button{border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:
 </head>
 <body>
 <div class="app">
-<section id="loading" class="screen active"><div>CONDITIONAL ERROR</div><div id="loadText" style="opacity:.7;margin-top:8px">Checking files...</div><div class="loader"><div class="loaderbar" id="loaderBar"></div></div></section>
-<section id="start" class="screen"><div style="width:100%"><img src="logo.png" class="school-logo" onerror="this.style.display='none'"><div class="school-name">SMK Negeri 6 Samarinda</div><div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div><div class="title">Conditional<br>Error Recognition</div><div class="desc">Zero, First, Second & Third Conditional</div><div class="start-form"><label>Name</label><input id="studentName" placeholder="Enter your name"><label>Class</label><input id="studentClass" placeholder="e.g. XII GP 1"><button class="primary" id="startBtn">START GAME</button></div></div></section>
-<section id="quiz" class="screen"><div class="quizHead"><div class="headrow"><div id="qNum">Question 1 / 20</div><div id="timer">00:00</div></div><div class="progress"><i id="progressBar"></i></div></div><div class="quizbody"><div class="badge" id="typeBadge"></div><div class="instruction">Choose the underlined part (A–E) that contains the error.</div><div class="sentence" id="sentence"></div><div class="hint">Tap the sentence or tap A–E below</div><div class="abc-options" id="abcOptions"><div class="abc-btn" data-i="0">A</div><div class="abc-btn" data-i="1">B</div><div class="abc-btn" data-i="2">C</div><div class="abc-btn" data-i="3">D</div><div class="abc-btn" data-i="4">E</div></div></div></section>
-<section id="result" class="screen"><div class="glitter" id="glitterBox"></div><div style="position:relative;z-index:2"><div class="small">RESULT</div><div id="resultName" style="font-size:24px;font-weight:900;margin-top:8px"></div><div id="resultClass" style="color:#666"></div><div class="scoreCircle" id="scoreCircle"><div class="score" id="finalScore">0</div><div style="color:#666">/ 100</div></div><div id="percentage" style="font-weight:800;font-size:16px;color:#555;margin-top:-10px"></div><div class="breakdown"><div class="row"><span>Correct</span><strong id="correctCount">0</strong></div><div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div><div class="row"><span>Score Detail</span><strong id="scoreDetail">0 / 20</strong></div></div><button class="restart" onclick="location.reload()">PLAY AGAIN</button></div></section>
+<section id="loading" class="screen active"><div style="font-weight:900;font-size:34px">CONDITIONAL ERROR</div><div id="loadText" style="opacity:.7;margin-top:8px">Loading...</div><div class="loader"><div class="loaderbar" id="loaderBar"></div></div></section>
+<section id="start" class="screen"><div style="width:100%"><img src="logo.png" class="school-logo" onerror="this.style.display='none'"><div class="school-name">SMK Negeri 6 Samarinda</div><div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div><div class="title">Conditional<br>Error Recognition</div><div style="color:#666;margin-bottom:25px">Zero, First, Second & Third Conditional</div><div class="start-form"><label>Name</label><input id="studentName" placeholder="Enter your name"><label>Class</label><input id="studentClass" placeholder="e.g. XII GP 1"><button class="primary" id="startBtn">START GAME</button></div></div></section>
+<section id="quiz" class="screen"><div class="quizHead"><div class="headrow"><div id="qNum">Question 1 / 20</div><div id="timer">00:00</div></div><div class="progress"><i id="progressBar"></i></div></div><div class="quizbody"><div class="badge" id="typeBadge"></div><div class="instruction">Choose the underlined part (A–E) that contains the error.</div><div class="sentence" id="sentence"></div><div class="hint">Tap the sentence OR tap A–E below</div><div class="abc-options" id="abcOptions"></div></div></section>
+<section id="result" class="screen"><div class="glitter" id="glitterBox"></div><div style="position:relative;z-index:2"><div>RESULT</div><div id="resultName" style="font-size:24px;font-weight:900;margin-top:8px"></div><div id="resultClass" style="color:#666"></div><div class="scoreCircle" id="scoreCircle"><div class="score" id="finalScore">0</div><div style="color:#666">/ 100</div></div><div id="percentage" style="font-weight:800;color:#555"></div><div class="breakdown"><div class="row"><span>Correct</span><strong id="correctCount">0</strong></div><div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div><div class="row"><span>Detail</span><strong id="scoreDetail">0 / 20</strong></div></div><button class="restart" onclick="location.reload()">PLAY AGAIN</button></div></section>
 <div id="feedback"><div class="feedbackBox"><img id="feedbackImg"><div class="feedbackTitle" id="feedbackTitle"></div><div class="feedbackText" id="feedbackText"></div><button class="next" id="nextBtn">NEXT</button></div></div>
-<audio id="correctAudio" src="1.mp3"></audio><audio id="wrongAudio" src="-1.mp3"></audio><audio id="perfectAudio" src="perfect.mp3"></audio>
+<audio id="correctAudio" src="1.mp3" preload="auto"></audio><audio id="wrongAudio" src="-1.mp3" preload="auto"></audio><audio id="perfectAudio" src="perfect.mp3" preload="auto"></audio>
 </div>
 <script>
-const CORRECT_IMG="1.gif", WRONG_IMG="-1.gif", CORRECT_AUDIO="1.mp3", WRONG_AUDIO="-1.mp3", PERFECT_AUDIO="perfect.mp3";
+const CORRECT_IMG="1.gif", WRONG_IMG="-1.gif";
 const questions=[
   {type:"Zero Conditional", parts:["If","you heat water","to 100°C,","it boil","quickly."], answer:3, correct:"boils", exp:"it singular -> boils"},
   {type:"Zero Conditional", parts:["If plants","does not get","enough sunlight,","they grow","poorly."], answer:1, correct:"do not get", exp:"plants jamak -> do not"},
@@ -84,55 +84,106 @@ const questions=[
   {type:"First Conditional", parts:["If I will finish","my homework early,","I will","watch a movie","tonight."], answer:0, correct:"I finish", exp:"If clause tidak boleh pakai will"},
   {type:"First Conditional", parts:["If they arrives","early, we","will start","the meeting","immediately."], answer:0, correct:"If they arrive", exp:"They jamak -> arrive"},
   {type:"First Conditional", parts:["If you don't hurry,","you will","missing the","bus at the","station."], answer:2, correct:"miss the", exp:"will + V1 : miss"},
-  {type:"Second Conditional", parts:["If I was","rich, I would","travel around","the world","every year."], answer:0, correct:"If I were", exp:"Second Conditional pakai were"},
+  {type:"Second Conditional", parts:["If I was","rich, I would","travel around","the world","every year."], answer:0, correct:"If I were", exp:"pakai were"},
   {type:"Second Conditional", parts:["If he had","more free time,","he would","learns another","language."], answer:3, correct:"learn another", exp:"would + V1"},
-  {type:"Second Conditional", parts:["If I would have","more money, I","would buy","a new laptop","for school."], answer:0, correct:"I had", exp:"If clause pakai Past Simple"},
-  {type:"Second Conditional", parts:["If she lived","closer to school,","she would","walking there","every day."], answer:3, correct:"walk there", exp:"would + V1 : walk"},
+  {type:"Second Conditional", parts:["If I would have","more money, I","would buy","a new laptop","for school."], answer:0, correct:"I had", exp:"Pakai Past Simple"},
+  {type:"Second Conditional", parts:["If she lived","closer to school,","she would","walking there","every day."], answer:3, correct:"walk there", exp:"would + V1"},
   {type:"Second Conditional", parts:["If we knew","the answer, we","will tell","you immediately","about it."], answer:2, correct:"would tell", exp:"If+Past -> would"},
   {type:"Third Conditional", parts:["If they had left","earlier, they","would have","arrive on","time."], answer:3, correct:"arrived on", exp:"would have + V3"},
-  {type:"Third Conditional", parts:["If I had known","about the problem,","I would have","help you","earlier."], answer:3, correct:"helped you", exp:"would have + V3 : helped"},
+  {type:"Third Conditional", parts:["If I had known","about the problem,","I would have","help you","earlier."], answer:3, correct:"helped you", exp:"would have + V3"},
   {type:"Third Conditional", parts:["If she had studied","harder, she","would has","passed the","exam."], answer:2, correct:"would have", exp:"harus would have"},
-  {type:"Third Conditional", parts:["If we had","seen the sign,","we would not","have turn","there."], answer:3, correct:"have turned", exp:"have + V3 : turned"},
-  {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tidak pakai more"}
+  {type:"Third Conditional", parts:["If we had","seen the sign,","we would not","have turn","there."], answer:3, correct:"have turned", exp:"have + V3"},
+  {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tanpa more"}
 ];
 let current=0,score=0,answered=false,student="",klass="",startedAt=0,timerInt=null;
 const $=id=>document.getElementById(id);
 const screens=["loading","start","quiz","result"];
 function show(id){screens.forEach(x=>$(x).classList.toggle("active",x===id));}
 function createGlitter(){ const box=$("glitterBox"); box.innerHTML=""; for(let i=0;i<30;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.animationDelay=(Math.random()*2)+"s"; s.style.animationDuration=(1.5+Math.random()*1.5)+"s"; s.style.background=i%2==0?"#fff":"#ffeb3b"; box.appendChild(s); } }
-function preloadAssets(){ const assets=[{src:CORRECT_IMG,type:"image"},{src:WRONG_IMG,type:"image"},{src:CORRECT_AUDIO,type:"audio"},{src:WRONG_AUDIO,type:"audio"},{src:PERFECT_AUDIO,type:"audio"}]; let loaded=0,failed=false; function update(){ loaded++; $("loaderBar").style.width=Math.round((loaded/assets.length)*100)+"%"; if(loaded===assets.length &&!failed){ setTimeout(()=>show("start"),400);} } function fail(src){ if(src===PERFECT_AUDIO){ update(); return;} if(failed)return; failed=true; $("loadText").innerHTML='FAILED '+src+'<br><button onclick="location.reload()">RETRY</button>'; } assets.forEach(a=>{ if(a.type==="image"){ const img=new Image(); img.onload=update; img.onerror=()=>fail(a.src); img.src=a.src; }else{ const au=new Audio(); let f=false; const ok=()=>{if(f)return; if(au.readyState>=3){f=true;update();}}; au.addEventListener("canplay",ok); au.addEventListener("canplaythrough",ok); au.addEventListener("error",()=>{if(!f)fail(a.src)}); au.src=a.src; au.load(); setTimeout(()=>{if(!f){f=true;update();}},2500);} }); }
+function preloadAssets(){ const assets=[CORRECT_IMG,WRONG_IMG,"1.mp3","-1.mp3","perfect.mp3"]; let loaded=0; function upd(){ loaded++; $("loaderBar").style.width=Math.round(loaded/assets.length*100)+"%"; if(loaded===assets.length) setTimeout(()=>show("start"),300); } assets.forEach(src=>{ const isImg=src.endsWith(".gif")||src.endsWith(".png"); if(isImg){ const im=new Image(); im.onload=upd; im.onerror=upd; im.src=src; } else { const a=new Audio(); let done=false; const ok=()=>{ if(done)return; done=true; upd(); }; a.addEventListener("canplaythrough",ok); a.addEventListener("error",ok); a.src=src; a.load(); setTimeout(ok,1500); } }); }
 preloadAssets();
-$("startBtn").onclick=()=>{ student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Enter name and class");return;} current=0;score=0;startedAt=Date.now();show("quiz");renderQuestion();startTimer(); };
+$("startBtn").onclick=()=>{ student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Isi nama dan kelas");return;} current=0;score=0;startedAt=Date.now();show("quiz");renderQuestion();startTimer(); };
 function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),r=s%60; $("timer").textContent=String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"); },250); }
 
-// FIXED RENDER - RESET TOMBOL HITAM
+// ==== FIX TOTAL HP - RECREATE BUTTONS TIAP SOAL ====
 function renderQuestion(){
   answered=false;
   const q=questions[current];
   $("qNum").textContent=`Question ${current+1} / ${questions.length}`;
   $("typeBadge").textContent=q.type;
-  $("progressBar").style.width=((current)/questions.length*100)+"%";
+  $("progressBar").style.width=(current/questions.length*100)+"%";
   $("sentence").innerHTML=q.parts.map((p,i)=>`<span class="part" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${p}</span>`).join(" ");
+
+  // Buat ulang tombol A-E fresh (pasti putih)
+  const abcContainer=$("abcOptions");
+  abcContainer.innerHTML = ["A","B","C","D","E"].map((letter,i)=>`<div class="abc-btn" data-i="${i}">${letter}</div>`).join("");
+
+  // Pasang event baru - pakai pointerdown biar tidak double di HP
   document.querySelectorAll(".part").forEach(el=>{
-    el.classList.remove("selected");
-    el.onclick=()=>handleAnswer(Number(el.dataset.i));
+    el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); handleAnswer(Number(el.dataset.i)); }, {once:true});
   });
   document.querySelectorAll(".abc-btn").forEach(btn=>{
-    btn.classList.remove("selected");
-    btn.onclick=()=>handleAnswer(Number(btn.dataset.i));
+    btn.addEventListener("pointerdown", (e)=>{ e.preventDefault(); handleAnswer(Number(btn.dataset.i)); }, {once:true});
   });
 }
+
 function handleAnswer(index){
   if(answered) return;
   answered=true;
-  document.querySelectorAll(".part").forEach(el=>{ if(Number(el.dataset.i)===index) el.classList.add("selected"); });
-  document.querySelectorAll(".abc-btn").forEach(btn=>{ if(Number(btn.dataset.i)===index) btn.classList.add("selected"); });
-  setTimeout(()=>answer(index), 180);
+
+  // visual feedback hitam sesaat
+  const partEl=document.querySelector(`.part[data-i="${index}"]`);
+  const btnEl=document.querySelector(`.abc-btn[data-i="${index}"]`);
+  if(partEl) partEl.classList.add("selected");
+  if(btnEl) btnEl.classList.add("selected");
+
+  setTimeout(()=>{ doAnswer(index); }, 180);
 }
-function answer(index){ const q=questions[current]; if(index===q.answer) score++; showFeedback(index===q.answer,q); }
-function showFeedback(correct,q){ $("feedback").style.display="flex"; $("feedbackImg").src=correct?CORRECT_IMG:WRONG_IMG; $("feedbackTitle").textContent=correct?"CORRECT!":"WRONG!"; $("feedbackText").innerHTML=correct?`<b>${q.exp}</b>`: `Correct is <b>${String.fromCharCode(65+q.answer)} - ${q.correct}</b><br>${q.exp}`; const aud=$(correct?"correctAudio":"wrongAudio"); aud.currentTime=0; aud.play().catch(()=>{}); $("nextBtn").textContent=current===questions.length-1?"SHOW SCORE":"NEXT QUESTION"; aud.onended=()=>{ if($("feedback").style.display==="flex") $("nextBtn").click(); }; }
-$("nextBtn").onclick=()=>{ $("correctAudio").pause(); $("wrongAudio").pause(); $("feedback").style.display="none"; if(current<questions.length-1){current++;renderQuestion();} else finish(); };
-function finish(){ clearInterval(timerInt); const total=questions.length; const nilai=Math.round(score/total*100); $("resultName").textContent=student; $("resultClass").textContent=klass; $("finalScore").textContent=nilai; $("percentage").textContent=nilai===100?"PERFECT SCORE! 🎉":""; $("correctCount").textContent=score; $("wrongCount").textContent=total-score; $("scoreDetail").textContent=score+" / "+total; show("result"); if(nilai===100){ $("result").classList.add("perfect"); $("scoreCircle").style.borderColor="#b8860b"; $("scoreCircle").style.background="#fff8dc"; createGlitter(); $("perfectAudio").play().catch(()=>{});}else{$("result").classList.remove("perfect");} }
+
+function doAnswer(index){
+  const q=questions[current];
+  if(index===q.answer) score++;
+  showFeedback(index===q.answer,q);
+}
+
+function showFeedback(correct,q){
+  $("feedback").style.display="flex";
+  $("feedbackImg").src=correct?CORRECT_IMG:WRONG_IMG;
+  $("feedbackTitle").textContent=correct?"CORRECT!":"WRONG!";
+  $("feedbackText").innerHTML=correct?`<b>${q.exp}</b>`: `Correct is <b>${String.fromCharCode(65+q.answer)} - ${q.correct}</b><br>${q.exp}`;
+  const aud=$(correct?"correctAudio":"wrongAudio"); aud.currentTime=0; aud.play().catch(()=>{});
+  $("nextBtn").textContent=current===questions.length-1?"SHOW SCORE":"NEXT QUESTION";
+  aud.onended=()=>{ if($("feedback").style.display==="flex") $("nextBtn").click(); };
+}
+
+$("nextBtn").onclick=()=>{
+  $("correctAudio").pause(); $("wrongAudio").pause();
+  $("feedback").style.display="none";
+  if(current<questions.length-1){ current++; renderQuestion(); } else finish();
+};
+
+function finish(){
+  clearInterval(timerInt);
+  const total=questions.length;
+  const nilai=Math.round(score/total*100);
+  $("resultName").textContent=student;
+  $("resultClass").textContent=klass;
+  $("finalScore").textContent=nilai;
+  $("percentage").textContent=nilai===100?"PERFECT SCORE! 🎉":"";
+  $("correctCount").textContent=score;
+  $("wrongCount").textContent=total-score;
+  $("scoreDetail").textContent=score+" / "+total;
+  show("result");
+  if(nilai===100){
+    $("result").classList.add("perfect");
+    $("scoreCircle").style.borderColor="#b8860b";
+    $("scoreCircle").style.background="#fff8dc";
+    createGlitter();
+    $("perfectAudio").play().catch(()=>{});
+  } else {
+    $("result").classList.remove("perfect");
+  }
+}
 </script>
 </body>
 </html>
