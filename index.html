@@ -1,203 +1,1403 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Conditional Error Recognition</title>
-<style>
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif;background:#111;color:#fff;-webkit-tap-highlight-color: transparent;}
-body{display:flex;justify-content:center;min-height:100vh}
-.app{width:100%;max-width:560px;min-height:100vh;background:#f4f4f4;color:#111;position:relative;overflow:hidden}
-.screen{display:none;min-height:100vh;padding:24px 18px}
-.screen.active{display:flex;flex-direction:column}
-#loading{background:#111;color:#fff;justify-content:center;align-items:center;text-align:center}
-.loader{width:82%;height:12px;border:2px solid #fff;border-radius:20px;margin-top:28px;overflow:hidden}
-.loaderbar{height:100%;width:0;background:#fff;transition:width.15s}
-#loadText{margin-top:12px;font-size:13px;opacity:.8}
-.school-logo{width:120px;height:120px;object-fit:contain;display:block;margin:0 auto 12px auto;cursor:pointer;transition:filter 0.6s, transform 0.15s}
-.school-logo.grayscale{filter:grayscale(1) contrast(1.1) brightness(1.1)}
-.school-logo.colored{filter:grayscale(0); animation:popColor 0.5s ease}
-@keyframes popColor{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
-.school-name{font-weight:900;font-size:18px;margin-top:8px}
-.teacher-name{font-size:14px;color:#666;margin-top:4px;margin-bottom:8px}
-.primary{background:#111;color:#fff;width:100%;margin-top:24px;border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:800;cursor:pointer}
-.primary.hidden{opacity:0;pointer-events:none;transform:translateY(20px);height:0;padding:0;margin:0;overflow:hidden}
-.primary.show{opacity:1;transform:translateY(0);height:auto;padding:15px 18px;margin-top:24px;animation:btnAppear 0.5s ease}
-@keyframes btnAppear{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)}}
-input{width:100%;padding:15px;border:2px solid #222;border-radius:10px;font-size:17px;outline:none}
-label{font-weight:bold;margin:12px 0 6px;display:block;text-align:left}
-.start-form{width:100%;text-align:left;margin-top:10px}
-#start{background:#fff;justify-content:center;align-items:center;text-align:center}
-#quiz{background:#f4f4f4;padding:0}
-.quizHead{background:#111;color:#fff;padding:16px 18px;position:sticky;top:0;z-index:5}
-.headrow{display:flex;justify-content:space-between;align-items:center}
-.progress{height:6px;background:#444;margin:12px -18px -16px}
-.progress i{display:block;height:100%;background:#fff;width:0}
-.quizbody{padding:24px 18px}
-.badge{display:inline-block;background:#ddd;border-radius:20px;padding:7px 11px;font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:16px}
-.instruction{font-weight:bold;margin-bottom:20px;color:#444}
-.sentence{font-size:19px;line-height:2.3;text-align:center;padding:22px 14px;background:#fff;border-radius:14px;box-shadow:0 3px 15px #0001;word-spacing:2px}
-.part{display:inline;padding:4px 3px 6px 3px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:7px;cursor:pointer;border-radius:6px;white-space:nowrap;line-height:2.8}
-.part.selected{background:#111;color:#fff;text-decoration:none}
-.letter{font-size:11px;color:#777;vertical-align:super;margin-right:2px;font-weight:900}
-.hint{text-align:center;color:#777;margin:18px 0 10px;font-size:14px}
-.abc-options{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
-.abc-btn{width:54px;height:54px;border-radius:50%;border:3px solid #111;background:#fff;color:#111;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
-.abc-btn.selected{background:#111!important;color:#fff!important}
-#feedback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
-.feedbackBox{width:min(90%,430px);background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}
-.feedbackBox img{width:100%;max-height:45vh;object-fit:contain;border-radius:12px;background:#eee}
-.next{width:100%;background:#111;color:#fff;border:0;border-radius:12px;padding:15px 18px;font-weight:800}
-#result{background:#fff;justify-content:center;text-align:center;position:relative;overflow:hidden}
-.scoreCircle{width:180px;height:180px;border:12px solid #111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;position:relative;z-index:2;background:#fff}
-.score{font-size:52px;font-weight:900;line-height:1}
-.breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px;position:relative;z-index:2}
-.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}
-.restart{background:#111;color:#fff;width:100%;margin-top:20px;border:0;border-radius:12px;padding:15px 18px;font-weight:800;position:relative;z-index:2}
-/* BG EMAS PERFECT - KEMBALI */
-#result.perfect{ background: radial-gradient(circle at center, #fff8dc 0%, #ffdf6e 40%, #ffb700 100%)!important; }
-.glitter{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
-#result.perfect .glitter{display:block}
-.glitter span{position:absolute;width:8px;height:8px;border-radius:50%;animation:glitterAnim 2s infinite linear;opacity:0.9}
-@keyframes glitterAnim{0%{transform:translateY(100vh) scale(0);opacity:0}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ujian Digital | Lab Coat – CEFR A1–B2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --primary-soft: #e7f1ff;
+      --success: #198754;
+      --success-soft: #d1e7dd;
+      --danger: #dc3545;
+      --danger-soft: #f8d7da;
+      --warning: #ffc107;
+      --text: #1a2332;
+      --text-muted: #5c6b7a;
+      --border: #d8e2ec;
+      --radius: 14px;
+      --shadow: 0 4px 20px rgba(13, 110, 253, 0.08);
+      --shadow-lg: 0 12px 40px rgba(13, 110, 253, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .exam-header {
+      background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+      color: white;
+      padding: 1.5rem 1.25rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exam-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+    }
+
+    .exam-header h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .exam-header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 520px;
+    }
+
+    /* Progress */
+    .progress-bar-wrap {
+      max-width: 820px;
+      margin: -1.1rem auto 0;
+      padding: 0 1.25rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .progress-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background: #e9eef5;
+      border-radius: 50px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0d6efd, #3d8bfd);
+      border-radius: 50px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Main */
+    .exam-main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 4rem;
+    }
+
+    /* Passage Card */
+    .passage-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.75rem;
+      border-left: 5px solid var(--primary);
+    }
+
+    .passage-card h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .passage-card .author {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .passage-text {
+      font-size: 0.97rem;
+      color: #2c3e50;
+      line-height: 1.75;
+    }
+
+    .passage-text p {
+      margin-bottom: 0.85rem;
+    }
+
+    .passage-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      transition: box-shadow 0.25s, border-color 0.25s;
+      display: none; /* hide all by default – show one at a time */
+    }
+
+    .question-card.active {
+      display: block;
+      animation: fadeInQ 0.3s ease;
+    }
+
+    @keyframes fadeInQ {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .question-card.answered {
+      border-color: #b6d4fe;
+    }
+
+    .q-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .q-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border-radius: 6px;
+    }
+
+    .tag-num {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tag-textual { background: #e0f2fe; color: #0369a1; }
+    .tag-inference { background: #fef3c7; color: #b45309; }
+    .tag-appreciation { background: #fce7f3; color: #be185d; }
+    .tag-evaluation { background: #ede9fe; color: #6d28d9; }
+    .tag-mc { background: #dcfce7; color: #15803d; }
+    .tag-mcma { background: #ffedd5; color: #c2410c; }
+    .tag-matrix { background: #e0e7ff; color: #3730a3; }
+    .tag-level { background: #f1f5f9; color: #475569; }
+
+    .q-stem {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      line-height: 1.55;
+    }
+
+    /* Options – Single Choice */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fafbfc;
+    }
+
+    .option:hover {
+      border-color: #90b4f0;
+      background: var(--primary-soft);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    }
+
+    .option input {
+      margin-top: 0.2rem;
+      accent-color: var(--primary);
+      width: 1.1rem;
+      height: 1.1rem;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .option label {
+      cursor: pointer;
+      font-size: 0.95rem;
+      flex: 1;
+      line-height: 1.45;
+    }
+
+    /* MCMA hint */
+    .mcma-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Matrix */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.6rem;
+      text-align: center;
+    }
+
+    .matrix-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: #334155;
+    }
+
+    .matrix-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+      background: #fafbfc;
+      width: 42%;
+    }
+
+    .matrix-table input[type="checkbox"],
+    .matrix-table input[type="radio"] {
+      width: 1.15rem;
+      height: 1.15rem;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .matrix-table tr:hover td {
+      background: var(--primary-soft);
+    }
+
+    /* Navigation & Submit */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-soft);
+    }
+
+    /* Result Screen */
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .result-screen.show {
+      display: block;
+      animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) calc(var(--score) * 1%), #e2e8f0 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+
+    .score-circle::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .score-value {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .result-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .result-details {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    .result-details h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-item .correct { color: var(--success); font-weight: 600; }
+    .result-item .wrong { color: var(--danger); font-weight: 600; }
+
+    .feedback-box {
+      background: var(--primary-soft);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #1e3a5f;
+      text-align: left;
+    }
+
+    /* Review mode */
+    .option.correct-answer {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .option.wrong-answer {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .matrix-table td.correct-cell {
+      background: var(--success-soft) !important;
+    }
+
+    .matrix-table td.wrong-cell {
+      background: var(--danger-soft) !important;
+    }
+
+    .q-feedback {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      display: none;
+    }
+
+    .q-feedback.show {
+      display: block;
+    }
+
+    .q-feedback.ok {
+      background: var(--success-soft);
+      color: #0f5132;
+      border-left: 4px solid var(--success);
+    }
+
+    .q-feedback.bad {
+      background: var(--danger-soft);
+      color: #842029;
+      border-left: 4px solid var(--danger);
+    }
+
+    /* Footer */
+    .exam-footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== START FORM PAGE ===== */
+    .start-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      background: linear-gradient(160deg, #e8f0fe 0%, #f0f4f8 50%, #e7f1ff 100%);
+    }
+
+    .start-card {
+      background: var(--surface);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(13, 110, 253, 0.12);
+      padding: 2.5rem 2rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .start-school {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .start-logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      margin: 0 auto 1.5rem;
+      display: block;
+    }
+
+    .start-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .start-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 1.15rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafbfc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+      background: white;
+    }
+
+    .form-group input::placeholder {
+      color: #94a3b8;
+    }
+
+    .start-btn {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.85rem;
+      font-size: 1rem;
+    }
+
+    /* Hide exam until form is submitted */
+    .exam-wrapper {
+      display: none;
+    }
+
+    .exam-wrapper.show {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .exam-header h1 { font-size: 1.35rem; }
+      .question-card, .passage-card { padding: 1.2rem; }
+      .matrix-table { font-size: 0.8rem; }
+      .matrix-table th, .matrix-table td { padding: 0.5rem 0.35rem; }
+      .btn { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
+    }
+  </style>
 </head>
 <body>
-<div class="app">
-<section id="loading" class="screen active"><div style="font-weight:900;font-size:28px">CONDITIONAL ERROR</div><div id="loadText">Checking files...</div><div class="loader"><div class="loaderbar" id="loaderBar"></div></div><div id="loadDetail" style="margin-top:15px;font-size:12px;opacity:.6"></div></section>
-<section id="start" class="screen"><div style="width:100%"><img id="schoolLogo" src="logo.png" class="school-logo grayscale"><div class="school-name">SMK Negeri 6 Samarinda</div><div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div><div class="title">Conditional<br>Error Recognition</div><div style="color:#666;margin-bottom:25px">Zero, First, Second & Third Conditional</div><div class="start-form"><label>Name</label><input id="studentName" placeholder="Enter your name"><label>Class</label><input id="studentClass" placeholder="e.g. XII GP 1"><button class="primary hidden" id="startBtn">START GAME</button></div></div></section>
-<section id="quiz" class="screen"><div class="quizHead"><div class="headrow"><div id="qNum"></div><div id="timer">00:00</div></div><div class="progress"><i id="progressBar"></i></div></div><div class="quizbody"><div class="badge" id="typeBadge"></div><div class="instruction">Choose the underlined part (A–E) that contains the error.</div><div class="sentence" id="sentence"></div><div class="hint">Tap the sentence OR tap A–E below</div><div class="abc-options" id="abcOptions"></div></div></section>
-<section id="result" class="screen"><div class="glitter" id="glitterBox"></div><div style="position:relative;z-index:2"><div>RESULT</div><div id="resultName" style="font-size:24px;font-weight:900;margin-top:8px"></div><div id="resultClass" style="color:#666"></div><div class="scoreCircle" id="scoreCircle"><div class="score" id="finalScore">0</div><div style="color:#666">/ 100</div></div><div id="percentage" style="font-weight:800;color:#555"></div><div class="breakdown"><div class="row"><span>Correct</span><strong id="correctCount">0</strong></div><div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div><div class="row"><span>Detail</span><strong id="scoreDetail">0 / 20</strong></div></div><button class="restart" onclick="location.reload()">PLAY AGAIN</button></div></section>
-<div id="feedback"><div class="feedbackBox"><img id="feedbackImg"><div id="feedbackTitle" style="font-size:25px;font-weight:900;margin:12px 0 4px"></div><div id="feedbackText" style="color:#555;margin-bottom:12px"></div><button class="next" id="nextBtn">NEXT</button></div></div>
-<audio id="correctAudio" preload="auto"></audio><audio id="wrongAudio" preload="auto"></audio><audio id="perfectAudio" preload="auto"></audio><audio id="appearAudio" preload="auto"></audio>
-</div>
-<script>
-const REQUIRED_FILES=[{src:"logo.png",type:"image"},{src:"1.gif",type:"image"},{src:"-1.gif",type:"image"},{src:"1.mp3",type:"audio"},{src:"-1.mp3",type:"audio"},{src:"perfect.mp3",type:"audio"},{src:"appear.mp3",type:"audio"}];
-let loadedCount=0,hasFailed=false;
-const $=id=>document.getElementById(id);
-function updateLoader(){
-  if(hasFailed) return;
-  $("loaderBar").style.width=Math.round((loadedCount/REQUIRED_FILES.length)*100)+"%";
-  $("loadText").textContent=`Loading ${loadedCount} / ${REQUIRED_FILES.length} files...`;
-  if(loadedCount<REQUIRED_FILES.length) $("loadDetail").textContent=`Checking: ${REQUIRED_FILES[loadedCount].src}`;
-  if(loadedCount===REQUIRED_FILES.length){ $("loadText").textContent="All files OK. Starting..."; $("loadDetail").textContent=""; $("loaderBar").style.width="100%"; setTimeout(()=>showScreen("start"),600); }
-}
-function failFile(src,reason){
-  if(hasFailed) return; hasFailed=true;
-  $("loaderBar").style.background="#ff3333"; $("loaderBar").style.width="100%";
-  $("loadText").innerHTML=`<span style="color:#ff5555;font-weight:900">MISSING FILE</span><br>${src}`;
-  $("loadDetail").innerHTML=`<div style="margin-top:15px;background:#222;padding:12px;border-radius:8px;text-align:left">File <b>${src}</b> tidak ada (${reason}).<br><br>Required:<br>${REQUIRED_FILES.map(f=>`• ${f.src}`).join("<br>")}<br><br><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;font-weight:bold;background:#fff;color:#111">RETRY</button></div>`;
-}
-function checkFilesStrict(){
-  hasFailed=false; loadedCount=0; $("loaderBar").style.background="#fff"; $("loaderBar").style.width="0%";
-  REQUIRED_FILES.forEach(file=>{
-    if(file.type==="image"){
-      const img=new Image(); let done=false;
-      img.onload=()=>{ if(done) return; done=true; if(img.decode){ img.decode().then(()=>{loadedCount++;updateLoader();}).catch(()=>failFile(file.src,"corrupt")); } else {loadedCount++;updateLoader();} };
-      img.onerror=()=>failFile(file.src,"404"); img.src=file.src;
-    } else {
-      const aud=new Audio(); let done=false;
-      const ok=()=>{ if(done||hasFailed) return; done=true; loadedCount++; updateLoader(); };
-      const fail=()=>{ if(done||hasFailed) return; done=true; failFile(file.src,"404 or corrupt"); };
-      aud.addEventListener("canplay",ok,{once:true}); aud.addEventListener("canplaythrough",ok,{once:true}); aud.addEventListener("loadeddata",ok,{once:true}); aud.addEventListener("error",fail,{once:true});
-      aud.src=file.src; aud.load();
-      setTimeout(()=>{ if(!done&&!hasFailed){ if(aud.readyState>=1) ok(); else fail(); } },4000);
+
+  <!-- ========== START FORM PAGE ========== -->
+  <div class="start-page" id="startPage">
+    <div class="start-card">
+      <div class="start-school">SMK Negeri 6 Samarinda</div>
+      <img src="logo.png" alt="Logo SMK Negeri 6 Samarinda" class="start-logo" onerror="this.style.display='none'">
+      <div class="start-title">Digital Reading Exam</div>
+      <div class="start-subtitle">Lab Coat · CEFR A1–B2 · 10 Questions</div>
+
+      <form id="startForm" onsubmit="startExam(event)">
+        <div class="form-group">
+          <label for="studentName">Nama</label>
+          <input type="text" id="studentName" placeholder="Odette" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="studentClass">Kelas</label>
+          <input type="text" id="studentClass" placeholder="XI-KA" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary start-btn">Mulai Ujian →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== EXAM CONTENT (hidden until form submitted) ========== -->
+  <div class="exam-wrapper" id="examWrapper">
+
+  <!-- Header -->
+  <header class="exam-header">
+    <div class="header-inner">
+      <div class="badge-row">
+        <span class="badge">Reading Comprehension</span>
+        <span class="badge">CEFR A1 – B2</span>
+        <span class="badge">10 Questions</span>
+      </div>
+      <h1>🧪 Digital Exam: Lab Coat</h1>
+      <p>Read the text carefully, then answer all questions. Good luck!</p>
+      <p id="studentInfo" style="margin-top:0.5rem;font-size:0.85rem;opacity:0.85"></p>
+    </div>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <div class="progress-card">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">0 / 10</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="exam-main" id="examMain">
+
+    <!-- Reading Passage -->
+    <article class="passage-card">
+      <h2>📖 Reading Text</h2>
+      <div class="author">Author: Maulida Nadjhua</div>
+      <div class="passage-text">
+        <p><strong>LAB COAT</strong></p>
+        <p>A lab coat is a special clothing worn in laboratories by scientists, students, and technicians. It is designed to protect the wearer from chemicals, spills, and dirt.</p>
+        <p>The lab coat is usually white. It is made of light and strong fabric, such as cotton or polyester. It has long sleeves that cover the arms. It has a collar and buttons in the front. It usually has three pockets: two on the lower part and one on the chest.</p>
+        <p>The lab coat is loose so it is comfortable to wear. It helps keep our clothes clean and protects our skin from dangerous substances.</p>
+        <p>In conclusion, a lab coat is very important in the laboratory. It is not only a part of safety, but also a symbol of professionalism and responsibility.</p>
+      </div>
+    </article>
+
+    <!-- QUESTIONS -->
+    <form id="examForm">
+
+      <!-- Q1 – Textual MC -->
+      <div class="question-card" data-q="1">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q1</span>
+          <span class="q-tag tag-textual">Textual</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">A1</span>
+        </div>
+        <div class="q-stem">What colour is a lab coat usually?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 1)">
+            <input type="radio" name="q1" value="a" id="q1a">
+            <label for="q1a">Blue</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 1)">
+            <input type="radio" name="q1" value="b" id="q1b">
+            <label for="q1b">White</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 1)">
+            <input type="radio" name="q1" value="c" id="q1c">
+            <label for="q1c">Green</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 1)">
+            <input type="radio" name="q1" value="d" id="q1d">
+            <label for="q1d">Black</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <!-- Q2 – Textual MC -->
+      <div class="question-card" data-q="2">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q2</span>
+          <span class="q-tag tag-textual">Textual</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">A1–A2</span>
+        </div>
+        <div class="q-stem">Who wears a lab coat?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 2)">
+            <input type="radio" name="q2" value="a" id="q2a">
+            <label for="q2a">Only doctors</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 2)">
+            <input type="radio" name="q2" value="b" id="q2b">
+            <label for="q2b">Scientists, students, and technicians</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 2)">
+            <input type="radio" name="q2" value="c" id="q2c">
+            <label for="q2c">Only teachers</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 2)">
+            <input type="radio" name="q2" value="d" id="q2d">
+            <label for="q2d">Only children</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <!-- Q3 – Textual MCMA -->
+      <div class="question-card" data-q="3">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q3</span>
+          <span class="q-tag tag-textual">Textual</span>
+          <span class="q-tag tag-mcma">MCMA</span>
+          <span class="q-tag tag-level">A2</span>
+        </div>
+        <div class="q-stem">What materials can a lab coat be made of? (Choose <strong>all</strong> correct answers)</div>
+        <div class="mcma-hint">☑️ You may select more than one option</div>
+        <div class="options">
+          <div class="option" onclick="selectMulti(this, 3)">
+            <input type="checkbox" name="q3" value="a" id="q3a">
+            <label for="q3a">Cotton</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 3)">
+            <input type="checkbox" name="q3" value="b" id="q3b">
+            <label for="q3b">Wool</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 3)">
+            <input type="checkbox" name="q3" value="c" id="q3c">
+            <label for="q3c">Polyester</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 3)">
+            <input type="checkbox" name="q3" value="d" id="q3d">
+            <label for="q3d">Silk</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <!-- Q4 – Inference MC -->
+      <div class="question-card" data-q="4">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q4</span>
+          <span class="q-tag tag-inference">Inference</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">A2–B1</span>
+        </div>
+        <div class="q-stem">Why does a lab coat have long sleeves?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 4)">
+            <input type="radio" name="q4" value="a" id="q4a">
+            <label for="q4a">To look fashionable</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 4)">
+            <input type="radio" name="q4" value="b" id="q4b">
+            <label for="q4b">To cover and protect the arms</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 4)">
+            <input type="radio" name="q4" value="c" id="q4c">
+            <label for="q4c">To make the coat heavier</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 4)">
+            <input type="radio" name="q4" value="d" id="q4d">
+            <label for="q4d">Because short sleeves are expensive</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <!-- Q5 – Inference MCMA -->
+      <div class="question-card" data-q="5">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q5</span>
+          <span class="q-tag tag-inference">Inference</span>
+          <span class="q-tag tag-mcma">MCMA</span>
+          <span class="q-tag tag-level">B1</span>
+        </div>
+        <div class="q-stem">According to the text, what does a lab coat protect the wearer from? (Choose <strong>all</strong> that apply)</div>
+        <div class="mcma-hint">☑️ You may select more than one option</div>
+        <div class="options">
+          <div class="option" onclick="selectMulti(this, 5)">
+            <input type="checkbox" name="q5" value="a" id="q5a">
+            <label for="q5a">Chemicals</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 5)">
+            <input type="checkbox" name="q5" value="b" id="q5b">
+            <label for="q5b">Spills</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 5)">
+            <input type="checkbox" name="q5" value="c" id="q5c">
+            <label for="q5c">Loud noise</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 5)">
+            <input type="checkbox" name="q5" value="d" id="q5d">
+            <label for="q5d">Dirt</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <!-- Q6 – Inference MC -->
+      <div class="question-card" data-q="6">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q6</span>
+          <span class="q-tag tag-inference">Inference</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">B1</span>
+        </div>
+        <div class="q-stem">Why is the lab coat described as “loose”?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 6)">
+            <input type="radio" name="q6" value="a" id="q6a">
+            <label for="q6a">So it is comfortable to wear</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 6)">
+            <input type="radio" name="q6" value="b" id="q6b">
+            <label for="q6b">So it looks bigger</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 6)">
+            <input type="radio" name="q6" value="c" id="q6c">
+            <label for="q6c">Because it is made of heavy fabric</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 6)">
+            <input type="radio" name="q6" value="d" id="q6d">
+            <label for="q6d">To save material</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb6"></div>
+      </div>
+
+      <!-- Q7 – Appreciation MC -->
+      <div class="question-card" data-q="7">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q7</span>
+          <span class="q-tag tag-appreciation">Appreciation</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">B1</span>
+        </div>
+        <div class="q-stem">How does the writer feel about the lab coat in the conclusion?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 7)">
+            <input type="radio" name="q7" value="a" id="q7a">
+            <label for="q7a">The writer thinks it is unimportant</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 7)">
+            <input type="radio" name="q7" value="b" id="q7b">
+            <label for="q7b">The writer sees it as important for safety and professionalism</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 7)">
+            <input type="radio" name="q7" value="c" id="q7c">
+            <label for="q7c">The writer thinks it is only for decoration</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 7)">
+            <input type="radio" name="q7" value="d" id="q7d">
+            <label for="q7d">The writer does not like lab coats</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb7"></div>
+      </div>
+
+      <!-- Q8 – Appreciation MCMA -->
+      <div class="question-card" data-q="8">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q8</span>
+          <span class="q-tag tag-appreciation">Appreciation</span>
+          <span class="q-tag tag-mcma">MCMA</span>
+          <span class="q-tag tag-level">B1–B2</span>
+        </div>
+        <div class="q-stem">Which words from the text show that the writer respects the lab coat? (Choose <strong>all</strong> that apply)</div>
+        <div class="mcma-hint">☑️ You may select more than one option</div>
+        <div class="options">
+          <div class="option" onclick="selectMulti(this, 8)">
+            <input type="checkbox" name="q8" value="a" id="q8a">
+            <label for="q8a">“very important”</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 8)">
+            <input type="checkbox" name="q8" value="b" id="q8b">
+            <label for="q8b">“a symbol of professionalism and responsibility”</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 8)">
+            <input type="checkbox" name="q8" value="c" id="q8c">
+            <label for="q8c">“usually white”</label>
+          </div>
+          <div class="option" onclick="selectMulti(this, 8)">
+            <input type="checkbox" name="q8" value="d" id="q8d">
+            <label for="q8d">“part of safety”</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb8"></div>
+      </div>
+
+      <!-- Q9 – Evaluation MC -->
+      <div class="question-card" data-q="9">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q9</span>
+          <span class="q-tag tag-evaluation">Evaluation</span>
+          <span class="q-tag tag-mc">MC</span>
+          <span class="q-tag tag-level">B1–B2</span>
+        </div>
+        <div class="q-stem">How well does the text explain the importance of a lab coat?</div>
+        <div class="options">
+          <div class="option" onclick="selectSingle(this, 9)">
+            <input type="radio" name="q9" value="a" id="q9a">
+            <label for="q9a">Very poorly – it gives almost no information</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 9)">
+            <input type="radio" name="q9" value="b" id="q9b">
+            <label for="q9b">Quite well – it clearly links the lab coat to safety and professionalism</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 9)">
+            <input type="radio" name="q9" value="c" id="q9c">
+            <label for="q9c">It only talks about the colour</label>
+          </div>
+          <div class="option" onclick="selectSingle(this, 9)">
+            <input type="radio" name="q9" value="d" id="q9d">
+            <label for="q9d">It is confusing and hard to understand</label>
+          </div>
+        </div>
+        <div class="q-feedback" id="fb9"></div>
+      </div>
+
+      <!-- Q10 – Evaluation True/False -->
+      <div class="question-card" data-q="10">
+        <div class="q-meta">
+          <span class="q-tag tag-num">Q10</span>
+          <span class="q-tag tag-evaluation">Evaluation</span>
+          <span class="q-tag tag-mc">True / False</span>
+          <span class="q-tag tag-level">B2</span>
+        </div>
+        <div class="q-stem">Read each statement carefully. Decide if it is <strong>True</strong> or <strong>False</strong> according to the text.</div>
+        <div class="mcma-hint">Select one answer for each statement.</div>
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Statement</th>
+              <th>True</th>
+              <th>False</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. A lab coat protects the wearer from chemicals, spills and dirt.</td>
+              <td><input type="radio" name="q10_s1" value="true" data-row="1"></td>
+              <td><input type="radio" name="q10_s1" value="false" data-row="1"></td>
+            </tr>
+            <tr>
+              <td>2. A lab coat is usually black and made of silk.</td>
+              <td><input type="radio" name="q10_s2" value="true" data-row="2"></td>
+              <td><input type="radio" name="q10_s2" value="false" data-row="2"></td>
+            </tr>
+            <tr>
+              <td>3. The writer thinks a lab coat is only for decoration.</td>
+              <td><input type="radio" name="q10_s3" value="true" data-row="3"></td>
+              <td><input type="radio" name="q10_s3" value="false" data-row="3"></td>
+            </tr>
+            <tr>
+              <td>4. A lab coat is a symbol of professionalism and responsibility.</td>
+              <td><input type="radio" name="q10_s4" value="true" data-row="4"></td>
+              <td><input type="radio" name="q10_s4" value="false" data-row="4"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="q-feedback" id="fb10"></div>
+      </div>
+
+      <!-- Navigation: one question at a time -->
+      <div class="nav-row" id="navRow">
+        <button type="button" class="btn btn-outline" id="prevBtn" onclick="showQuestion(currentQ - 1)" style="visibility:hidden">← Previous</button>
+        <div style="display:flex;gap:0.6rem;align-items:center">
+          <span id="qCounter" style="font-size:0.9rem;font-weight:600;color:var(--primary);font-family:'JetBrains Mono',monospace">1 / 10</span>
+          <button type="button" class="btn btn-primary" id="nextBtn" onclick="showQuestion(currentQ + 1)">Next →</button>
+          <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitExam()" style="display:none">Submit Answers →</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Result Screen -->
+    <div class="result-screen" id="resultScreen">
+      <div class="score-circle" id="scoreCircle" style="--score: 0">
+        <span class="score-value" id="scoreValue">0%</span>
+      </div>
+      <h2 class="result-title" id="resultTitle">Well done!</h2>
+      <p class="result-subtitle" id="resultSubtitle">You scored 0 out of 10</p>
+
+      <div class="result-details">
+        <h3>📊 Score Breakdown</h3>
+        <div id="resultList"></div>
+        <div class="feedback-box" id="overallFeedback"></div>
+      </div>
+
+      <button type="button" class="btn btn-primary" onclick="reviewAnswers()">Review Answers</button>
+      <button type="button" class="btn btn-outline" style="margin-left:0.6rem" onclick="location.reload()">Try Again</button>
+    </div>
+
+  </main>
+
+  <footer class="exam-footer">
+    Digital Reading Exam · CEFR A1–B2 · Lab Coat by Maulida Nadjhua
+  </footer>
+
+  </div><!-- end .exam-wrapper -->
+
+  <script>
+    // ========== START FORM ==========
+    function startExam(e) {
+      e.preventDefault();
+      const name = document.getElementById('studentName').value.trim();
+      const kelas = document.getElementById('studentClass').value.trim();
+      if (!name || !kelas) return;
+
+      // Save student info
+      window.studentName = name;
+      window.studentClass = kelas;
+
+      // Show name in header
+      document.getElementById('studentInfo').textContent = name + ' · ' + kelas;
+
+      // Hide start page, show exam
+      document.getElementById('startPage').style.display = 'none';
+      document.getElementById('examWrapper').classList.add('show');
+
+      // Start at question 1
+      showQuestion(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  });
-}
-let tapTimes=[], unlocked=false, unlockTimer=null;
-const WINDOW_MS=3000;
-function showScreen(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id)); if(id==="start") initLogoSecurity(); }
-function initLogoSecurity(){
-  tapTimes=[]; unlocked=false;
-  const logo=$("schoolLogo"), btn=$("startBtn");
-  logo.classList.add("grayscale"); logo.classList.remove("colored");
-  btn.classList.add("hidden"); btn.classList.remove("show");
-  logo.style.pointerEvents="auto";
-  if(unlockTimer) clearTimeout(unlockTimer);
-  logo.onpointerdown=(e)=>{
-    e.preventDefault(); if(unlocked) return;
-    const now=Date.now(); tapTimes.push(now);
-    tapTimes=tapTimes.filter(t=>now-t<=WINDOW_MS);
-    logo.style.transform="scale(0.88)"; setTimeout(()=>logo.style.transform="",90);
-    if(tapTimes.length>6){ tapTimes=[]; if(unlockTimer) clearTimeout(unlockTimer); return; }
-    if(tapTimes.length===6){
-      const span=tapTimes[5]-tapTimes[0];
-      if(span<=WINDOW_MS){
-        if(unlockTimer) clearTimeout(unlockTimer);
-        unlockTimer=setTimeout(()=>{ if(tapTimes.length===6) doUnlock(); },400);
-      } else { tapTimes=[]; }
+
+    // ========== ANSWER KEY ==========
+    const answers = {
+      1: { type: 'mc', correct: 'b', explanation: 'The text says: “The lab coat is usually white.”' },
+      2: { type: 'mc', correct: 'b', explanation: 'The text says it is worn by “scientists, students, and technicians.”' },
+      3: { type: 'mcma', correct: ['a', 'c'], explanation: 'The text mentions “cotton or polyester.” Wool and silk are not mentioned.' },
+      4: { type: 'mc', correct: 'b', explanation: 'The text says: “It has long sleeves that cover the arms.” This protects the arms.' },
+      5: { type: 'mcma', correct: ['a', 'b', 'd'], explanation: 'The text says the lab coat protects from “chemicals, spills, and dirt.” Loud noise is not mentioned.' },
+      6: { type: 'mc', correct: 'a', explanation: 'The text says: “The lab coat is loose so it is comfortable to wear.”' },
+      7: { type: 'mc', correct: 'b', explanation: 'In the conclusion the writer says a lab coat is “very important” and a “symbol of professionalism and responsibility.”' },
+      8: { type: 'mcma', correct: ['a', 'b', 'd'], explanation: '“very important”, “a symbol of professionalism and responsibility”, and “part of safety” show respect. “usually white” is only a fact about colour.' },
+      9: { type: 'mc', correct: 'b', explanation: 'The text clearly explains the protective function and links the lab coat to safety and professionalism.' },
+      10: {
+        type: 'tf',
+        // Pattern: True, False, False, True
+        correct: {
+          1: 'true',
+          2: 'false',
+          3: 'false',
+          4: 'true'
+        },
+        explanation: '1. True – the text clearly states this. 2. False – the text says the lab coat is usually white and made of cotton or polyester. 3. False – the writer sees it as important for safety and professionalism, not decoration. 4. True – the conclusion says it is a symbol of professionalism and responsibility.'
+      }
+    };
+
+    const answered = new Set();
+    let currentQ = 1;
+    const totalQ = 10;
+
+    // Show only one question at a time
+    function showQuestion(n) {
+      if (n < 1 || n > totalQ) return;
+      currentQ = n;
+
+      // Hide all questions, show only current
+      document.querySelectorAll('.question-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      const activeCard = document.querySelector(`.question-card[data-q="${n}"]`);
+      if (activeCard) activeCard.classList.add('active');
+
+      // Update counter
+      document.getElementById('qCounter').textContent = n + ' / ' + totalQ;
+
+      // Previous button
+      document.getElementById('prevBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+
+      // Next vs Submit
+      if (n === totalQ) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'inline-flex';
+      } else {
+        document.getElementById('nextBtn').style.display = 'inline-flex';
+        document.getElementById('submitBtn').style.display = 'none';
+      }
+
+      // Scroll to question area (keep text visible above)
+      activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  };
-}
-function doUnlock(){
-  if(unlocked) return; unlocked=true;
-  const logo=$("schoolLogo"), btn=$("startBtn");
-  logo.classList.remove("grayscale"); logo.classList.add("colored"); logo.style.pointerEvents="none";
-  if(unlockTimer) clearTimeout(unlockTimer);
-  setTimeout(()=>{ btn.classList.remove("hidden"); btn.classList.add("show"); const a=$("appearAudio"); a.src="appear.mp3"; a.currentTime=0; a.play().catch(()=>{}); },1000);
-}
-const CORRECT_IMG="1.gif", WRONG_IMG="-1.gif";
-const questions=[
-  {type:"Zero Conditional", parts:["If","you heat water","to 100°C,","it boil","quickly."], answer:3, correct:"boils", exp:"it singular -> boils"},
-  {type:"Zero Conditional", parts:["If plants","does not get","enough sunlight,","they grow","poorly."], answer:1, correct:"do not get", exp:"plants jamak -> do not"},
-  {type:"Zero Conditional", parts:["When ice","reaches 0°C,","it usually","melt into","water."], answer:3, correct:"melts into", exp:"it singular -> melts"},
-  {type:"Zero Conditional", parts:["If people","eats too much","sugar, they","often gain","weight."], answer:1, correct:"eat too much", exp:"people jamak -> eat"},
-  {type:"Zero Conditional", parts:["Water freezes","if the temperature","fall below","zero degrees","Celsius."], answer:2, correct:"falls below", exp:"temperature singular -> falls"},
-  {type:"First Conditional", parts:["If it rains","tomorrow, we","will stays","at home","all day."], answer:2, correct:"will stay", exp:"will + V1"},
-  {type:"First Conditional", parts:["If she studies","hard tonight,","she will","passes the","exam tomorrow."], answer:3, correct:"pass the", exp:"will + V1 : pass"},
-  {type:"First Conditional", parts:["If I will finish","my homework early,","I will","watch a movie","tonight."], answer:0, correct:"I finish", exp:"If clause tidak boleh pakai will"},
-  {type:"First Conditional", parts:["If they arrives","early, we","will start","the meeting","immediately."], answer:0, correct:"If they arrive", exp:"They jamak -> arrive"},
-  {type:"First Conditional", parts:["If you don't hurry,","you will","missing the","bus at the","station."], answer:2, correct:"miss the", exp:"will + V1 : miss"},
-  {type:"Second Conditional", parts:["If I was","rich, I would","travel around","the world","every year."], answer:0, correct:"If I were", exp:"pakai were"},
-  {type:"Second Conditional", parts:["If he had","more free time,","he would","learns another","language."], answer:3, correct:"learn another", exp:"would + V1"},
-  {type:"Second Conditional", parts:["If I would have","more money, I","would buy","a new laptop","for school."], answer:0, correct:"I had", exp:"Past Simple"},
-  {type:"Second Conditional", parts:["If she lived","closer to school,","she would","walking there","every day."], answer:3, correct:"walk there", exp:"would + V1"},
-  {type:"Second Conditional", parts:["If we knew","the answer, we","will tell","you immediately","about it."], answer:2, correct:"would tell", exp:"If+Past -> would"},
-  {type:"Third Conditional", parts:["If they had left","earlier, they","would have","arrive on","time."], answer:3, correct:"arrived on", exp:"would have + V3"},
-  {type:"Third Conditional", parts:["If I had known","about the problem,","I would have","help you","earlier."], answer:3, correct:"helped you", exp:"would have + V3"},
-  {type:"Third Conditional", parts:["If she had studied","harder, she","would has","passed the","exam."], answer:2, correct:"would have", exp:"harus would have"},
-  {type:"Third Conditional", parts:["If we had","seen the sign,","we would not","have turn","there."], answer:3, correct:"have turned", exp:"have + V3"},
-  {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tanpa more"}
-];
-let current=0,score=0,answered=false,student="",klass="",startedAt=0,timerInt=null;
-function createGlitter(){ const box=$("glitterBox"); box.innerHTML=""; for(let i=0;i<35;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%"; s.style.animationDelay=(Math.random()*2)+"s"; s.style.animationDuration=(1.2+Math.random()*1.8)+"s"; s.style.background=i%2==0?"#fff":"#ffeb3b"; s.style.width=(5+Math.random()*8)+"px"; s.style.height=s.style.width; box.appendChild(s); } }
-$("startBtn").onclick=()=>{ if(!unlocked) return; student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Isi nama dan kelas");return;} current=0;score=0;startedAt=Date.now();showScreen("quiz");renderQuestion();startTimer(); };
-function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),r=s%60; $("timer").textContent=String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"); },250); }
-function renderQuestion(){
-  answered=false;
-  const q=questions[current];
-  $("qNum").textContent=`Question ${current+1} / ${questions.length}`;
-  $("typeBadge").textContent=q.type;
-  $("progressBar").style.width=(current/questions.length*100)+"%";
-  $("sentence").innerHTML=q.parts.map((p,i)=>`<span class="part" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${p}</span>`).join(" ");
-  $("abcOptions").innerHTML = ["A","B","C","D","E"].map((l,i)=>`<div class="abc-btn" data-i="${i}">${l}</div>`).join("");
-  document.querySelectorAll(".part").forEach(el=>{ el.addEventListener("pointerdown", (e)=>{ e.preventDefault(); handleAnswer(Number(el.dataset.i)); }, {once:true}); });
-  document.querySelectorAll(".abc-btn").forEach(btn=>{ btn.addEventListener("pointerdown", (e)=>{ e.preventDefault(); handleAnswer(Number(btn.dataset.i)); }, {once:true}); });
-}
-function handleAnswer(index){ if(answered) return; answered=true; const p=document.querySelector(`.part[data-i="${index}"]`); const b=document.querySelector(`.abc-btn[data-i="${index}"]`); if(p) p.classList.add("selected"); if(b) b.classList.add("selected"); setTimeout(()=>doAnswer(index),180); }
-function doAnswer(index){ if(index===questions[current].answer) score++; showFeedback(index===questions[current].answer, questions[current]); }
-function showFeedback(correct,q){ $("feedback").style.display="flex"; $("feedbackImg").src=correct?CORRECT_IMG:WRONG_IMG; $("feedbackTitle").textContent=correct?"CORRECT!":"WRONG!"; $("feedbackText").innerHTML=correct?`<b>${q.exp}</b>`: `Correct is <b>${String.fromCharCode(65+q.answer)} - ${q.correct}</b><br>${q.exp}`; const aud=$(correct?"correctAudio":"wrongAudio"); aud.src=correct?"1.mp3":"-1.mp3"; aud.currentTime=0; aud.play().catch(()=>{}); $("nextBtn").textContent=current===questions.length-1?"SHOW SCORE":"NEXT QUESTION"; aud.onended=()=>{ if($("feedback").style.display==="flex") $("nextBtn").click(); }; }
-$("nextBtn").onclick=()=>{ $("correctAudio").pause(); $("wrongAudio").pause(); $("feedback").style.display="none"; if(current<questions.length-1){current++;renderQuestion();} else finish(); };
-function finish(){
-  clearInterval(timerInt);
-  const total=questions.length; const nilai=Math.round(score/total*100);
-  $("resultName").textContent=student; $("resultClass").textContent=klass; $("finalScore").textContent=nilai; $("percentage").textContent=nilai===100?"PERFECT SCORE! 🎉":""; $("correctCount").textContent=score; $("wrongCount").textContent=total-score; $("scoreDetail").textContent=score+" / "+total; showScreen("result");
-  if(nilai===100){
-    $("result").classList.add("perfect");
-    $("scoreCircle").style.borderColor="#b8860b";
-    $("scoreCircle").style.background="#fff8dc";
-    createGlitter();
-    $("perfectAudio").src="perfect.mp3";
-    $("perfectAudio").play().catch(()=>{});
-  } else {
-    $("result").classList.remove("perfect");
-    $("scoreCircle").style.borderColor="#111";
-    $("scoreCircle").style.background="#fff";
-  }
-}
-checkFilesStrict();
-</script>
+
+    // Start with Q1
+    showQuestion(1);
+
+    // True/False change listener (Q10)
+    document.querySelectorAll('.matrix-table input[type="radio"]').forEach(inp => {
+      inp.addEventListener('change', () => {
+        let allAnswered = true;
+        for (let s = 1; s <= 4; s++) {
+          if (!document.querySelector(`input[name="q10_s${s}"]:checked`)) {
+            allAnswered = false;
+            break;
+          }
+        }
+        if (allAnswered) markAnswered(10);
+        else {
+          answered.delete(10);
+          document.querySelector('.question-card[data-q="10"]').classList.remove('answered');
+          updateProgress();
+        }
+      });
+    });
+
+    function updateProgress() {
+      const total = 10;
+      const count = answered.size;
+      const pct = (count / total) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = count + ' / ' + total;
+    }
+
+    function markAnswered(qNum) {
+      answered.add(qNum);
+      const card = document.querySelector(`.question-card[data-q="${qNum}"]`);
+      if (card) card.classList.add('answered');
+      updateProgress();
+    }
+
+    function selectSingle(el, qNum) {
+      const card = el.closest('.question-card');
+      card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+      markAnswered(qNum);
+    }
+
+    function selectMulti(el, qNum) {
+      const input = el.querySelector('input');
+      // Toggle happens via click on label/checkbox, but we force visual
+      setTimeout(() => {
+        if (input.checked) el.classList.add('selected');
+        else el.classList.remove('selected');
+        // Check if any checked in this question
+        const any = el.closest('.options').querySelector('input:checked');
+        if (any) markAnswered(qNum);
+        else {
+          answered.delete(qNum);
+          el.closest('.question-card').classList.remove('answered');
+          updateProgress();
+        }
+      }, 10);
+    }
+
+    function getUserAnswer(qNum) {
+      const a = answers[qNum];
+      if (a.type === 'mc') {
+        const sel = document.querySelector(`input[name="q${qNum}"]:checked`);
+        return sel ? sel.value : null;
+      }
+      if (a.type === 'mcma') {
+        return Array.from(document.querySelectorAll(`input[name="q${qNum}"]:checked`)).map(i => i.value).sort();
+      }
+      if (a.type === 'tf') {
+        const result = {};
+        for (let s = 1; s <= 4; s++) {
+          const sel = document.querySelector(`input[name="q10_s${s}"]:checked`);
+          result[s] = sel ? sel.value : null;
+        }
+        return result;
+      }
+    }
+
+    function isCorrect(qNum, userAns) {
+      const a = answers[qNum];
+      if (userAns === null || userAns === undefined) return false;
+      if (a.type === 'mc') return userAns === a.correct;
+      if (a.type === 'mcma') {
+        const corr = [...a.correct].sort();
+        return JSON.stringify(userAns) === JSON.stringify(corr);
+      }
+      if (a.type === 'tf') {
+        // All 4 statements must be correct
+        for (let s = 1; s <= 4; s++) {
+          if (userAns[s] !== a.correct[s]) return false;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function submitExam() {
+      // Check unanswered
+      if (answered.size < 10) {
+        const missing = [];
+        for (let i = 1; i <= 10; i++) if (!answered.has(i)) missing.push(i);
+        if (!confirm(`You have not answered question(s): ${missing.join(', ')}.\n\nSubmit anyway?`)) return;
+      }
+
+      let score = 0;
+      const results = [];
+
+      for (let i = 1; i <= 10; i++) {
+        const userAns = getUserAnswer(i);
+        const ok = isCorrect(i, userAns);
+        if (ok) score++;
+        results.push({ q: i, ok, userAns });
+      }
+
+      // Show result
+      document.getElementById('examForm').style.display = 'none';
+      document.querySelector('.passage-card').style.display = 'none';
+
+      const pct = Math.round((score / 10) * 100);
+      document.getElementById('scoreCircle').style.setProperty('--score', pct);
+      document.getElementById('scoreValue').textContent = pct + '%';
+      const info = (window.studentName || '') + (window.studentClass ? ' · ' + window.studentClass : '');
+      document.getElementById('resultSubtitle').textContent = (info ? info + ' — ' : '') + `You scored ${score} out of 10`;
+
+      let title = 'Keep practising!';
+      let feedback = '';
+      if (pct >= 90) {
+        title = 'Excellent! 🌟';
+        feedback = 'Outstanding work! You understood the text very well at both literal and deeper levels.';
+      } else if (pct >= 70) {
+        title = 'Very Good! 👏';
+        feedback = 'Strong performance. You handled most textual and inference questions well. Review the evaluation items.';
+      } else if (pct >= 50) {
+        title = 'Good effort!';
+        feedback = 'You got the main ideas. Re-read the text carefully and pay attention to details and the writer’s attitude.';
+      } else {
+        title = 'Keep going!';
+        feedback = 'Try reading the text again slowly. Focus on key words about protection, materials, and the conclusion.';
+      }
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('overallFeedback').textContent = feedback;
+
+      const list = document.getElementById('resultList');
+      list.innerHTML = results.map(r => `
+        <div class="result-item">
+          <span>Question ${r.q}</span>
+          <span class="${r.ok ? 'correct' : 'wrong'}">${r.ok ? '✓ Correct' : '✗ Incorrect'}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('resultScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Store for review
+      window._results = results;
+    }
+
+    function reviewAnswers() {
+      document.getElementById('resultScreen').classList.remove('show');
+      document.getElementById('examForm').style.display = 'block';
+      document.querySelector('.passage-card').style.display = 'block';
+
+      // Show ALL questions for review
+      document.querySelectorAll('.question-card').forEach(card => {
+        card.classList.add('active');
+        card.style.display = 'block';
+      });
+      // Hide navigation during review
+      document.getElementById('navRow').style.display = 'none';
+
+      // Disable all inputs
+      document.querySelectorAll('input').forEach(i => i.disabled = true);
+
+      // Show feedback per question
+      for (let i = 1; i <= 10; i++) {
+        const res = window._results.find(r => r.q === i);
+        const fb = document.getElementById('fb' + i);
+        const a = answers[i];
+
+        if (res.ok) {
+          fb.className = 'q-feedback show ok';
+          fb.innerHTML = `<strong>✓ Correct.</strong> ${a.explanation}`;
+        } else {
+          fb.className = 'q-feedback show bad';
+          fb.innerHTML = `<strong>✗ Incorrect.</strong> ${a.explanation}`;
+        }
+
+        // Highlight options
+        if (a.type === 'mc') {
+          document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => {
+            const opt = inp.closest('.option');
+            if (inp.value === a.correct) opt.classList.add('correct-answer');
+            else if (inp.checked) opt.classList.add('wrong-answer');
+          });
+        }
+        if (a.type === 'mcma') {
+          document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => {
+            const opt = inp.closest('.option');
+            if (a.correct.includes(inp.value)) opt.classList.add('correct-answer');
+            else if (inp.checked) opt.classList.add('wrong-answer');
+          });
+        }
+        if (a.type === 'tf') {
+          for (let s = 1; s <= 4; s++) {
+            const correctVal = a.correct[s];
+            document.querySelectorAll(`input[name="q10_s${s}"]`).forEach(inp => {
+              const td = inp.closest('td');
+              if (inp.value === correctVal) {
+                td.classList.add('correct-cell');
+              } else if (inp.checked) {
+                td.classList.add('wrong-cell');
+              }
+            });
+          }
+        }
+      }
+
+      // Change submit button
+      document.getElementById('submitBtn').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
