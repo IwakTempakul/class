@@ -365,6 +365,41 @@
       flex-wrap: wrap;
     }
 
+    #checkBtn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Feedback overlay */
+    .feedback-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feedback-overlay.show {
+      display: flex;
+      animation: fadeInOverlay 0.25s ease;
+    }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .feedback-overlay img {
+      max-width: min(280px, 70vw);
+      max-height: 50vh;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
     .btn {
       font-family: inherit;
       font-size: 0.95rem;
@@ -411,7 +446,14 @@
     .result-screen {
       display: none;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1.25rem 3rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      min-height: 480px;
+      margin-top: 1.5rem;
+      background: var(--surface);
+      box-shadow: var(--shadow);
     }
 
     .result-screen.show {
@@ -424,9 +466,94 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Perfect score – gold background */
+    .result-screen.perfect {
+      background: linear-gradient(145deg, #fef9e7 0%, #fde68a 40%, #fbbf24 100%);
+      box-shadow: 0 0 60px rgba(251, 191, 36, 0.45);
+    }
+
+    .result-screen.perfect .score-circle {
+      background: conic-gradient(#d97706 calc(var(--score) * 1%), #fde68a 0);
+    }
+
+    .result-screen.perfect .score-circle::before {
+      background: linear-gradient(145deg, #fffbeb, #fef3c7);
+    }
+
+    .result-screen.perfect .score-value {
+      color: #b45309;
+    }
+
+    .result-screen.perfect .result-title {
+      color: #92400e;
+    }
+
+    /* Glitter layer */
+    .glitter-layer {
+      display: none;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .result-screen.perfect .glitter-layer {
+      display: block;
+    }
+
+    .glitter-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: glitterFall linear infinite;
+      box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.8);
+    }
+
+    @keyframes glitterFall {
+      0% { opacity: 0; transform: translateY(-20px) rotate(0deg) scale(0.5); }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(110vh) rotate(360deg) scale(1); }
+    }
+
+    .result-student {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1.75rem;
+    }
+
+    .result-student .rs-name {
+      display: block;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .result-student .rs-class {
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .result-screen.perfect .result-student .rs-name {
+      color: #78350f;
+    }
+
+    .result-screen.perfect .result-student .rs-class {
+      color: #92400e;
+    }
+
     .score-circle {
-      width: 140px;
-      height: 140px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
       background: conic-gradient(var(--primary) calc(var(--score) * 1%), #e2e8f0 0);
       display: flex;
@@ -434,12 +561,13 @@
       justify-content: center;
       margin: 0 auto 1.5rem;
       position: relative;
+      z-index: 1;
     }
 
     .score-circle::before {
       content: '';
       position: absolute;
-      inset: 12px;
+      inset: 16px;
       background: white;
       border-radius: 50%;
     }
@@ -447,62 +575,76 @@
     .score-value {
       position: relative;
       z-index: 1;
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 3.4rem;
+      font-weight: 800;
       color: var(--primary);
       font-family: 'JetBrains Mono', monospace;
+      line-height: 1;
     }
 
     .result-title {
-      font-size: 1.5rem;
+      position: relative;
+      z-index: 1;
+      font-size: 1.6rem;
       font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
-
-    .result-subtitle {
-      color: var(--text-muted);
-      margin-bottom: 1.75rem;
-    }
-
-    .result-details {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.25rem;
-      text-align: left;
       margin-bottom: 1.5rem;
     }
 
-    .result-details h3 {
-      font-size: 0.95rem;
-      margin-bottom: 0.85rem;
-      color: var(--text);
-    }
-
-    .result-item {
+    .result-summary {
+      position: relative;
+      z-index: 1;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 0.55rem 0;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 0.9rem;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    .result-item:last-child {
-      border-bottom: none;
+    .summary-item {
+      text-align: center;
     }
 
-    .result-item .correct { color: var(--success); font-weight: 600; }
-    .result-item .wrong { color: var(--danger); font-weight: 600; }
+    .sum-num {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.1;
+    }
 
-    .feedback-box {
-      background: var(--primary-soft);
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin-top: 1rem;
+    .correct-sum .sum-num { color: var(--success); }
+    .wrong-sum .sum-num { color: var(--danger); }
+
+    .result-screen.perfect .correct-sum .sum-num { color: #15803d; }
+    .result-screen.perfect .wrong-sum .sum-num { color: #b91c1c; }
+
+    .sum-label {
       font-size: 0.9rem;
-      color: #1e3a5f;
-      text-align: left;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .summary-divider {
+      width: 2px;
+      height: 48px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .result-feedback {
+      position: relative;
+      z-index: 1;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .result-screen.perfect .result-feedback {
+      color: #78350f;
+      font-weight: 600;
     }
 
     /* Review mode */
@@ -1056,32 +1198,52 @@
 
       <!-- Navigation: one question at a time -->
       <div class="nav-row" id="navRow">
-        <button type="button" class="btn btn-outline" id="prevBtn" onclick="showQuestion(currentQ - 1)" style="visibility:hidden">← Previous</button>
-        <div style="display:flex;gap:0.6rem;align-items:center">
-          <span id="qCounter" style="font-size:0.9rem;font-weight:600;color:var(--primary);font-family:'JetBrains Mono',monospace">1 / 10</span>
-          <button type="button" class="btn btn-primary" id="nextBtn" onclick="showQuestion(currentQ + 1)">Next →</button>
-          <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitExam()" style="display:none">Submit Answers →</button>
-        </div>
+        <span id="qCounter" style="font-size:0.9rem;font-weight:600;color:var(--primary);font-family:'JetBrains Mono',monospace">1 / 10</span>
+        <button type="button" class="btn btn-primary" id="checkBtn" onclick="checkCurrentAnswer()" disabled>Kirim Jawaban</button>
       </div>
     </form>
 
+    <!-- Feedback overlay (gif + auto advance) -->
+    <div class="feedback-overlay" id="feedbackOverlay">
+      <img id="feedbackGif" src="" alt="feedback">
+    </div>
+
+    <audio id="audioCorrect" src="1.mp3" preload="auto"></audio>
+    <audio id="audioWrong" src="-1.mp3" preload="auto"></audio>
+
     <!-- Result Screen -->
     <div class="result-screen" id="resultScreen">
+      <div class="glitter-layer" id="glitterLayer"></div>
+
+      <div class="result-student" id="resultStudent">
+        <span class="rs-name" id="rsName">Nama</span>
+        <span class="rs-class" id="rsClass">Kelas</span>
+      </div>
+
       <div class="score-circle" id="scoreCircle" style="--score: 0">
-        <span class="score-value" id="scoreValue">0%</span>
+        <span class="score-value" id="scoreValue">0</span>
       </div>
+
       <h2 class="result-title" id="resultTitle">Well done!</h2>
-      <p class="result-subtitle" id="resultSubtitle">You scored 0 out of 10</p>
 
-      <div class="result-details">
-        <h3>📊 Score Breakdown</h3>
-        <div id="resultList"></div>
-        <div class="feedback-box" id="overallFeedback"></div>
+      <div class="result-summary" id="resultSummary">
+        <div class="summary-item correct-sum">
+          <span class="sum-num" id="correctCount">0</span>
+          <span class="sum-label">Benar</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item wrong-sum">
+          <span class="sum-num" id="wrongCount">0</span>
+          <span class="sum-label">Salah</span>
+        </div>
       </div>
 
-      <button type="button" class="btn btn-primary" onclick="reviewAnswers()">Review Answers</button>
-      <button type="button" class="btn btn-outline" style="margin-left:0.6rem" onclick="location.reload()">Try Again</button>
+      <p class="result-feedback" id="overallFeedback"></p>
+
+      <button type="button" class="btn btn-outline" onclick="location.reload()" style="margin-top:1.5rem">Coba Lagi</button>
     </div>
+
+    <audio id="perfectAudio" src="perfect.mp3" preload="auto"></audio>
 
   </main>
 
@@ -1142,11 +1304,14 @@
     const answered = new Set();
     let currentQ = 1;
     const totalQ = 10;
+    let totalCorrect = 0;
+    let isChecking = false; // prevent double-submit while feedback plays
 
     // Show only one question at a time
     function showQuestion(n) {
       if (n < 1 || n > totalQ) return;
       currentQ = n;
+      isChecking = false;
 
       // Hide all questions, show only current
       document.querySelectorAll('.question-card').forEach(card => {
@@ -1158,20 +1323,37 @@
       // Update counter
       document.getElementById('qCounter').textContent = n + ' / ' + totalQ;
 
-      // Previous button
-      document.getElementById('prevBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
-
-      // Next vs Submit
-      if (n === totalQ) {
-        document.getElementById('nextBtn').style.display = 'none';
-        document.getElementById('submitBtn').style.display = 'inline-flex';
-      } else {
-        document.getElementById('nextBtn').style.display = 'inline-flex';
-        document.getElementById('submitBtn').style.display = 'none';
-      }
+      // Enable/disable Kirim Jawaban based on whether current Q is answered
+      updateCheckButton();
 
       // Scroll to question area (keep text visible above)
-      activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (activeCard) activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function updateCheckButton() {
+      const btn = document.getElementById('checkBtn');
+      if (isQuestionAnswered(currentQ)) {
+        btn.disabled = false;
+      } else {
+        btn.disabled = true;
+      }
+    }
+
+    function isQuestionAnswered(qNum) {
+      const a = answers[qNum];
+      if (a.type === 'mc') {
+        return !!document.querySelector(`input[name="q${qNum}"]:checked`);
+      }
+      if (a.type === 'mcma') {
+        return !!document.querySelector(`input[name="q${qNum}"]:checked`);
+      }
+      if (a.type === 'tf') {
+        for (let s = 1; s <= 4; s++) {
+          if (!document.querySelector(`input[name="q10_s${s}"]:checked`)) return false;
+        }
+        return true;
+      }
+      return false;
     }
 
     // Start with Q1
@@ -1180,21 +1362,128 @@
     // True/False change listener (Q10)
     document.querySelectorAll('.matrix-table input[type="radio"]').forEach(inp => {
       inp.addEventListener('change', () => {
-        let allAnswered = true;
-        for (let s = 1; s <= 4; s++) {
-          if (!document.querySelector(`input[name="q10_s${s}"]:checked`)) {
-            allAnswered = false;
-            break;
-          }
-        }
-        if (allAnswered) markAnswered(10);
-        else {
+        if (isQuestionAnswered(10)) {
+          markAnswered(10);
+        } else {
           answered.delete(10);
           document.querySelector('.question-card[data-q="10"]').classList.remove('answered');
           updateProgress();
         }
+        updateCheckButton();
       });
     });
+
+    // Check answer for current question
+    function checkCurrentAnswer() {
+      if (isChecking) return;
+      if (!isQuestionAnswered(currentQ)) return;
+
+      isChecking = true;
+      document.getElementById('checkBtn').disabled = true;
+
+      const userAns = getUserAnswer(currentQ);
+      const ok = isCorrect(currentQ, userAns);
+
+      if (ok) totalCorrect++;
+
+      // Show gif + play audio
+      const overlay = document.getElementById('feedbackOverlay');
+      const gif = document.getElementById('feedbackGif');
+      const audio = document.getElementById(ok ? 'audioCorrect' : 'audioWrong');
+
+      gif.src = ok ? '1.gif' : '-1.gif';
+      overlay.classList.add('show');
+
+      // Play audio, then advance
+      const advance = () => {
+        overlay.classList.remove('show');
+        gif.src = '';
+
+        if (currentQ < totalQ) {
+          showQuestion(currentQ + 1);
+        } else {
+          // Last question → show final score
+          showFinalScore();
+        }
+      };
+
+      if (audio) {
+        audio.currentTime = 0;
+        const onEnded = () => {
+          audio.removeEventListener('ended', onEnded);
+          advance();
+        };
+        audio.addEventListener('ended', onEnded);
+        audio.play().catch(() => {
+          // If autoplay blocked, wait 1.5s then advance
+          setTimeout(advance, 1500);
+        });
+      } else {
+        setTimeout(advance, 1500);
+      }
+    }
+
+    function showFinalScore() {
+      const score = totalCorrect;
+      const wrong = totalQ - score;
+      const pct = Math.round((score / totalQ) * 100);
+
+      // Hide everything except the score section
+      document.getElementById('examForm').style.display = 'none';
+      document.querySelector('.passage-card').style.display = 'none';
+      document.getElementById('navRow').style.display = 'none';
+      document.querySelector('.exam-header').style.display = 'none';
+      document.querySelector('.progress-bar-wrap').style.display = 'none';
+      document.querySelector('.exam-footer').style.display = 'none';
+
+      // Student name & class
+      document.getElementById('rsName').textContent = window.studentName || '';
+      document.getElementById('rsClass').textContent = window.studentClass || '';
+
+      // Big score (out of 100)
+      document.getElementById('scoreCircle').style.setProperty('--score', pct);
+      document.getElementById('scoreValue').textContent = pct;
+
+      // Benar / Salah counts only
+      document.getElementById('correctCount').textContent = score;
+      document.getElementById('wrongCount').textContent = wrong;
+
+      // Title & feedback
+      let title = 'Terus berlatih!';
+      let feedback = 'Coba baca teks lagi dengan teliti.';
+      if (pct === 100) {
+        title = 'Sempurna! 🏆';
+        feedback = 'Nilai sempurna! Pemahamanmu terhadap teks sangat baik.';
+      } else if (pct >= 80) {
+        title = 'Excellent! 🌟';
+        feedback = 'Hasil yang sangat bagus. Hampir sempurna!';
+      } else if (pct >= 60) {
+        title = 'Good Job! 👏';
+        feedback = 'Sudah cukup baik. Perhatikan detail teks lagi.';
+      } else if (pct >= 40) {
+        title = 'Keep Going!';
+        feedback = 'Masih bisa ditingkatkan. Baca ulang bagian yang sulit.';
+      }
+
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('overallFeedback').textContent = feedback;
+
+      const resultEl = document.getElementById('resultScreen');
+      resultEl.classList.add('show');
+
+      // Perfect score: gold + glitter + music
+      if (pct === 100) {
+        resultEl.classList.add('perfect');
+        createGlitter();
+        const audio = document.getElementById('perfectAudio');
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play().catch(() => {});
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     function updateProgress() {
       const total = 10;
@@ -1209,9 +1498,11 @@
       const card = document.querySelector(`.question-card[data-q="${qNum}"]`);
       if (card) card.classList.add('answered');
       updateProgress();
+      updateCheckButton();
     }
 
     function selectSingle(el, qNum) {
+      if (isChecking) return;
       const card = el.closest('.question-card');
       card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
       el.classList.add('selected');
@@ -1220,18 +1511,18 @@
     }
 
     function selectMulti(el, qNum) {
+      if (isChecking) return;
       const input = el.querySelector('input');
-      // Toggle happens via click on label/checkbox, but we force visual
       setTimeout(() => {
         if (input.checked) el.classList.add('selected');
         else el.classList.remove('selected');
-        // Check if any checked in this question
         const any = el.closest('.options').querySelector('input:checked');
         if (any) markAnswered(qNum);
         else {
           answered.delete(qNum);
           el.closest('.question-card').classList.remove('answered');
           updateProgress();
+          updateCheckButton();
         }
       }, 10);
     }
@@ -1273,130 +1564,22 @@
       return false;
     }
 
-    function submitExam() {
-      // Check unanswered
-      if (answered.size < 10) {
-        const missing = [];
-        for (let i = 1; i <= 10; i++) if (!answered.has(i)) missing.push(i);
-        if (!confirm(`You have not answered question(s): ${missing.join(', ')}.\n\nSubmit anyway?`)) return;
+    function createGlitter() {
+      const layer = document.getElementById('glitterLayer');
+      layer.innerHTML = '';
+      const colors = ['#fff', '#fde68a', '#fbbf24', '#f59e0b', '#fef3c7', '#fcd34d'];
+      for (let i = 0; i < 60; i++) {
+        const p = document.createElement('div');
+        p.className = 'glitter-particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = -10 - Math.random() * 30 + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.width = (4 + Math.random() * 6) + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = (2.5 + Math.random() * 3.5) + 's';
+        p.style.animationDelay = (Math.random() * 2) + 's';
+        layer.appendChild(p);
       }
-
-      let score = 0;
-      const results = [];
-
-      for (let i = 1; i <= 10; i++) {
-        const userAns = getUserAnswer(i);
-        const ok = isCorrect(i, userAns);
-        if (ok) score++;
-        results.push({ q: i, ok, userAns });
-      }
-
-      // Show result
-      document.getElementById('examForm').style.display = 'none';
-      document.querySelector('.passage-card').style.display = 'none';
-
-      const pct = Math.round((score / 10) * 100);
-      document.getElementById('scoreCircle').style.setProperty('--score', pct);
-      document.getElementById('scoreValue').textContent = pct + '%';
-      const info = (window.studentName || '') + (window.studentClass ? ' · ' + window.studentClass : '');
-      document.getElementById('resultSubtitle').textContent = (info ? info + ' — ' : '') + `You scored ${score} out of 10`;
-
-      let title = 'Keep practising!';
-      let feedback = '';
-      if (pct >= 90) {
-        title = 'Excellent! 🌟';
-        feedback = 'Outstanding work! You understood the text very well at both literal and deeper levels.';
-      } else if (pct >= 70) {
-        title = 'Very Good! 👏';
-        feedback = 'Strong performance. You handled most textual and inference questions well. Review the evaluation items.';
-      } else if (pct >= 50) {
-        title = 'Good effort!';
-        feedback = 'You got the main ideas. Re-read the text carefully and pay attention to details and the writer’s attitude.';
-      } else {
-        title = 'Keep going!';
-        feedback = 'Try reading the text again slowly. Focus on key words about protection, materials, and the conclusion.';
-      }
-      document.getElementById('resultTitle').textContent = title;
-      document.getElementById('overallFeedback').textContent = feedback;
-
-      const list = document.getElementById('resultList');
-      list.innerHTML = results.map(r => `
-        <div class="result-item">
-          <span>Question ${r.q}</span>
-          <span class="${r.ok ? 'correct' : 'wrong'}">${r.ok ? '✓ Correct' : '✗ Incorrect'}</span>
-        </div>
-      `).join('');
-
-      document.getElementById('resultScreen').classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Store for review
-      window._results = results;
-    }
-
-    function reviewAnswers() {
-      document.getElementById('resultScreen').classList.remove('show');
-      document.getElementById('examForm').style.display = 'block';
-      document.querySelector('.passage-card').style.display = 'block';
-
-      // Show ALL questions for review
-      document.querySelectorAll('.question-card').forEach(card => {
-        card.classList.add('active');
-        card.style.display = 'block';
-      });
-      // Hide navigation during review
-      document.getElementById('navRow').style.display = 'none';
-
-      // Disable all inputs
-      document.querySelectorAll('input').forEach(i => i.disabled = true);
-
-      // Show feedback per question
-      for (let i = 1; i <= 10; i++) {
-        const res = window._results.find(r => r.q === i);
-        const fb = document.getElementById('fb' + i);
-        const a = answers[i];
-
-        if (res.ok) {
-          fb.className = 'q-feedback show ok';
-          fb.innerHTML = `<strong>✓ Correct.</strong> ${a.explanation}`;
-        } else {
-          fb.className = 'q-feedback show bad';
-          fb.innerHTML = `<strong>✗ Incorrect.</strong> ${a.explanation}`;
-        }
-
-        // Highlight options
-        if (a.type === 'mc') {
-          document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => {
-            const opt = inp.closest('.option');
-            if (inp.value === a.correct) opt.classList.add('correct-answer');
-            else if (inp.checked) opt.classList.add('wrong-answer');
-          });
-        }
-        if (a.type === 'mcma') {
-          document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => {
-            const opt = inp.closest('.option');
-            if (a.correct.includes(inp.value)) opt.classList.add('correct-answer');
-            else if (inp.checked) opt.classList.add('wrong-answer');
-          });
-        }
-        if (a.type === 'tf') {
-          for (let s = 1; s <= 4; s++) {
-            const correctVal = a.correct[s];
-            document.querySelectorAll(`input[name="q10_s${s}"]`).forEach(inp => {
-              const td = inp.closest('td');
-              if (inp.value === correctVal) {
-                td.classList.add('correct-cell');
-              } else if (inp.checked) {
-                td.classList.add('wrong-cell');
-              }
-            });
-          }
-        }
-      }
-
-      // Change submit button
-      document.getElementById('submitBtn').style.display = 'none';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 </body>
