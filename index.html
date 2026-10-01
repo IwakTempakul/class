@@ -1375,7 +1375,10 @@
 
       <p class="result-feedback" id="overallFeedback"></p>
 
-      <button type="button" class="btn btn-outline" onclick="location.reload()" style="margin-top:1.5rem">Coba Lagi</button>
+      <div style="margin-top:1.75rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+        <button type="button" class="btn btn-primary" id="sendWaBtn" onclick="sendResultWA()">Kirim Hasil</button>
+        <button type="button" class="btn btn-outline" onclick="location.reload()">Coba Lagi</button>
+      </div>
     </div>
 
     <audio id="perfectAudio" src="perfect.mp3" preload="auto"></audio>
@@ -1618,10 +1621,35 @@
       }
     }
 
+    function sendResultWA() {
+      const name = window.studentName || '-';
+      const kelas = window.studentClass || '-';
+      const pct = window.finalPct != null ? window.finalPct : 0;
+      const benar = window.finalCorrect != null ? window.finalCorrect : 0;
+      const salah = window.finalWrong != null ? window.finalWrong : 0;
+
+      const text =
+        '*Hasil Ujian Digital – Lab Coat*\n\n' +
+        'Nama: ' + name + '\n' +
+        'Kelas: ' + kelas + '\n' +
+        'Nilai: ' + pct + '\n' +
+        'Benar: ' + benar + '\n' +
+        'Salah: ' + salah;
+
+      // Nomor tidak ditampilkan di UI
+      const waNumber = '6281331279791';
+      window.open('https://wa.me/' + waNumber + '?text=' + encodeURIComponent(text), '_blank');
+    }
+
     function showFinalScore() {
       const score = totalCorrect;
       const wrong = totalQ - score;
       const pct = Math.round((score / totalQ) * 100);
+
+      // Simpan untuk tombol Kirim Hasil
+      window.finalPct = pct;
+      window.finalCorrect = score;
+      window.finalWrong = wrong;
 
       // Hide everything except the score section
       document.getElementById('examForm').style.display = 'none';
