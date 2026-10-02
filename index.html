@@ -1,1809 +1,200 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ujian Digital | Lab Coat – CEFR A1–B2</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f0f4f8;
-      --surface: #ffffff;
-      --primary: #0d6efd;
-      --primary-dark: #0a58ca;
-      --primary-soft: #e7f1ff;
-      --success: #198754;
-      --success-soft: #d1e7dd;
-      --danger: #dc3545;
-      --danger-soft: #f8d7da;
-      --warning: #ffc107;
-      --text: #1a2332;
-      --text-muted: #5c6b7a;
-      --border: #d8e2ec;
-      --radius: 14px;
-      --shadow: 0 4px 20px rgba(13, 110, 253, 0.08);
-      --shadow-lg: 0 12px 40px rgba(13, 110, 253, 0.12);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* Header */
-    .exam-header {
-      background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-      color: white;
-      padding: 1.5rem 1.25rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .exam-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 60%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .header-inner {
-      max-width: 820px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(4px);
-    }
-
-    .exam-header h1 {
-      font-size: 1.65rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.35rem;
-    }
-
-    .exam-header p {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      max-width: 520px;
-    }
-
-    /* Progress */
-    .progress-bar-wrap {
-      max-width: 820px;
-      margin: -1.1rem auto 0;
-      padding: 0 1.25rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .progress-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .progress-track {
-      flex: 1;
-      height: 8px;
-      background: #e9eef5;
-      border-radius: 50px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #0d6efd, #3d8bfd);
-      border-radius: 50px;
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 0%;
-    }
-
-    .progress-text {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--primary);
-      white-space: nowrap;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Main */
-    .exam-main {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 1.75rem 1.25rem 4rem;
-    }
-
-    /* Passage Card */
-    .passage-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.5rem 1.6rem;
-      margin-bottom: 1.75rem;
-      border-left: 5px solid var(--primary);
-    }
-
-    .passage-card h2 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .passage-card .author {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      font-style: italic;
-    }
-
-    .passage-text {
-      font-size: 0.97rem;
-      color: #2c3e50;
-      line-height: 1.75;
-    }
-
-    .passage-text p {
-      margin-bottom: 0.85rem;
-    }
-
-    .passage-text p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Question Card */
-    .question-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.5rem 1.6rem;
-      margin-bottom: 1.25rem;
-      border: 1px solid var(--border);
-      transition: box-shadow 0.25s, border-color 0.25s;
-      display: none; /* hide all by default – show one at a time */
-    }
-
-    .question-card.active {
-      display: block;
-      animation: fadeInQ 0.3s ease;
-    }
-
-    @keyframes fadeInQ {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .question-card:hover {
-      box-shadow: var(--shadow-lg);
-    }
-
-    .question-card.answered {
-      border-color: #b6d4fe;
-    }
-
-    .q-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .q-tag {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      padding: 0.22rem 0.55rem;
-      border-radius: 6px;
-    }
-
-    .tag-num {
-      background: var(--primary);
-      color: white;
-    }
-
-    .tag-textual { background: #e0f2fe; color: #0369a1; }
-    .tag-inference { background: #fef3c7; color: #b45309; }
-    .tag-appreciation { background: #fce7f3; color: #be185d; }
-    .tag-evaluation { background: #ede9fe; color: #6d28d9; }
-    .tag-mc { background: #dcfce7; color: #15803d; }
-    .tag-mcma { background: #ffedd5; color: #c2410c; }
-    .tag-matrix { background: #e0e7ff; color: #3730a3; }
-    .tag-level { background: #f1f5f9; color: #475569; }
-
-    .q-stem {
-      font-size: 1.02rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 1.1rem;
-      line-height: 1.55;
-    }
-
-    /* Options – Single Choice */
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .option {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: #fafbfc;
-    }
-
-    .option:hover {
-      border-color: #90b4f0;
-      background: var(--primary-soft);
-    }
-
-    .option.selected {
-      border-color: var(--primary);
-      background: var(--primary-soft);
-      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
-    }
-
-    .option input {
-      margin-top: 0.2rem;
-      accent-color: var(--primary);
-      width: 1.1rem;
-      height: 1.1rem;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .option label {
-      cursor: pointer;
-      font-size: 0.95rem;
-      flex: 1;
-      line-height: 1.45;
-    }
-
-    /* MCMA hint */
-    .mcma-hint {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    /* Matrix */
-    .matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-
-    .matrix-table th,
-    .matrix-table td {
-      border: 1px solid var(--border);
-      padding: 0.7rem 0.6rem;
-      text-align: center;
-    }
-
-    .matrix-table th {
-      background: #f1f5f9;
-      font-weight: 600;
-      font-size: 0.82rem;
-      color: #334155;
-    }
-
-    .matrix-table td:first-child {
-      text-align: left;
-      font-weight: 500;
-      background: #fafbfc;
-      width: 42%;
-    }
-
-    .matrix-table input[type="checkbox"],
-    .matrix-table input[type="radio"] {
-      width: 1.15rem;
-      height: 1.15rem;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .matrix-table tr:hover td {
-      background: var(--primary-soft);
-    }
-
-    /* Navigation & Submit */
-    .nav-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-    }
-
-    #checkBtn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-
-    /* Feedback overlay */
-    .feedback-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .feedback-overlay.show {
-      display: flex;
-      animation: fadeInOverlay 0.25s ease;
-    }
-
-    @keyframes fadeInOverlay {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .feedback-overlay img {
-      max-width: min(280px, 70vw);
-      max-height: 50vh;
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-    }
-
-    .btn {
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.75rem 1.5rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 14px rgba(13, 110, 253, 0.3);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .btn-outline {
-      background: white;
-      color: var(--primary);
-      border: 1.5px solid var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary-soft);
-    }
-
-    /* Result Screen */
-    .result-screen {
-      display: none;
-      text-align: center;
-      padding: 3rem 1.25rem 3rem;
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius);
-      min-height: 480px;
-      margin-top: 1.5rem;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    .result-screen.show {
-      display: block;
-      animation: fadeUp 0.5s ease;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Perfect score – gold background */
-    .result-screen.perfect {
-      background: linear-gradient(145deg, #fef9e7 0%, #fde68a 40%, #fbbf24 100%);
-      box-shadow: 0 0 60px rgba(251, 191, 36, 0.45);
-    }
-
-    .result-screen.perfect .score-circle {
-      background: conic-gradient(#d97706 calc(var(--score) * 1%), #fde68a 0);
-    }
-
-    .result-screen.perfect .score-circle::before {
-      background: linear-gradient(145deg, #fffbeb, #fef3c7);
-    }
-
-    .result-screen.perfect .score-value {
-      color: #b45309;
-    }
-
-    .result-screen.perfect .result-title {
-      color: #92400e;
-    }
-
-    /* Glitter layer */
-    .glitter-layer {
-      display: none;
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .result-screen.perfect .glitter-layer {
-      display: block;
-    }
-
-    .glitter-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #fff;
-      border-radius: 50%;
-      opacity: 0;
-      animation: glitterFall linear infinite;
-      box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.8);
-    }
-
-    @keyframes glitterFall {
-      0% { opacity: 0; transform: translateY(-20px) rotate(0deg) scale(0.5); }
-      15% { opacity: 1; }
-      85% { opacity: 1; }
-      100% { opacity: 0; transform: translateY(110vh) rotate(360deg) scale(1); }
-    }
-
-    .result-student {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 1.75rem;
-    }
-
-    .result-student .rs-name {
-      display: block;
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-
-    .result-student .rs-class {
-      display: block;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-top: 0.25rem;
-    }
-
-    .result-screen.perfect .result-student .rs-name {
-      color: #78350f;
-    }
-
-    .result-screen.perfect .result-student .rs-class {
-      color: #92400e;
-    }
-
-    .score-circle {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: conic-gradient(var(--primary) calc(var(--score) * 1%), #e2e8f0 0);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .score-circle::before {
-      content: '';
-      position: absolute;
-      inset: 16px;
-      background: white;
-      border-radius: 50%;
-    }
-
-    .score-value {
-      position: relative;
-      z-index: 1;
-      font-size: 3.4rem;
-      font-weight: 800;
-      color: var(--primary);
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1;
-    }
-
-    .result-title {
-      position: relative;
-      z-index: 1;
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-    }
-
-    .result-summary {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .summary-item {
-      text-align: center;
-    }
-
-    .sum-num {
-      display: block;
-      font-size: 2.2rem;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1.1;
-    }
-
-    .correct-sum .sum-num { color: var(--success); }
-    .wrong-sum .sum-num { color: var(--danger); }
-
-    .result-screen.perfect .correct-sum .sum-num { color: #15803d; }
-    .result-screen.perfect .wrong-sum .sum-num { color: #b91c1c; }
-
-    .sum-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .summary-divider {
-      width: 2px;
-      height: 48px;
-      background: var(--border);
-      border-radius: 2px;
-    }
-
-    .result-feedback {
-      position: relative;
-      z-index: 1;
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 360px;
-      margin: 0 auto;
-    }
-
-    .result-screen.perfect .result-feedback {
-      color: #78350f;
-      font-weight: 600;
-    }
-
-    /* Review mode */
-    .option.correct-answer {
-      border-color: var(--success);
-      background: var(--success-soft);
-    }
-
-    .option.wrong-answer {
-      border-color: var(--danger);
-      background: var(--danger-soft);
-    }
-
-    .matrix-table td.correct-cell {
-      background: var(--success-soft) !important;
-    }
-
-    .matrix-table td.wrong-cell {
-      background: var(--danger-soft) !important;
-    }
-
-    .q-feedback {
-      margin-top: 1rem;
-      padding: 0.85rem 1rem;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      display: none;
-    }
-
-    .q-feedback.show {
-      display: block;
-    }
-
-    .q-feedback.ok {
-      background: var(--success-soft);
-      color: #0f5132;
-      border-left: 4px solid var(--success);
-    }
-
-    .q-feedback.bad {
-      background: var(--danger-soft);
-      color: #842029;
-      border-left: 4px solid var(--danger);
-    }
-
-    /* Footer */
-    .exam-footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    /* ===== LOADING SCREEN ===== */
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      background: #0d6efd;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      color: white;
-    }
-
-    .loading-screen.hide {
-      display: none;
-    }
-
-    .loading-spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-bottom: 1.25rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 1rem;
-      font-weight: 600;
-      opacity: 0.9;
-    }
-
-    .loading-progress {
-      margin-top: 0.75rem;
-      font-size: 0.85rem;
-      font-family: 'JetBrains Mono', monospace;
-      opacity: 0.7;
-    }
-
-    /* ===== SPLASH SCREEN ===== */
-    .splash-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      cursor: pointer;
-    }
-
-    .splash-screen.show {
-      display: flex;
-    }
-
-    .splash-screen img {
-      max-width: min(100%, 480px);
-      max-height: 70vh;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
-    .splash-hint {
-      margin-top: 1.5rem;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: white;
-      letter-spacing: 0.03em;
-      animation: pulseHint 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulseHint {
-      0%, 100% { opacity: 0.55; }
-      50% { opacity: 1; }
-    }
-
-    /* ===== START FORM PAGE ===== */
-    .start-page {
-      min-height: 100vh;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.25rem;
-      background: linear-gradient(160deg, #e8f0fe 0%, #f0f4f8 50%, #e7f1ff 100%);
-    }
-
-    .start-page.show {
-      display: flex;
-    }
-
-    .start-card {
-      background: var(--surface);
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(13, 110, 253, 0.12);
-      padding: 2.5rem 2rem;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .start-school {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: 0.02em;
-      margin-bottom: 1.25rem;
-    }
-
-    .start-logo {
-      width: 110px;
-      height: 110px;
-      object-fit: contain;
-      margin: 0 auto 1.5rem;
-      display: block;
-    }
-
-    .start-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-
-    .start-subtitle {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1.75rem;
-    }
-
-    .form-group {
-      text-align: left;
-      margin-bottom: 1.15rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: var(--text);
-      background: #fafbfc;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
-      background: white;
-    }
-
-    .form-group input::placeholder {
-      color: #94a3b8;
-    }
-
-    .start-btn {
-      width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.85rem;
-      font-size: 1rem;
-    }
-
-    /* Hide exam until form is submitted */
-    .exam-wrapper {
-      display: none;
-    }
-
-    .exam-wrapper.show {
-      display: block;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .exam-header h1 { font-size: 1.35rem; }
-      .question-card, .passage-card { padding: 1.2rem; }
-      .matrix-table { font-size: 0.8rem; }
-      .matrix-table th, .matrix-table td { padding: 0.5rem 0.35rem; }
-      .btn { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Conditional Error Recognition</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif;background:#111;color:#fff}
+body{display:flex;justify-content:center;min-height:100vh}
+.app{width:100%;max-width:560px;min-height:100vh;background:#f4f4f4;color:#111;position:relative;overflow:hidden}
+.screen{display:none;min-height:100vh;padding:24px 18px}
+.screen.active{display:flex;flex-direction:column}
+#loading{background:#111;color:#fff;justify-content:center;align-items:center;text-align:center}
+.logo{font-size:34px;font-weight:900;letter-spacing:1px}
+.sub{opacity:.7;margin-top:8px}
+.loader{width:82%;height:12px;border:2px solid #fff;border-radius:20px;margin-top:28px;overflow:hidden}
+.loaderbar{height:100%;width:0;background:#fff;transition:width.15s}
+#start{background:#fff;justify-content:center;align-items:center;text-align:center}
+.title{font-size:30px;font-weight:900;line-height:1.05;margin-bottom:8px;margin-top:16px}
+.desc{color:#666;margin-bottom:25px}
+.start-form{width:100%;text-align:left;margin-top:10px}
+label{font-weight:bold;margin:12px 0 6px;display:block}
+input{width:100%;padding:15px;border:2px solid #222;border-radius:10px;font-size:17px;outline:none}
+button{border:0;border-radius:12px;padding:15px 18px;font-size:17px;font-weight:800;cursor:pointer}
+.primary{background:#111;color:#fff;width:100%;margin-top:24px}
+.school-logo{width:110px;height:110px;object-fit:contain;display:block;margin:0 auto 12px auto}
+.school-name{font-weight:900;font-size:18px;margin-top:8px;color:#111}
+.teacher-name{font-size:14px;color:#666;margin-top:4px;margin-bottom:8px}
+#quiz{background:#f4f4f4;padding:0}
+.quizHead{background:#111;color:#fff;padding:16px 18px;position:sticky;top:0;z-index:5}
+.headrow{display:flex;justify-content:space-between;align-items:center}
+.qnum{font-weight:900;font-size:18px}
+.timer{font-family:monospace;font-size:18px}
+.progress{height:6px;background:#444;margin:12px -18px -16px}
+.progress i{display:block;height:100%;background:#fff;width:0}
+.quizbody{padding:24px 18px}
+.badge{display:inline-block;background:#ddd;border-radius:20px;padding:7px 11px;font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:16px}
+.instruction{font-weight:bold;margin-bottom:20px;color:#444}
+.sentence{font-size:20px;line-height:1.8;text-align:center;padding:20px 5px;background:#fff;border-radius:14px;box-shadow:0 3px 15px #0001}
+.part{display:inline-block;padding:2px 4px;margin:0 1px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer;border-radius:4px}
+.part:hover,.part:active{background:#ddd}
+.letter{font-size:11px;color:#777;vertical-align:top;text-decoration:none;margin-right:2px;font-weight:bold}
+.hint{text-align:center;color:#777;margin:18px 0;font-size:14px}
+#feedback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
+.feedbackBox{width:min(90%,430px);background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}
+.feedbackBox img{width:100%;max-height:45vh;object-fit:contain;border-radius:12px;background:#eee}
+.feedbackTitle{font-size:25px;font-weight:900;margin:12px 0 4px}
+.feedbackText{color:#555;margin-bottom:12px;line-height:1.4}
+.next{width:100%;background:#111;color:#fff}
+#result{background:#fff;justify-content:center;text-align:center;position:relative;overflow:hidden;transition:background 0.5s}
+.scoreCircle{width:180px;height:180px;border:12px solid #111;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;position:relative;z-index:2;background:#fff}
+.score{font-size:52px;font-weight:900;line-height:1}
+.small{color:#666}
+.resultName{font-size:24px;font-weight:900;margin-top:8px;position:relative;z-index:2}
+.breakdown{text-align:left;margin-top:20px;background:#f2f2f2;border-radius:14px;padding:15px;position:relative;z-index:2}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}
+.row:last-child{border:0}
+.restart{background:#111;color:#fff;width:100%;margin-top:20px;position:relative;z-index:2}
+#result.perfect{ background: radial-gradient(circle at center, #fff8dc 0%, #ffdf6e 40%, #ffb700 100%)!important; }
+.glitter{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
+#result.perfect.glitter{display:block}
+.glitter span{position:absolute;width:8px;height:8px;background:#fff;border-radius:50%;animation:glitterAnim 2s infinite linear;opacity:0.8}
+@keyframes glitterAnim{0%{transform:translateY(100vh) scale(0);opacity:0}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
+@media(max-width:380px){.sentence{font-size:18px}.title{font-size:26px}}
+</style>
 </head>
 <body>
-
-  <!-- ========== LOADING SCREEN ========== -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Memuat resources...</div>
-    <div class="loading-progress" id="loadingProgress">0%</div>
-  </div>
-
-  <!-- ========== SPLASH SCREEN ========== -->
-  <div class="splash-screen" id="splashScreen" onclick="continueFromSplash()">
-    <img src="splash.png" alt="Splash" id="splashImg">
-    <div class="splash-hint">Ketuk untuk melanjutkan</div>
-  </div>
-
-  <!-- ========== START FORM PAGE ========== -->
-  <div class="start-page" id="startPage">
-    <div class="start-card">
-      <div class="start-school">SMK Negeri 6 Samarinda</div>
-      <img src="logo.png" alt="Logo SMK Negeri 6 Samarinda" class="start-logo" onerror="this.style.display='none'">
-      <div class="start-title">Digital Reading Exam</div>
-      <div class="start-subtitle">Lab Coat · CEFR A1–B2 · 10 Questions</div>
-
-      <form id="startForm" onsubmit="startExam(event)">
-        <div class="form-group">
-          <label for="studentName">Nama</label>
-          <input type="text" id="studentName" placeholder="Odette" required autocomplete="name">
-        </div>
-        <div class="form-group">
-          <label for="studentClass">Kelas</label>
-          <input type="text" id="studentClass" placeholder="XI-KA" required autocomplete="off">
-        </div>
-        <button type="submit" class="btn btn-primary start-btn">Mulai Ujian →</button>
-      </form>
+<div class="app">
+<section id="loading" class="screen active">
+  <div class="logo">CONDITIONAL ERROR</div>
+  <div class="sub" id="loadText">Checking required files...</div>
+  <div class="loader"><div class="loaderbar" id="loaderBar"></div></div>
+</section>
+<section id="start" class="screen">
+  <div style="width:100%">
+    <img src="logo.png" alt="Logo SMK" class="school-logo" onerror="this.style.display='none'">
+    <div class="school-name">SMK Negeri 6 Samarinda</div>
+    <div class="teacher-name">Pengajar: Guritno Aditya Warman, S.Pd</div>
+    <div class="title">Conditional<br>Error Recognition</div>
+    <div class="desc">Zero, First, Second & Third Conditional</div>
+    <div class="start-form">
+      <label for="studentName">Name</label>
+      <input id="studentName" autocomplete="off" placeholder="Enter your name">
+      <label for="studentClass">Class</label>
+      <input id="studentClass" autocomplete="off" placeholder="e.g. XII GP 1">
+      <button class="primary" id="startBtn">START GAME</button>
     </div>
   </div>
-
-  <!-- ========== EXAM CONTENT (hidden until form submitted) ========== -->
-  <div class="exam-wrapper" id="examWrapper">
-
-  <!-- Header -->
-  <header class="exam-header">
-    <div class="header-inner">
-      <div class="badge-row">
-        <span class="badge">Reading Comprehension</span>
-        <span class="badge">CEFR A1 – B2</span>
-        <span class="badge">10 Questions</span>
-      </div>
-      <h1>🧪 Digital Exam: Lab Coat</h1>
-      <p>Read the text carefully, then answer all questions. Good luck!</p>
-      <p id="studentInfo" style="margin-top:0.5rem;font-size:0.85rem;opacity:0.85"></p>
-    </div>
-  </header>
-
-  <!-- Progress -->
-  <div class="progress-bar-wrap">
-    <div class="progress-card">
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-text" id="progressText">0 / 10</div>
-    </div>
+</section>
+<section id="quiz" class="screen">
+  <div class="quizHead">
+    <div class="headrow"><div class="qnum" id="qNum">Question 1 / 20</div><div class="timer" id="timer">00:00</div></div>
+    <div class="progress"><i id="progressBar"></i></div>
   </div>
-
-  <!-- Main Content -->
-  <main class="exam-main" id="examMain">
-
-    <!-- Reading Passage -->
-    <article class="passage-card">
-      <h2>📖 Reading Text</h2>
-      <div class="author">Author: Maulida Nadjhua</div>
-      <div class="passage-text">
-        <p><strong>LAB COAT</strong></p>
-        <p>A lab coat is a special clothing worn in laboratories by scientists, students, and technicians. It is designed to protect the wearer from chemicals, spills, and dirt.</p>
-        <p>The lab coat is usually white. It is made of light and strong fabric, such as cotton or polyester. It has long sleeves that cover the arms. It has a collar and buttons in the front. It usually has three pockets: two on the lower part and one on the chest.</p>
-        <p>The lab coat is loose so it is comfortable to wear. It helps keep our clothes clean and protects our skin from dangerous substances.</p>
-        <p>In conclusion, a lab coat is very important in the laboratory. It is not only a part of safety, but also a symbol of professionalism and responsibility.</p>
-      </div>
-    </article>
-
-    <!-- QUESTIONS -->
-    <form id="examForm">
-
-      <!-- Q1 – Textual MC -->
-      <div class="question-card" data-q="1">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q1</span>
-          <span class="q-tag tag-textual">Textual</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">A1</span>
-        </div>
-        <div class="q-stem">What colour is a lab coat usually?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 1)">
-            <input type="radio" name="q1" value="a" id="q1a">
-            <label for="q1a">Blue</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 1)">
-            <input type="radio" name="q1" value="b" id="q1b">
-            <label for="q1b">White</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 1)">
-            <input type="radio" name="q1" value="c" id="q1c">
-            <label for="q1c">Green</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 1)">
-            <input type="radio" name="q1" value="d" id="q1d">
-            <label for="q1d">Black</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 1)">
-            <input type="radio" name="q1" value="e" id="q1e">
-            <label for="q1e">Red</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb1"></div>
-      </div>
-
-      <!-- Q2 – Textual MC -->
-      <div class="question-card" data-q="2">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q2</span>
-          <span class="q-tag tag-textual">Textual</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">A1–A2</span>
-        </div>
-        <div class="q-stem">Who wears a lab coat?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 2)">
-            <input type="radio" name="q2" value="a" id="q2a">
-            <label for="q2a">Only doctors</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 2)">
-            <input type="radio" name="q2" value="b" id="q2b">
-            <label for="q2b">Scientists, students, and technicians</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 2)">
-            <input type="radio" name="q2" value="c" id="q2c">
-            <label for="q2c">Only teachers</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 2)">
-            <input type="radio" name="q2" value="d" id="q2d">
-            <label for="q2d">Only children</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 2)">
-            <input type="radio" name="q2" value="e" id="q2e">
-            <label for="q2e">Only nurses</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb2"></div>
-      </div>
-
-      <!-- Q3 – Textual MCMA -->
-      <div class="question-card" data-q="3">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q3</span>
-          <span class="q-tag tag-textual">Textual</span>
-          <span class="q-tag tag-mcma">MCMA</span>
-          <span class="q-tag tag-level">A2</span>
-        </div>
-        <div class="q-stem">What materials can a lab coat be made of? (Choose <strong>all</strong> correct answers)</div>
-        <div class="mcma-hint">☑️ You may select more than one option</div>
-        <div class="options">
-          <div class="option" onclick="selectMulti(this, 3)">
-            <input type="checkbox" name="q3" value="a" id="q3a">
-            <label for="q3a">Cotton</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 3)">
-            <input type="checkbox" name="q3" value="b" id="q3b">
-            <label for="q3b">Wool</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 3)">
-            <input type="checkbox" name="q3" value="c" id="q3c">
-            <label for="q3c">Polyester</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 3)">
-            <input type="checkbox" name="q3" value="d" id="q3d">
-            <label for="q3d">Silk</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 3)">
-            <input type="checkbox" name="q3" value="e" id="q3e">
-            <label for="q3e">Leather</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb3"></div>
-      </div>
-
-      <!-- Q4 – Inference MC -->
-      <div class="question-card" data-q="4">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q4</span>
-          <span class="q-tag tag-inference">Inference</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">A2–B1</span>
-        </div>
-        <div class="q-stem">Why does a lab coat have long sleeves?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 4)">
-            <input type="radio" name="q4" value="a" id="q4a">
-            <label for="q4a">To look fashionable</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 4)">
-            <input type="radio" name="q4" value="b" id="q4b">
-            <label for="q4b">To cover and protect the arms</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 4)">
-            <input type="radio" name="q4" value="c" id="q4c">
-            <label for="q4c">To make the coat heavier</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 4)">
-            <input type="radio" name="q4" value="d" id="q4d">
-            <label for="q4d">Because short sleeves are expensive</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 4)">
-            <input type="radio" name="q4" value="e" id="q4e">
-            <label for="q4e">To keep the arms warm</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb4"></div>
-      </div>
-
-      <!-- Q5 – Inference MCMA -->
-      <div class="question-card" data-q="5">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q5</span>
-          <span class="q-tag tag-inference">Inference</span>
-          <span class="q-tag tag-mcma">MCMA</span>
-          <span class="q-tag tag-level">B1</span>
-        </div>
-        <div class="q-stem">According to the text, what does a lab coat protect the wearer from? (Choose <strong>all</strong> that apply)</div>
-        <div class="mcma-hint">☑️ You may select more than one option</div>
-        <div class="options">
-          <div class="option" onclick="selectMulti(this, 5)">
-            <input type="checkbox" name="q5" value="a" id="q5a">
-            <label for="q5a">Chemicals</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 5)">
-            <input type="checkbox" name="q5" value="b" id="q5b">
-            <label for="q5b">Spills</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 5)">
-            <input type="checkbox" name="q5" value="c" id="q5c">
-            <label for="q5c">Loud noise</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 5)">
-            <input type="checkbox" name="q5" value="d" id="q5d">
-            <label for="q5d">Dirt</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 5)">
-            <input type="checkbox" name="q5" value="e" id="q5e">
-            <label for="q5e">Sunlight</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb5"></div>
-      </div>
-
-      <!-- Q6 – Inference MC -->
-      <div class="question-card" data-q="6">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q6</span>
-          <span class="q-tag tag-inference">Inference</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">B1</span>
-        </div>
-        <div class="q-stem">Why is the lab coat described as “loose”?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 6)">
-            <input type="radio" name="q6" value="a" id="q6a">
-            <label for="q6a">So it is comfortable to wear</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 6)">
-            <input type="radio" name="q6" value="b" id="q6b">
-            <label for="q6b">So it looks bigger</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 6)">
-            <input type="radio" name="q6" value="c" id="q6c">
-            <label for="q6c">Because it is made of heavy fabric</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 6)">
-            <input type="radio" name="q6" value="d" id="q6d">
-            <label for="q6d">To save material</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 6)">
-            <input type="radio" name="q6" value="e" id="q6e">
-            <label for="q6e">So it can be worn by two people</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb6"></div>
-      </div>
-
-      <!-- Q7 – Appreciation MC -->
-      <div class="question-card" data-q="7">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q7</span>
-          <span class="q-tag tag-appreciation">Appreciation</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">B1</span>
-        </div>
-        <div class="q-stem">How does the writer feel about the lab coat in the conclusion?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 7)">
-            <input type="radio" name="q7" value="a" id="q7a">
-            <label for="q7a">The writer thinks it is unimportant</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 7)">
-            <input type="radio" name="q7" value="b" id="q7b">
-            <label for="q7b">The writer sees it as important for safety and professionalism</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 7)">
-            <input type="radio" name="q7" value="c" id="q7c">
-            <label for="q7c">The writer thinks it is only for decoration</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 7)">
-            <input type="radio" name="q7" value="d" id="q7d">
-            <label for="q7d">The writer does not like lab coats</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 7)">
-            <input type="radio" name="q7" value="e" id="q7e">
-            <label for="q7e">The writer thinks it is old-fashioned</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb7"></div>
-      </div>
-
-      <!-- Q8 – Appreciation MCMA -->
-      <div class="question-card" data-q="8">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q8</span>
-          <span class="q-tag tag-appreciation">Appreciation</span>
-          <span class="q-tag tag-mcma">MCMA</span>
-          <span class="q-tag tag-level">B1–B2</span>
-        </div>
-        <div class="q-stem">Which words from the text show that the writer respects the lab coat? (Choose <strong>all</strong> that apply)</div>
-        <div class="mcma-hint">☑️ You may select more than one option</div>
-        <div class="options">
-          <div class="option" onclick="selectMulti(this, 8)">
-            <input type="checkbox" name="q8" value="a" id="q8a">
-            <label for="q8a">“very important”</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 8)">
-            <input type="checkbox" name="q8" value="b" id="q8b">
-            <label for="q8b">“a symbol of professionalism and responsibility”</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 8)">
-            <input type="checkbox" name="q8" value="c" id="q8c">
-            <label for="q8c">“usually white”</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 8)">
-            <input type="checkbox" name="q8" value="d" id="q8d">
-            <label for="q8d">“part of safety”</label>
-          </div>
-          <div class="option" onclick="selectMulti(this, 8)">
-            <input type="checkbox" name="q8" value="e" id="q8e">
-            <label for="q8e">“light and strong fabric”</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb8"></div>
-      </div>
-
-      <!-- Q9 – Evaluation MC -->
-      <div class="question-card" data-q="9">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q9</span>
-          <span class="q-tag tag-evaluation">Evaluation</span>
-          <span class="q-tag tag-mc">MC</span>
-          <span class="q-tag tag-level">B1–B2</span>
-        </div>
-        <div class="q-stem">How well does the text explain the importance of a lab coat?</div>
-        <div class="options">
-          <div class="option" onclick="selectSingle(this, 9)">
-            <input type="radio" name="q9" value="a" id="q9a">
-            <label for="q9a">Very poorly – it gives almost no information</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 9)">
-            <input type="radio" name="q9" value="b" id="q9b">
-            <label for="q9b">Quite well – it clearly links the lab coat to safety and professionalism</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 9)">
-            <input type="radio" name="q9" value="c" id="q9c">
-            <label for="q9c">It only talks about the colour</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 9)">
-            <input type="radio" name="q9" value="d" id="q9d">
-            <label for="q9d">It is confusing and hard to understand</label>
-          </div>
-          <div class="option" onclick="selectSingle(this, 9)">
-            <input type="radio" name="q9" value="e" id="q9e">
-            <label for="q9e">It gives too much unnecessary detail</label>
-          </div>
-        </div>
-        <div class="q-feedback" id="fb9"></div>
-      </div>
-
-      <!-- Q10 – Evaluation True/False -->
-      <div class="question-card" data-q="10">
-        <div class="q-meta">
-          <span class="q-tag tag-num">Q10</span>
-          <span class="q-tag tag-evaluation">Evaluation</span>
-          <span class="q-tag tag-mc">True / False</span>
-          <span class="q-tag tag-level">B2</span>
-        </div>
-        <div class="q-stem">Read each statement carefully. Decide if it is <strong>True</strong> or <strong>False</strong> according to the text.</div>
-        <div class="mcma-hint">Select one answer for each statement.</div>
-        <table class="matrix-table">
-          <thead>
-            <tr>
-              <th>Statement</th>
-              <th>True</th>
-              <th>False</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1. A lab coat protects the wearer from chemicals, spills and dirt.</td>
-              <td><input type="radio" name="q10_s1" value="true" data-row="1"></td>
-              <td><input type="radio" name="q10_s1" value="false" data-row="1"></td>
-            </tr>
-            <tr>
-              <td>2. A lab coat is usually black and made of silk.</td>
-              <td><input type="radio" name="q10_s2" value="true" data-row="2"></td>
-              <td><input type="radio" name="q10_s2" value="false" data-row="2"></td>
-            </tr>
-            <tr>
-              <td>3. The writer thinks a lab coat is only for decoration.</td>
-              <td><input type="radio" name="q10_s3" value="true" data-row="3"></td>
-              <td><input type="radio" name="q10_s3" value="false" data-row="3"></td>
-            </tr>
-            <tr>
-              <td>4. A lab coat is a symbol of professionalism and responsibility.</td>
-              <td><input type="radio" name="q10_s4" value="true" data-row="4"></td>
-              <td><input type="radio" name="q10_s4" value="false" data-row="4"></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="q-feedback" id="fb10"></div>
-      </div>
-
-      <!-- Navigation: one question at a time -->
-      <div class="nav-row" id="navRow">
-        <span id="qCounter" style="font-size:0.9rem;font-weight:600;color:var(--primary);font-family:'JetBrains Mono',monospace">1 / 10</span>
-        <button type="button" class="btn btn-primary" id="checkBtn" onclick="checkCurrentAnswer()" disabled>Kirim Jawaban</button>
-      </div>
-    </form>
-
-    <!-- Feedback overlay (gif + auto advance) -->
-    <div class="feedback-overlay" id="feedbackOverlay">
-      <img id="feedbackGif" src="" alt="feedback">
+  <div class="quizbody">
+    <div class="badge" id="typeBadge">First Conditional</div>
+    <div class="instruction">Choose the underlined part (A–E) that contains the error.</div>
+    <div class="sentence" id="sentence"></div>
+    <div class="hint">Tap one of the five underlined parts.</div>
+  </div>
+</section>
+<section id="result" class="screen">
+  <div class="glitter" id="glitterBox"></div>
+  <div style="position:relative;z-index:2">
+    <div class="small">RESULT</div>
+    <div class="resultName" id="resultName"></div>
+    <div class="small" id="resultClass"></div>
+    <div class="scoreCircle" id="scoreCircle">
+      <div class="score" id="finalScore">0</div>
+      <div class="small" id="percentageSmall">/ 100</div>
     </div>
-
-    <audio id="audioCorrect" src="1.mp3" preload="auto"></audio>
-    <audio id="audioWrong" src="-1.mp3" preload="auto"></audio>
-
-    <!-- Result Screen -->
-    <div class="result-screen" id="resultScreen">
-      <div class="glitter-layer" id="glitterLayer"></div>
-
-      <div class="result-student" id="resultStudent">
-        <span class="rs-name" id="rsName">Nama</span>
-        <span class="rs-class" id="rsClass">Kelas</span>
-      </div>
-
-      <div class="score-circle" id="scoreCircle" style="--score: 0">
-        <span class="score-value" id="scoreValue">0</span>
-      </div>
-
-      <h2 class="result-title" id="resultTitle">Well done!</h2>
-
-      <div class="result-summary" id="resultSummary">
-        <div class="summary-item correct-sum">
-          <span class="sum-num" id="correctCount">0</span>
-          <span class="sum-label">Benar</span>
-        </div>
-        <div class="summary-divider"></div>
-        <div class="summary-item wrong-sum">
-          <span class="sum-num" id="wrongCount">0</span>
-          <span class="sum-label">Salah</span>
-        </div>
-      </div>
-
-      <p class="result-feedback" id="overallFeedback"></p>
-
-      <div style="margin-top:1.75rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
-        <button type="button" class="btn btn-primary" id="sendWaBtn" onclick="sendResultWA()">Kirim Hasil</button>
-        <button type="button" class="btn btn-outline" onclick="location.reload()">Coba Lagi</button>
-      </div>
+    <div id="percentage" style="font-weight:800;font-size:16px;color:#555;margin-top:-10px"></div>
+    <div class="breakdown">
+      <div class="row"><span>Correct</span><strong id="correctCount">0</strong></div>
+      <div class="row"><span>Wrong</span><strong id="wrongCount">0</strong></div>
+      <div class="row"><span>Score Detail</span><strong id="scoreDetail">0 / 20</strong></div>
     </div>
-
-    <audio id="perfectAudio" src="perfect.mp3" preload="auto"></audio>
-
-  </main>
-
-  <footer class="exam-footer">
-    Digital Reading Exam · CEFR A1–B2 · Lab Coat by Maulida Nadjhua
-  </footer>
-
-  </div><!-- end .exam-wrapper -->
-
-  <script>
-    // ========== PRELOAD ALL RESOURCES ==========
-    const resources = [
-      { type: 'image', src: 'logo.png' },
-      { type: 'image', src: 'splash.png' },
-      { type: 'image', src: '1.gif' },
-      { type: 'image', src: '-1.gif' },
-      { type: 'audio', src: '1.mp3' },
-      { type: 'audio', src: '-1.mp3' },
-      { type: 'audio', src: 'perfect.mp3' }
-    ];
-
-    let loadedCount = 0;
-    const totalResources = resources.length;
-
-    function updateLoadingProgress() {
-      const pct = Math.round((loadedCount / totalResources) * 100);
-      document.getElementById('loadingProgress').textContent = pct + '%';
-    }
-
-    function resourceDone() {
-      loadedCount++;
-      updateLoadingProgress();
-      if (loadedCount >= totalResources) {
-        // All loaded → hide loading, show splash
-        document.getElementById('loadingScreen').classList.add('hide');
-        document.getElementById('splashScreen').classList.add('show');
-      }
-    }
-
-    function preloadResources() {
-      resources.forEach(r => {
-        if (r.type === 'image') {
-          const img = new Image();
-          img.onload = resourceDone;
-          img.onerror = resourceDone; // continue even if missing
-          img.src = r.src;
-        } else if (r.type === 'audio') {
-          const audio = new Audio();
-          audio.preload = 'auto';
-          const done = () => {
-            audio.removeEventListener('canplaythrough', done);
-            audio.removeEventListener('error', done);
-            resourceDone();
-          };
-          audio.addEventListener('canplaythrough', done);
-          audio.addEventListener('error', done);
-          audio.src = r.src;
-          audio.load();
-        }
-      });
-    }
-
-    function continueFromSplash() {
-      document.getElementById('splashScreen').classList.remove('show');
-      document.getElementById('startPage').classList.add('show');
-    }
-
-    // Start preloading immediately
-    preloadResources();
-
-    // ========== START FORM ==========
-    function startExam(e) {
-      e.preventDefault();
-      const name = document.getElementById('studentName').value.trim();
-      const kelas = document.getElementById('studentClass').value.trim();
-      if (!name || !kelas) return;
-
-      // Save student info
-      window.studentName = name;
-      window.studentClass = kelas;
-
-      // Show name in header
-      document.getElementById('studentInfo').textContent = name + ' · ' + kelas;
-
-      // Hide start page, show exam
-      document.getElementById('startPage').style.display = 'none';
-      document.getElementById('examWrapper').classList.add('show');
-
-      // Start at question 1
-      showQuestion(1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ========== ANSWER KEY ==========
-    const answers = {
-      1: { type: 'mc', correct: 'b', explanation: 'The text says: “The lab coat is usually white.”' },
-      2: { type: 'mc', correct: 'b', explanation: 'The text says it is worn by “scientists, students, and technicians.”' },
-      3: { type: 'mcma', correct: ['a', 'c'], explanation: 'The text mentions “cotton or polyester.” Wool and silk are not mentioned.' },
-      4: { type: 'mc', correct: 'b', explanation: 'The text says: “It has long sleeves that cover the arms.” This protects the arms.' },
-      5: { type: 'mcma', correct: ['a', 'b', 'd'], explanation: 'The text says the lab coat protects from “chemicals, spills, and dirt.” Loud noise is not mentioned.' },
-      6: { type: 'mc', correct: 'a', explanation: 'The text says: “The lab coat is loose so it is comfortable to wear.”' },
-      7: { type: 'mc', correct: 'b', explanation: 'In the conclusion the writer says a lab coat is “very important” and a “symbol of professionalism and responsibility.”' },
-      8: { type: 'mcma', correct: ['a', 'b', 'd'], explanation: '“very important”, “a symbol of professionalism and responsibility”, and “part of safety” show respect. “usually white” is only a fact about colour.' },
-      9: { type: 'mc', correct: 'b', explanation: 'The text clearly explains the protective function and links the lab coat to safety and professionalism.' },
-      10: {
-        type: 'tf',
-        // Pattern: True, False, False, True
-        correct: {
-          1: 'true',
-          2: 'false',
-          3: 'false',
-          4: 'true'
-        },
-        explanation: '1. True – the text clearly states this. 2. False – the text says the lab coat is usually white and made of cotton or polyester. 3. False – the writer sees it as important for safety and professionalism, not decoration. 4. True – the conclusion says it is a symbol of professionalism and responsibility.'
-      }
-    };
-
-    const answered = new Set();
-    let currentQ = 1;
-    const totalQ = 10;
-    let totalCorrect = 0;
-    let isChecking = false; // prevent double-submit while feedback plays
-
-    // Show only one question at a time
-    function showQuestion(n) {
-      if (n < 1 || n > totalQ) return;
-      currentQ = n;
-      isChecking = false;
-
-      // Hide all questions, show only current
-      document.querySelectorAll('.question-card').forEach(card => {
-        card.classList.remove('active');
-      });
-      const activeCard = document.querySelector(`.question-card[data-q="${n}"]`);
-      if (activeCard) activeCard.classList.add('active');
-
-      // Update counter
-      document.getElementById('qCounter').textContent = n + ' / ' + totalQ;
-
-      // Enable/disable Kirim Jawaban based on whether current Q is answered
-      updateCheckButton();
-
-      // Scroll to question area (keep text visible above)
-      if (activeCard) activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function updateCheckButton() {
-      const btn = document.getElementById('checkBtn');
-      if (isQuestionAnswered(currentQ)) {
-        btn.disabled = false;
-      } else {
-        btn.disabled = true;
-      }
-    }
-
-    function isQuestionAnswered(qNum) {
-      const a = answers[qNum];
-      if (a.type === 'mc') {
-        return !!document.querySelector(`input[name="q${qNum}"]:checked`);
-      }
-      if (a.type === 'mcma') {
-        return !!document.querySelector(`input[name="q${qNum}"]:checked`);
-      }
-      if (a.type === 'tf') {
-        for (let s = 1; s <= 4; s++) {
-          if (!document.querySelector(`input[name="q10_s${s}"]:checked`)) return false;
-        }
-        return true;
-      }
-      return false;
-    }
-
-    // Start with Q1
-    showQuestion(1);
-
-    // True/False change listener (Q10)
-    document.querySelectorAll('.matrix-table input[type="radio"]').forEach(inp => {
-      inp.addEventListener('change', () => {
-        if (isQuestionAnswered(10)) {
-          markAnswered(10);
-        } else {
-          answered.delete(10);
-          document.querySelector('.question-card[data-q="10"]').classList.remove('answered');
-          updateProgress();
-        }
-        updateCheckButton();
-      });
-    });
-
-    // Check answer for current question
-    function checkCurrentAnswer() {
-      if (isChecking) return;
-      if (!isQuestionAnswered(currentQ)) return;
-
-      isChecking = true;
-      document.getElementById('checkBtn').disabled = true;
-
-      const userAns = getUserAnswer(currentQ);
-      const ok = isCorrect(currentQ, userAns);
-
-      if (ok) totalCorrect++;
-
-      // Show gif + play audio
-      const overlay = document.getElementById('feedbackOverlay');
-      const gif = document.getElementById('feedbackGif');
-      const audio = document.getElementById(ok ? 'audioCorrect' : 'audioWrong');
-
-      gif.src = ok ? '1.gif' : '-1.gif';
-      overlay.classList.add('show');
-
-      // Play audio, then advance
-      const advance = () => {
-        overlay.classList.remove('show');
-        gif.src = '';
-
-        if (currentQ < totalQ) {
-          showQuestion(currentQ + 1);
-        } else {
-          // Last question → show final score
-          showFinalScore();
-        }
-      };
-
-      if (audio) {
-        audio.currentTime = 0;
-        const onEnded = () => {
-          audio.removeEventListener('ended', onEnded);
-          advance();
-        };
-        audio.addEventListener('ended', onEnded);
-        audio.play().catch(() => {
-          // If autoplay blocked, wait 1.5s then advance
-          setTimeout(advance, 1500);
-        });
-      } else {
-        setTimeout(advance, 1500);
-      }
-    }
-
-    function sendResultWA() {
-      const name = window.studentName || '-';
-      const kelas = window.studentClass || '-';
-      const pct = window.finalPct != null ? window.finalPct : 0;
-      const benar = window.finalCorrect != null ? window.finalCorrect : 0;
-      const salah = window.finalWrong != null ? window.finalWrong : 0;
-
-      const text =
-        '*Hasil Ujian Digital – Lab Coat*\n\n' +
-        'Nama: ' + name + '\n' +
-        'Kelas: ' + kelas + '\n' +
-        'Nilai: ' + pct + '\n' +
-        'Benar: ' + benar + '\n' +
-        'Salah: ' + salah;
-
-      // Nomor tidak ditampilkan di UI
-      const waNumber = '6281331279791';
-      window.open('https://wa.me/' + waNumber + '?text=' + encodeURIComponent(text), '_blank');
-    }
-
-    function showFinalScore() {
-      const score = totalCorrect;
-      const wrong = totalQ - score;
-      const pct = Math.round((score / totalQ) * 100);
-
-      // Simpan untuk tombol Kirim Hasil
-      window.finalPct = pct;
-      window.finalCorrect = score;
-      window.finalWrong = wrong;
-
-      // Hide everything except the score section
-      document.getElementById('examForm').style.display = 'none';
-      document.querySelector('.passage-card').style.display = 'none';
-      document.getElementById('navRow').style.display = 'none';
-      document.querySelector('.exam-header').style.display = 'none';
-      document.querySelector('.progress-bar-wrap').style.display = 'none';
-      document.querySelector('.exam-footer').style.display = 'none';
-
-      // Student name & class
-      document.getElementById('rsName').textContent = window.studentName || '';
-      document.getElementById('rsClass').textContent = window.studentClass || '';
-
-      // Big score (out of 100)
-      document.getElementById('scoreCircle').style.setProperty('--score', pct);
-      document.getElementById('scoreValue').textContent = pct;
-
-      // Benar / Salah counts only
-      document.getElementById('correctCount').textContent = score;
-      document.getElementById('wrongCount').textContent = wrong;
-
-      // Title & feedback
-      let title = 'Terus berlatih!';
-      let feedback = 'Coba baca teks lagi dengan teliti.';
-      if (pct === 100) {
-        title = 'Sempurna! 🏆';
-        feedback = 'Nilai sempurna! Pemahamanmu terhadap teks sangat baik.';
-      } else if (pct >= 80) {
-        title = 'Excellent! 🌟';
-        feedback = 'Hasil yang sangat bagus. Hampir sempurna!';
-      } else if (pct >= 60) {
-        title = 'Good Job! 👏';
-        feedback = 'Sudah cukup baik. Perhatikan detail teks lagi.';
-      } else if (pct >= 40) {
-        title = 'Keep Going!';
-        feedback = 'Masih bisa ditingkatkan. Baca ulang bagian yang sulit.';
-      }
-
-      document.getElementById('resultTitle').textContent = title;
-      document.getElementById('overallFeedback').textContent = feedback;
-
-      const resultEl = document.getElementById('resultScreen');
-      resultEl.classList.add('show');
-
-      // Perfect score: gold + glitter + music
-      if (pct === 100) {
-        resultEl.classList.add('perfect');
-        createGlitter();
-        const audio = document.getElementById('perfectAudio');
-        if (audio) {
-          audio.currentTime = 0;
-          audio.play().catch(() => {});
-        }
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function updateProgress() {
-      const total = 10;
-      const count = answered.size;
-      const pct = (count / total) * 100;
-      document.getElementById('progressFill').style.width = pct + '%';
-      document.getElementById('progressText').textContent = count + ' / ' + total;
-    }
-
-    function markAnswered(qNum) {
-      answered.add(qNum);
-      const card = document.querySelector(`.question-card[data-q="${qNum}"]`);
-      if (card) card.classList.add('answered');
-      updateProgress();
-      updateCheckButton();
-    }
-
-    function selectSingle(el, qNum) {
-      if (isChecking) return;
-      const card = el.closest('.question-card');
-      card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-      el.classList.add('selected');
-      el.querySelector('input').checked = true;
-      markAnswered(qNum);
-    }
-
-    function selectMulti(el, qNum) {
-      if (isChecking) return;
-      const input = el.querySelector('input');
-      setTimeout(() => {
-        if (input.checked) el.classList.add('selected');
-        else el.classList.remove('selected');
-        const any = el.closest('.options').querySelector('input:checked');
-        if (any) markAnswered(qNum);
-        else {
-          answered.delete(qNum);
-          el.closest('.question-card').classList.remove('answered');
-          updateProgress();
-          updateCheckButton();
-        }
-      }, 10);
-    }
-
-    function getUserAnswer(qNum) {
-      const a = answers[qNum];
-      if (a.type === 'mc') {
-        const sel = document.querySelector(`input[name="q${qNum}"]:checked`);
-        return sel ? sel.value : null;
-      }
-      if (a.type === 'mcma') {
-        return Array.from(document.querySelectorAll(`input[name="q${qNum}"]:checked`)).map(i => i.value).sort();
-      }
-      if (a.type === 'tf') {
-        const result = {};
-        for (let s = 1; s <= 4; s++) {
-          const sel = document.querySelector(`input[name="q10_s${s}"]:checked`);
-          result[s] = sel ? sel.value : null;
-        }
-        return result;
-      }
-    }
-
-    function isCorrect(qNum, userAns) {
-      const a = answers[qNum];
-      if (userAns === null || userAns === undefined) return false;
-      if (a.type === 'mc') return userAns === a.correct;
-      if (a.type === 'mcma') {
-        const corr = [...a.correct].sort();
-        return JSON.stringify(userAns) === JSON.stringify(corr);
-      }
-      if (a.type === 'tf') {
-        // All 4 statements must be correct
-        for (let s = 1; s <= 4; s++) {
-          if (userAns[s] !== a.correct[s]) return false;
-        }
-        return true;
-      }
-      return false;
-    }
-
-    function createGlitter() {
-      const layer = document.getElementById('glitterLayer');
-      layer.innerHTML = '';
-      const colors = ['#fff', '#fde68a', '#fbbf24', '#f59e0b', '#fef3c7', '#fcd34d'];
-      for (let i = 0; i < 60; i++) {
-        const p = document.createElement('div');
-        p.className = 'glitter-particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.top = -10 - Math.random() * 30 + 'px';
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        p.style.width = (4 + Math.random() * 6) + 'px';
-        p.style.height = p.style.width;
-        p.style.animationDuration = (2.5 + Math.random() * 3.5) + 's';
-        p.style.animationDelay = (Math.random() * 2) + 's';
-        layer.appendChild(p);
-      }
-    }
-  </script>
+    <button class="restart" id="sendWA">KIRIM HASIL</button>
+    <button class="restart" onclick="location.reload()">PLAY AGAIN</button>
+  </div>
+</section>
+<div id="feedback">
+  <div class="feedbackBox">
+    <img id="feedbackImg" alt="feedback"><div class="feedbackTitle" id="feedbackTitle"></div><div class="feedbackText" id="feedbackText"></div><button class="next" id="nextBtn">NEXT QUESTION</button>
+  </div>
+</div>
+<audio id="correctAudio" preload="auto" src="1.mp3"></audio>
+<audio id="wrongAudio" preload="auto" src="-1.mp3"></audio>
+<audio id="perfectAudio" preload="auto" src="perfect.mp3"></audio>
+</div>
+<script>
+const CORRECT_IMG="1.gif"; const WRONG_IMG="-1.gif"; const CORRECT_AUDIO="1.mp3"; const WRONG_AUDIO="-1.mp3"; const PERFECT_AUDIO="perfect.mp3";
+const questions=[
+  {type:"Zero Conditional", parts:["If","you heat water","to 100°C,","it boil","quickly."], answer:3, correct:"boils", exp:"it = singular -> boils"},
+  {type:"Zero Conditional", parts:["If plants","does not get","enough sunlight,","they grow","poorly."], answer:1, correct:"do not get", exp:"plants jamak -> do not"},
+  {type:"Zero Conditional", parts:["When ice","reaches 0°C,","it usually","melt into","water."], answer:3, correct:"melts into", exp:"it singular -> melts"},
+  {type:"Zero Conditional", parts:["If people","eats too much","sugar, they","often gain","weight."], answer:1, correct:"eat too much", exp:"people jamak -> eat"},
+  {type:"Zero Conditional", parts:["Water freezes","if the temperature","fall below","zero degrees","Celsius."], answer:2, correct:"falls below", exp:"temperature singular -> falls"},
+  {type:"First Conditional", parts:["If it rains","tomorrow, we","will stays","at home","all day."], answer:2, correct:"will stay", exp:"will + V1"},
+  {type:"First Conditional", parts:["If she studies","hard tonight,","she will","passes the","exam tomorrow."], answer:3, correct:"pass the", exp:"will + V1 : pass"},
+  {type:"First Conditional", parts:["If I will finish","my homework early,","I will","watch a movie","tonight."], answer:0, correct:"I finish", exp:"If clause tidak boleh pakai will"},
+  {type:"First Conditional", parts:["If they arrives","early, we","will start","the meeting","immediately."], answer:0, correct:"If they arrive", exp:"They jamak -> arrive"},
+  {type:"First Conditional", parts:["If you don't hurry,","you will","missing the","bus at the","station."], answer:2, correct:"miss the", exp:"will + V1 : miss"},
+  {type:"Second Conditional", parts:["If I was","rich, I would","travel around","the world","every year."], answer:0, correct:"If I were", exp:"Second Conditional pakai were"},
+  {type:"Second Conditional", parts:["If he had","more free time,","he would","learns another","language."], answer:3, correct:"learn another", exp:"would + V1"},
+  {type:"Second Conditional", parts:["If I would have","more money, I","would buy","a new laptop","for school."], answer:0, correct:"I had", exp:"If clause pakai Past Simple"},
+  {type:"Second Conditional", parts:["If she lived","closer to school,","she would","walking there","every day."], answer:3, correct:"walk there", exp:"would + V1 : walk"},
+  {type:"Second Conditional", parts:["If we knew","the answer, we","will tell","you immediately","about it."], answer:2, correct:"would tell", exp:"If+Past -> would"},
+  {type:"Third Conditional", parts:["If they had left","earlier, they","would have","arrive on","time."], answer:3, correct:"arrived on", exp:"would have + V3"},
+  {type:"Third Conditional", parts:["If I had known","about the problem,","I would have","help you","earlier."], answer:3, correct:"helped you", exp:"would have + V3 : helped"},
+  {type:"Third Conditional", parts:["If she had studied","harder, she","would has","passed the","exam."], answer:2, correct:"would have", exp:"harus would have"},
+  {type:"Third Conditional", parts:["If we had","seen the sign,","we would not","have turn","there."], answer:3, correct:"have turned", exp:"have + V3 : turned"},
+  {type:"Third Conditional", parts:["If he had taken","the medicine,","he would have","felt more better","yesterday."], answer:3, correct:"felt better", exp:"better tidak pakai more"}
+];
+let current=0,score=0,answered=false,student="",klass="",startedAt=0,timerInt=null;
+const $=id=>document.getElementById(id);
+const screens=["loading","start","quiz","result"];
+function show(id){screens.forEach(x=>$(x).classList.toggle("active",x===id));}
+function createGlitter(){
+  const box=$("glitterBox"); box.innerHTML="";
+  for(let i=0;i<30;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.animationDelay=(Math.random()*2)+"s"; s.style.animationDuration=(1.5+Math.random()*1.5)+"s"; s.style.background=i%2==0?"#fff":"#ffeb3b"; s.style.top=Math.random()*20+"%"; box.appendChild(s); }
+}
+function preloadAssets(){
+  const assets=[{src:CORRECT_IMG,type:"image"},{src:WRONG_IMG,type:"image"},{src:CORRECT_AUDIO,type:"audio"},{src:WRONG_AUDIO,type:"audio"},{src:PERFECT_AUDIO,type:"audio"}];
+  let loaded=0,failed=false;
+  $("loadText").textContent="Loading 0 / "+assets.length+" files...";
+  function update(){ loaded++; const percent=Math.round((loaded/assets.length)*100); $("loaderBar").style.width=percent+"%"; $("loadText").textContent="Loading "+loaded+" / "+assets.length+" files..."; if(loaded===assets.length &&!failed){ $("loadText").textContent="All files loaded. Starting..."; $("loaderBar").style.width="100%"; setTimeout(()=>show("start"),500); } }
+  function fail(src){ if(src===PERFECT_AUDIO){ update(); return; } if(failed)return; failed=true; $("loaderBar").style.width="100%"; $("loaderBar").style.background="#d00"; $("loadText").innerHTML='<strong style="color:#ff5555">FAILED TO LOAD</strong><br><span style="font-size:14px">'+src+'</span><br><br><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;border:0;font-weight:bold">RETRY</button>'; }
+  assets.forEach(asset=>{ if(asset.type==="image"){ const img=new Image(); img.onload=()=>{ if(img.decode){ img.decode().then(update).catch(update); }else{ update(); } }; img.onerror=()=>fail(asset.src); img.src=asset.src; }else{ const audio=new Audio(); audio.preload="auto"; let finished=false; const success=()=>{ if(finished)return; if(audio.readyState>=3){ finished=true; update(); } }; audio.addEventListener("canplay",success); audio.addEventListener("canplaythrough",success); audio.addEventListener("error",()=>{ if(!finished)fail(asset.src); }); audio.src=asset.src; audio.load(); if(audio.readyState>=3)success(); setTimeout(()=>{ if(!finished){ finished=true; update(); }},2500); } });
+}
+preloadAssets();
+$("startBtn").onclick=()=>{ student=$("studentName").value.trim(); klass=$("studentClass").value.trim(); if(!student||!klass){alert("Please enter your name and class.");return;} current=0;score=0;startedAt=Date.now();show("quiz");renderQuestion();startTimer(); };
+function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),r=s%60; $("timer").textContent=String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"); },250); }
+function renderQuestion(){ answered=false; const q=questions[current]; $("qNum").textContent=`Question ${current+1} / ${questions.length}`; $("typeBadge").textContent=q.type; $("progressBar").style.width=((current)/questions.length*100)+"%"; $("sentence").innerHTML=q.parts.map((p,i)=>`<span class="part" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${p}</span>`).join(" "); document.querySelectorAll(".part").forEach(el=>el.onclick=()=>answer(Number(el.dataset.i))); }
+function answer(index){ if(answered)return; answered=true; const q=questions[current], correct=index===q.answer; if(correct)score++; showFeedback(correct,q,index); }
+function showFeedback(correct,q,index){ $("feedback").style.display="flex"; const img=$("feedbackImg"); img.src=correct?CORRECT_IMG:WRONG_IMG; img.src=""; setTimeout(()=>img.src=correct?CORRECT_IMG:WRONG_IMG,10); $("feedbackTitle").textContent=correct?"CORRECT!":"WRONG!"; $("feedbackText").innerHTML= correct? "Great!<br><b>"+q.exp+"</b>" : `Correct is <b>${String.fromCharCode(65+q.answer)} - ${q.correct}</b><br>${q.exp}`; const audio=$(correct?"correctAudio":"wrongAudio"); audio.src=correct?CORRECT_AUDIO:WRONG_AUDIO; audio.currentTime=0; audio.play().catch(()=>{}); $("nextBtn").textContent=current===questions.length-1?"SHOW SCORE":"NEXT QUESTION"; audio.onended=()=>{ if($("feedback").style.display==="flex"){ $("nextBtn").click(); } }; }
+$("nextBtn").onclick=()=>{ const a1=$("correctAudio"),a2=$("wrongAudio"); a1.pause();a2.pause(); $("feedback").style.display="none"; if(current<questions.length-1){current++;renderQuestion();} else finish(); };
+function finish(){
+  clearInterval(timerInt); $("progressBar").style.width="100%";
+  const total=questions.length; const nilai=Math.round(score/total*100);
+  $("resultName").textContent=student; $("resultClass").textContent=klass;
+  $("finalScore").textContent=nilai;
+  $("percentage").textContent = nilai===100? "PERFECT SCORE! 🎉" : "";
+  $("correctCount").textContent=score; $("wrongCount").textContent=total-score; $("scoreDetail").textContent=score+" / "+total;
+  $("sendWA").onclick=()=>{
+    const phone="6281331279791";
+    const message=`HASIL CONDITIONAL ERROR RECOGNITION%0A%0ANama: ${student}%0AKelas: ${klass}%0ANilai: ${nilai}%0A%0ABenar: ${score}/${total}`;
+    window.open("https://wa.me/"+phone+"?text="+message,"_blank");
+  };
+  show("result");
+  if(nilai===100){
+    $("result").classList.add("perfect");
+    $("scoreCircle").style.borderColor="#b8860b"; $("scoreCircle").style.background="#fff8dc";
+    createGlitter(); const pAudio=$("perfectAudio"); pAudio.currentTime=0; pAudio.play().catch(()=>{});
+  }else{ $("result").classList.remove("perfect"); }
+}
+</script>
 </body>
 </html>
