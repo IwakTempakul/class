@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
-<meta name="theme-color" content="#06201c">
+<meta name="theme-color" content="#14151a">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lab Quest – Analis Kimia</title>
+<title>Gaya Makmur Mobil – Mekanik Quest</title>
 <style>
-:root{--bg1:#06201c;--bg2:#0b4a43;--card:#0d3a36;--ink:#eefcf6;--gold:#b6ff5a;--ok:#2ecc71;--bad:#ff5252;--mut:#9fd6c8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg1:#14151a;--bg2:#2c303a;--card:#23262e;--ink:#eefcf6;--gold:#ffb020;--ok:#2ecc71;--bad:#ff5252;--mut:#b8bec9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;background:var(--bg1)}
 body{margin:0;min-height:100dvh;background:linear-gradient(var(--bg1),var(--bg2)) fixed;color:var(--ink);font-family:'Trebuchet MS',Verdana,sans-serif;display:flex;justify-content:center;touch-action:manipulation;-webkit-user-select:none;user-select:none;overflow-x:hidden}
@@ -15,19 +15,19 @@ h2{font-size:clamp(14px,3vw,22px)}
 .c{text-align:center}.card{background:var(--card);border:3px solid var(--gold);border-radius:18px;padding:16px;margin:10px 0}
 button{font:inherit;cursor:pointer;color:var(--ink);touch-action:manipulation}
 button:active{transform:scale(.97)}
-.big{background:var(--gold);color:#0a2a10;border:0;border-radius:14px;padding:14px 30px;font-size:clamp(18px,3vw,28px);font-weight:bold;min-height:52px}
+.big{background:var(--gold);color:#2a1800;border:0;border-radius:14px;padding:14px 30px;font-size:clamp(18px,3vw,28px);font-weight:bold;min-height:52px}
 .hud{display:flex;justify-content:space-between;gap:6px;font-size:clamp(15px,2.6vw,26px);font-weight:bold;white-space:nowrap}
 .sea{position:relative;height:40px;margin:8px 8px 4px;border-bottom:4px dashed var(--mut)}
-#ship{position:absolute;bottom:-6px;font-size:30px;transition:left .8s;transform:translateX(-50%)}
+#ship{position:absolute;bottom:-6px;font-size:30px;transition:left .8s;transform:translateX(-50%) scaleX(-1)}
 #flag{position:absolute;right:-8px;bottom:0;font-size:26px}
-.dots{display:flex;gap:2px;margin-bottom:6px}.dots i{flex:1;height:7px;border-radius:4px;background:#1d6b60}
+.dots{display:flex;gap:2px;margin-bottom:6px}.dots i{flex:1;height:7px;border-radius:4px;background:#444a58}
 .dots i.ok{background:var(--ok)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--gold)}
 #isl{color:var(--gold);font-size:clamp(13px,2.2vw,20px);margin:0 0 6px;font-weight:bold}
 #q{font-size:clamp(21px,4.4vw,40px);margin:6px 0 12px;line-height:1.3}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.o{background:#12594f;border:3px solid #2ba896;border-radius:14px;padding:12px 14px;font-size:clamp(18px,3.2vw,30px);text-align:left;min-height:56px;line-height:1.25;width:100%}
+.o{background:#383d4a;border:3px solid #6b7385;border-radius:14px;padding:12px 14px;font-size:clamp(18px,3.2vw,30px);text-align:left;min-height:56px;line-height:1.25;width:100%}
 .o:disabled{cursor:default}.o.ok{background:var(--ok);border-color:#fff;color:#04200f}.o.no{background:var(--bad);border-color:#fff}.o.hide{visibility:hidden}
-.tm{height:10px;background:#1d6b60;border-radius:6px;overflow:hidden;margin:4px 0 10px}#tb{height:100%;width:100%;background:var(--gold)}
+.tm{height:10px;background:#444a58;border-radius:6px;overflow:hidden;margin:4px 0 10px}#tb{height:100%;width:100%;background:var(--gold)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;bottom:0;background:var(--card);padding:10px 0 4px;margin-top:6px}
 .pw{background:transparent;border:2px solid var(--gold);border-radius:12px;padding:8px 12px;font-size:clamp(14px,2.4vw,22px);min-height:46px}.pw:disabled{opacity:.4}
 #fb{min-height:22px;font-size:clamp(15px,2.8vw,26px);margin:10px 0 4px;line-height:1.35}
@@ -46,13 +46,13 @@ button:active{transform:scale(.97)}
 .tt{color:var(--gold);font-size:clamp(20px,4vw,34px);margin:0 0 8px}
 .tb{font-size:clamp(16px,2.8vw,26px);line-height:1.45;text-align:left}
 .tb p{margin:6px 0}.hl{color:var(--gold);font-weight:bold}
-.ex{background:#0a2e2b;border-left:5px solid var(--gold);border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.95em}
+.ex{background:#1a1c22;border-left:5px solid var(--gold);border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.95em}
 .ex small{color:var(--mut);display:block}
-.fm{background:#12594f;border-radius:12px;padding:8px 12px;margin:8px 0}
+.fm{background:#383d4a;border-radius:12px;padding:8px 12px;margin:8px 0}
 .fm b{color:var(--gold)}
 table.tl{width:100%;border-collapse:collapse;font-size:.92em;margin:6px 0}
-.tl td,.tl th{border:1px solid #2ba896;padding:6px 8px;text-align:left}.tl th{background:#12594f;color:var(--gold)}
-.pg{display:flex;justify-content:center;gap:6px;margin:6px 0}.pg i{width:10px;height:10px;border-radius:50%;background:#1d6b60}.pg i.on{background:var(--gold)}
+.tl td,.tl th{border:1px solid #6b7385;padding:6px 8px;text-align:left}.tl th{background:#383d4a;color:var(--gold)}
+.pg{display:flex;justify-content:center;gap:6px;margin:6px 0}.pg i{width:10px;height:10px;border-radius:50%;background:#444a58}.pg i.on{background:var(--gold)}
 .sk{background:transparent;border:0;color:var(--mut);text-decoration:underline;font-size:clamp(14px,2.4vw,20px);margin-top:10px;min-height:44px}
 .snd{display:flex;justify-content:flex-end;gap:8px;margin-bottom:2px}
 .snd button{background:transparent;border:2px solid var(--mut);border-radius:20px;padding:4px 12px;font-size:14px;min-height:36px}
@@ -62,23 +62,23 @@ table.tl{width:100%;border-collapse:collapse;font-size:.92em;margin:6px 0}
 <audio id="bgm" src="BG.mp3" loop preload="auto"></audio>
 
 <section id="s0" class="scr on c">
-<h1>🧪 LAB QUEST</h1>
-<h2 style="margin:0;color:var(--mut)">Misi Analis Kimia • Simple Present Tense</h2>
+<h1>🔧 MEKANIK QUEST</h1>
+<h2 style="margin:0;color:var(--mut)">Gaya Makmur Mobil • Teknik Kendaraan Ringan<br>Simple Present Tense</h2>
 <div class="card">
-<p style="font-size:clamp(18px,3vw,28px)">Kamu <b>analis laboratorium</b>! Ada <b>25 sampel</b> yang harus dianalisis. Jawab soal <b>Simple Present Tense</b> dengan benar agar analisis berlanjut sampai <b>laporan hasil</b> selesai.</p>
-<p style="color:var(--mut);font-size:clamp(15px,2.4vw,22px)">⏱ 20 detik per soal • ❤️ 5 nyawa (keselamatan lab) • ⭐ poin bonus kalau cepat & beruntun • ⚗️ Sampel ke-5, 10, 15, 20, 25 = <b>STASIUN INSTRUMEN (poin x2)</b> • 🔬 2x bantuan Filtrasi 50:50</p>
+<p style="font-size:clamp(18px,3vw,28px)">Kamu <b>mekanik andalan Bengkel Gaya Makmur Mobil</b>! Ada <b>25 mobil pelanggan</b> yang harus diservis. Jawab soal <b>Simple Present Tense</b> dengan benar agar servis berlanjut sampai semua mobil <b>siap diserahkan</b>.</p>
+<p style="color:var(--mut);font-size:clamp(15px,2.4vw,22px)">⏱ 20 detik per soal • ❤️ 5 nyawa (keselamatan kerja) • ⭐ poin bonus kalau cepat & beruntun • 🛠 Mobil ke-5, 10, 15, 20, 25 = <b>SERVIS BESAR (poin x2)</b> • 🔧 2x bantuan Scan OBD 50:50</p>
 <button class="big" onclick="theory()">📖 Belajar Teori Dulu</button><br><button class="sk" onclick="start()">Sudah paham? Langsung main ➜</button></div>
 </section>
 
 <section id="s1" class="scr">
 <div class="hud"><span id="hl"></span><span id="hg"></span><span id="hs"></span></div>
-<div class="sea"><span id="ship">🧪</span><span id="flag">📋</span></div>
+<div class="sea"><span id="ship">🚗</span><span id="flag">🏁</span></div>
 <div class="dots" id="dots"></div>
 <div class="card">
 <p id="isl"></p><div class="tm"><div id="tb"></div></div>
 <div id="q"></div><div class="opts" id="opts"></div>
 <div id="fb"></div>
-<div class="row"><button class="pw" id="p5" onclick="fifty()">🔬 Filtrasi 50:50 (<span id="pc">2</span>)</button><button class="big" id="nx" style="display:none" onclick="next()">Lanjut ➜</button></div>
+<div class="row"><button class="pw" id="p5" onclick="fifty()">🔧 Scan OBD 50:50 (<span id="pc">2</span>)</button><button class="big" id="nx" style="display:none" onclick="next()">Lanjut ➜</button></div>
 </div></section>
 
 <section id="s3" class="scr">
@@ -91,56 +91,56 @@ table.tl{width:100%;border-collapse:collapse;font-size:.92em;margin:6px 0}
 <h1 id="et"></h1>
 <div class="card"><div style="font-size:70px" id="ei"></div>
 <div class="stat" id="e1"></div><div class="stat" id="e2"></div><div class="stat" id="e3"></div>
-<button class="big" onclick="start()">🔁 Analisis Lagi</button><br><button class="sk" onclick="theory()">📖 Buka teori lagi</button></div>
+<button class="big" onclick="start()">🔁 Main Lagi</button><br><button class="sk" onclick="theory()">📖 Buka teori lagi</button></div>
 </section>
 </div>
 <script>
 const Q=[
-["The analyst ___ the sample every morning.",["weigh","weighs","weighing","weighed"],1,"The analyst = he/she → verb + s: weighs."],
-["Students ___ lab coats in the laboratory.",["wears","wear","wearing","is wear"],1,"Students (jamak) → verb dasar: wear."],
-["A pH meter ___ the acidity of a solution.",["measure","measuring","measures","measured"],2,"A pH meter = it → measures."],
-["Water ___ at 100°C.",["boil","boils","boiling","is boil"],1,"Fakta ilmiah pakai Simple Present; water = it → boils."],
-["We ___ not use cracked glassware.",["does","am","do","is"],2,"Negatif dengan we → do not (don't)."],
-["The technician ___ not mix acids carelessly.",["do","does","is","are"],1,"Negatif dengan he/she/it → does not (doesn't)."],
-["___ you wash the burette after titration?",["Do","Does","Are","Is"],0,"Pertanyaan dengan you → Do you ...?"],
-["___ she calibrate the balance every day?",["Do","Is","Does","Are"],2,"Pertanyaan dengan she → Does she ...? (verb kembali dasar)."],
-["Litmus paper ___ red in acid.",["turn","turns","turning","turned"],1,"Fakta kimia; litmus paper = it → turns."],
-["My partner and I ___ the data in a logbook.",["records","recording","record","recordes"],2,"My partner and I = we → record."],
-["The centrifuge ___ the mixture at high speed.",["spin","spins","spinning","spinned"],1,"The centrifuge = it → spins."],
-["Choose the correct sentence.",["The analyst don't heat the sample.","The analyst doesn't heats the sample.","The analyst doesn't heat the sample.","The analyst not heat the sample."],2,"Setelah doesn't, verb tetap bentuk dasar: heat."],
-["Choose the correct sentence.",["She always is careful in the lab.","She is always careful in the lab.","Always she is careful in the lab.","She is careful always in the lab."],1,"Adverb frekuensi (always) diletakkan setelah to be."],
-["Sodium chloride ___ in water.",["dissolve","dissolving","dissolves","dissolved"],2,"Sodium chloride = it → dissolves."],
-["Acids ___ with metals.",["reacts","react","reacting","is react"],1,"Acids (jamak) → react tanpa s."],
-["The lab assistant ___ the filtration process.",["watchs","watch","watches","watching"],2,"Verb berakhiran -ch → tambah es: watches."],
-["He ___ a blank test before each analysis.",["do","does","doing","dos"],1,"Do untuk he/she/it menjadi does."],
-["The student ___ the test tube carefully.",["carries","carrys","carry","carryes"],0,"Konsonan + y → y jadi ies: carries."],
-["The analyst ___ the glassware with distilled water.",["wash","washs","washes","washing"],2,"Verb berakhiran -sh → tambah es: washes."],
-["The assistant ___ use the oven without gloves. (negative)",["don't","doesn't","isn't","not"],1,"The assistant = he/she → doesn't + verb dasar."],
-["___ your teacher explain the titration method?",["Do","Are","Is","Does"],3,"Your teacher = he/she → Does ... explain?"],
-["Which sentence expresses a scientific fact?",["The sample is heating now.","Water freezes at 0°C.","He is mixing the reagent.","They tested the sample yesterday."],1,"Fakta/kebenaran umum memakai Simple Present: freezes."],
-["Does the chemical react with water? – Yes, it ___.",["do","is","does","reacts"],2,"Jawaban singkat: Yes, it does."],
+["The mechanic ___ the engine oil every morning.",["check","checks","checking","checked"],1,"The mechanic = he/she → verb + s: checks."],
+["Technicians ___ safety shoes in the workshop.",["wears","wear","wearing","is wear"],1,"Technicians (jamak) → verb dasar: wear."],
+["A multimeter ___ the voltage of the battery.",["measure","measuring","measures","measured"],2,"A multimeter = it → measures."],
+["The radiator ___ the engine.",["cool","cools","cooling","cooled"],1,"Fungsi/fakta; the radiator = it → cools."],
+["We ___ not use damaged tools.",["does","am","do","is"],2,"Negatif dengan we → do not (don't)."],
+["The mechanic ___ not touch a hot engine.",["do","does","is","are"],1,"Negatif dengan he/she/it → does not (doesn't)."],
+["___ you change the tires on Saturdays?",["Do","Does","Are","Is"],0,"Pertanyaan dengan you → Do you ...?"],
+["___ he check the brakes before servicing?",["Do","Is","Does","Are"],2,"Pertanyaan dengan he → Does he ...? (verb kembali dasar)."],
+["The oil filter ___ dirt from the engine oil.",["remove","removes","removing","removed"],1,"The oil filter = it → removes."],
+["My friend and I ___ the spark plugs every 10,000 km.",["replaces","replace","replacing","replaced"],1,"My friend and I = we → replace."],
+["The workshop ___ at 8 a.m. every day.",["open","opens","opening","openning"],1,"Jadwal tetap; the workshop = it → opens."],
+["Choose the correct sentence.",["The mechanic don't use the wrong tool.","The mechanic doesn't uses the wrong tool.","The mechanic doesn't use the wrong tool.","The mechanic not use the wrong tool."],2,"Setelah doesn't, verb tetap bentuk dasar: use."],
+["Choose the correct sentence.",["He always is careful with the jack.","He is always careful with the jack.","Always he is careful with the jack.","He is careful always with the jack."],1,"Adverb frekuensi (always) diletakkan setelah to be."],
+["A car battery ___ electricity.",["store","storing","stores","stored"],2,"A car battery = it → stores."],
+["Mechanics ___ cars at the workshop.",["repairs","repair","repairing","is repair"],1,"Mechanics (jamak) → repair tanpa s."],
+["The mechanic ___ the engine every week.",["fixs","fix","fixes","fixing"],2,"Verb berakhiran -x → tambah es: fixes."],
+["He ___ a test drive after every service.",["do","does","doing","dos"],1,"Do untuk he/she/it menjadi does."],
+["The assistant ___ tools to the customer's car.",["carries","carrys","carry","carryes"],0,"Konsonan + y → y jadi ies: carries."],
+["The mechanic ___ the car with soap and water.",["wash","washs","washes","washing"],2,"Verb berakhiran -sh → tambah es: washes."],
+["The apprentice ___ drive the customer's car alone. (negative)",["don't","doesn't","isn't","not"],1,"The apprentice = he/she → doesn't + verb dasar."],
+["___ your teacher explain the brake system?",["Do","Are","Is","Does"],3,"Your teacher = he/she → Does ... explain?"],
+["Which sentence expresses a fact?",["The car is moving now.","A diesel engine uses diesel fuel.","He is changing the oil.","They repaired the car yesterday."],1,"Fakta/kebenaran umum memakai Simple Present: uses."],
+["Does the engine need oil? – Yes, it ___.",["do","is","does","needs"],2,"Jawaban singkat: Yes, it does."],
 ["Simple Present is usually used with ___.",["now","yesterday","every day","last week"],2,"Keterangan kebiasaan: every day, always, usually, often."],
-["The analyst ___ the sample and ___ the result every day.",["prepare – record","prepares – records","prepares – record","preparing – records"],1,"The analyst = he/she → kedua verb pakai s: prepares, records."]
+["The mechanic ___ the car and ___ the problem to the owner.",["check – explain","checks – explains","checks – explain","checking – explains"],1,"The mechanic = he/she → kedua verb pakai s: checks, explains."]
 ];
 const $=id=>document.getElementById(id);
 let S,opts,t,iv,locked;
 const T=[
 ["Apa itu Simple Present?",`<p>Simple Present dipakai untuk menyatakan:</p>
-<div class="ex"><span class="hl">1. Kebiasaan / rutinitas</span><br>The analyst weighs the sample every morning.<small>Analis menimbang sampel setiap pagi.</small></div>
-<div class="ex"><span class="hl">2. Fakta / kebenaran umum</span><br>Water boils at 100°C.<small>Air mendidih pada 100°C.</small></div>
-<div class="ex"><span class="hl">3. Jadwal tetap</span><br>The laboratory opens at 7 a.m.<small>Laboratorium buka jam 7 pagi.</small></div>`],
+<div class="ex"><span class="hl">1. Kebiasaan / rutinitas</span><br>The mechanic checks the engine oil every morning.<small>Mekanik memeriksa oli mesin setiap pagi.</small></div>
+<div class="ex"><span class="hl">2. Fakta / kebenaran umum</span><br>A diesel engine uses diesel fuel.<small>Mesin diesel memakai bahan bakar solar.</small></div>
+<div class="ex"><span class="hl">3. Jadwal tetap</span><br>The workshop opens at 8 a.m.<small>Bengkel buka jam 8 pagi.</small></div>`],
 ["Rumus Kalimat (+ ) Positif",`<div class="fm"><b>I / You / We / They</b> + V1<br><b>He / She / It</b> + V1 <b>+ s/es</b></div>
-<div class="ex">We <b>wear</b> lab coats.<br>She <b>measures</b> the pH.<small>Subjek he/she/it (termasuk nama orang & benda tunggal) → verb diberi s/es.</small></div>
+<div class="ex">We <b>wear</b> overalls.<br>She <b>measures</b> the voltage.<small>Subjek he/she/it (termasuk nama orang & benda tunggal) → verb diberi s/es.</small></div>
 <p>Kalimat tanpa kata kerja memakai <span class="hl">to be</span>:</p>
-<div class="ex">I <b>am</b> / He, She, It <b>is</b> / You, We, They <b>are</b><br>She <b>is</b> careful in the lab.</div>`],
+<div class="ex">I <b>am</b> / He, She, It <b>is</b> / You, We, They <b>are</b><br>She <b>is</b> careful in the workshop.</div>`],
 ["Rumus Negatif (–) & Tanya (?)",`<div class="fm"><b>(–)</b> S + do/does + <b>not</b> + V1</div>
-<div class="ex">They <b>do not (don't)</b> mix acids.<br>He <b>does not (doesn't)</b> heat it.</div>
+<div class="ex">They <b>do not (don't)</b> use damaged tools.<br>He <b>does not (doesn't)</b> touch the engine.</div>
 <div class="fm"><b>(?)</b> Do/Does + S + V1 ... ?</div>
-<div class="ex"><b>Does</b> she calibrate the balance?<br>Yes, she <b>does</b>. / No, she <b>doesn't</b>.</div>
+<div class="ex"><b>Does</b> she check the brakes?<br>Yes, she <b>does</b>. / No, she <b>doesn't</b>.</div>
 <p class="hl">Ingat: setelah does / doesn't, verb kembali bentuk dasar (tanpa s)!</p>`],
 ["Aturan Menambah -s / -es",`<table class="tl"><tr><th>Aturan</th><th>Contoh</th></tr>
-<tr><td>Umumnya + <b>s</b></td><td>measure → measures<br>record → records</td></tr>
-<tr><td>-s, -sh, -ch, -x, -o → + <b>es</b></td><td>wash → washes<br>watch → watches<br>mix → mixes<br>go → goes, do → does</td></tr>
+<tr><td>Umumnya + <b>s</b></td><td>check → checks<br>repair → repairs</td></tr>
+<tr><td>-s, -sh, -ch, -x, -o → + <b>es</b></td><td>wash → washes<br>watch → watches<br>fix → fixes<br>go → goes, do → does</td></tr>
 <tr><td>Konsonan + y → <b>ies</b></td><td>carry → carries<br>study → studies</td></tr>
 <tr><td>Vokal + y → + <b>s</b></td><td>play → plays</td></tr>
 <tr><td>Khusus</td><td>have → <b>has</b></td></tr></table>`],
@@ -150,15 +150,15 @@ const T=[
 <tr><td>always</td><td>selalu (100%)</td></tr><tr><td>usually</td><td>biasanya</td></tr>
 <tr><td>often</td><td>sering</td></tr><tr><td>sometimes</td><td>kadang-kadang</td></tr>
 <tr><td>rarely</td><td>jarang</td></tr><tr><td>never</td><td>tidak pernah (0%)</td></tr></table>
-<div class="ex">She <b>always</b> checks the label. (sebelum verb)<br>She is <b>always</b> careful. (setelah to be)</div>`],
+<div class="ex">He <b>always</b> checks the tire pressure. (sebelum verb)<br>He is <b>always</b> careful. (setelah to be)</div>`],
 ["Tips Cepat Menjawab 🎯",`<div class="fm"><b>1.</b> Lihat subjeknya: siapa?<br><b>2.</b> He / She / It? → verb + s/es<br><b>3.</b> Ada does / doesn't? → verb dasar<br><b>4.</b> Ada do / don't? → verb dasar<br><b>5.</b> Fakta atau kebiasaan? → Simple Present ✔</div>
-<div class="ex">The analyst ___ the sample every day.<br>→ analyst = he/she → <b>prepares</b> ✔</div>
-<p>Siap jadi analis kimia? Ayo mulai misi! 🧪</p>`]
+<div class="ex">The mechanic ___ the car every day.<br>→ mechanic = he/she → <b>checks</b> ✔</div>
+<p>Siap jadi mekanik andalan? Ayo mulai servis! 🔧</p>`]
 ];
 
 let AC,sOn=true,mOn=true,bgOk=true,lt=0;
-try{const p=JSON.parse(localStorage.getItem('lq')||'{}');if(p.s===false)sOn=false;if(p.m===false)mOn=false}catch(e){}
-function pref(){try{localStorage.setItem('lq',JSON.stringify({s:sOn,m:mOn}))}catch(e){}$('bm').classList.toggle('off',!mOn);$('bs').classList.toggle('off',!sOn)}
+try{const p=JSON.parse(localStorage.getItem('gmm')||'{}');if(p.s===false)sOn=false;if(p.m===false)mOn=false}catch(e){}
+function pref(){try{localStorage.setItem('gmm',JSON.stringify({s:sOn,m:mOn}))}catch(e){}$('bm').classList.toggle('off',!mOn);$('bs').classList.toggle('off',!sOn)}
 function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state=='suspended')AC.resume();return AC}
 function bp(f,d,ty,v,dl){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t0=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(v||.2,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(a.destination);o.start(t0);o.stop(t0+d+.05)}
 function sfx(n){if(!sOn)return;const m={click:()=>bp(660,.08,'square',.08),tick:()=>bp(900,.06,'square',.07),
@@ -183,7 +183,7 @@ let ti=0;
 function theory(){sfx('click');ti=0;show('s3');trender()}
 function trender(){$('tn').textContent='📖 Teori '+(ti+1)+' / '+T.length;$('tt').textContent=T[ti][0];$('tbd').innerHTML=T[ti][1];
  $('pg').innerHTML=T.map((_,k)=>'<i class="'+(k==ti?'on':'')+'"></i>').join('');
- $('tp').style.visibility=ti?'visible':'hidden';$('tx').textContent=ti==T.length-1?'🥽 Mulai Game!':'Lanjut ➜';window.scrollTo(0,0)}
+ $('tp').style.visibility=ti?'visible':'hidden';$('tx').textContent=ti==T.length-1?'🔧 Mulai Game!':'Lanjut ➜';window.scrollTo(0,0)}
 function tgo(d){sfx('click');if(d>0&&ti==T.length-1){start();return}ti=Math.max(0,ti+d);trender()}
 
 function show(id){document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==id));window.scrollTo(0,0)}
@@ -193,7 +193,7 @@ function hud(){$('hl').textContent='❤️'.repeat(S.l)+'🖤'.repeat(5-S.l);$('
  $('dots').innerHTML=Q.map((_,k)=>'<i class="'+(k<S.r.length?(S.r[k]?'ok':'no'):k==S.i?'cur':'')+'"></i>').join('');
  $('ship').style.left=(S.i/25*96+2)+'%'}
 function load(){locked=false;const q=Q[S.i];opts=shuf(q[1].map((x,k)=>({x,ok:k==q[2]})));
- const boss=(S.i+1)%5==0;$('isl').textContent=(boss?'⚗️ STASIUN INSTRUMEN – Sampel ':'🧫 Sampel ')+(S.i+1)+' / 25'+(boss?' (poin x2)':'');
+ const boss=(S.i+1)%5==0;$('isl').textContent=(boss?'🛠 SERVIS BESAR – Mobil ':'🚗 Mobil ')+(S.i+1)+' / 25'+(boss?' (poin x2)':'');
  $('q').textContent=q[0];$('fb').textContent='';$('nx').style.display='none';
  $('opts').innerHTML=opts.map((o,k)=>'<button class="o" onclick="ans('+k+')">'+'ABCD'[k]+'. '+o.x+'</button>').join('');
  window.scrollTo(0,0);lt=0;hud();t=20;$('tb').style.width='100%';clearInterval(iv);
@@ -203,12 +203,12 @@ function ans(k){if(locked)return;locked=true;clearInterval(iv);const q=Q[S.i],b=
  b.forEach((e,j)=>{e.disabled=true;if(opts[j].ok)e.classList.add('ok');else if(j==k)e.classList.add('no')});
  const ok=k>=0&&opts[k].ok;S.r.push(ok);sfx(ok?((S.i+1)%5==0?'boss':'ok'):(k<0?'time':'bad'));
  if(ok){S.c++;S.s++;S.m=Math.max(S.m,S.s);let g=10+Math.ceil(t)+(S.s>=3?5:0);if((S.i+1)%5==0)g*=2;S.g+=g;
-  $('fb').innerHTML='✅ Hasil valid! +'+g+' ⭐ — '+q[3];$('fb').classList.add('pop')}
- else{S.s=0;S.l--;$('fb').innerHTML=(k<0?'⏰ Waktu habis! ':'💥 Reaksi tidak terkendali! ')+'Jawaban benar: <b>'+q[1][q[2]]+'</b>. '+q[3]}
+  $('fb').innerHTML='✅ Servis tepat! +'+g+' ⭐ — '+q[3];$('fb').classList.add('pop')}
+ else{S.s=0;S.l--;$('fb').innerHTML=(k<0?'⏰ Waktu habis! ':'💥 Mesin mogok! ')+'Jawaban benar: <b>'+q[1][q[2]]+'</b>. '+q[3]}
  try{navigator.vibrate&&navigator.vibrate(ok?30:[60,40,60])}catch(e){}setTimeout(()=>$('fb').classList.remove('pop'),500);hud();$('p5').disabled=true;
  const n=$('nx');n.style.display='';n.textContent=(S.l<=0||S.i==24)?'Lihat Hasil ➜':'Lanjut ➜'}
 function next(){sfx('click');S.i++;if(S.l<=0||S.i>=25){end();return}load()}
-function end(){const w=S.l>0;let r=S.c>=23?'Analis Senior 🥇':S.c>=17?'Analis Junior 🔬':S.c>=10?'Laboran Tangguh 🥽':'Praktikan Baru 🐣';
- $('et').textContent=w?'📋 LAPORAN ANALISIS SELESAI!':'💥 Laboratorium Darurat!';$('ei').textContent=w?'🏅':'🚨';
+function end(){const w=S.l>0;let r=S.c>=23?'Kepala Mekanik 🥇':S.c>=17?'Mekanik Senior 🔧':S.c>=10?'Mekanik Junior 🛠':'Magang Baru 🐣';
+ $('et').textContent=w?'🏁 SERVIS SELESAI!':'🚨 Bengkel Darurat!';$('ei').textContent=w?'🏅':'🚨';
  $('e1').textContent='Benar: '+S.c+' / '+S.r.length+' soal';$('e2').textContent='⭐ Total poin: '+S.g+' • 🔥 Beruntun terbaik: '+S.m;$('e3').textContent='Pangkat: '+r;show('s2');sfx(w?'win':'lose')}
 </script></body></html>
