@@ -211,7 +211,7 @@ const Q=[
 ["The workshop usually ___ spare parts on Monday.","orders",["order","ordered","ordering","are order"],"Kebiasaan, subjek tunggal: orders."]
 ];
 const NEED=25,EN=5;
-const LV={easy:{t:20,r:.33},med:{t:15,r:.42},hard:{t:10,r:.53}};
+const LV={easy:{t:20,r:.495},med:{t:15,r:.63},hard:{t:10,r:.795}};
 const $=id=>document.getElementById(id);
 let lv='med',S,timer,snd=true,music=true;
 const bgm=$('bgm');bgm.volume=.35;
@@ -299,7 +299,7 @@ function pick(i){
     sfx('Correct',660,.15);
   }else{
     if(i>=0)btns[i].classList.add('no');
-    S.streak=0;S.b+=2;if(S.en<EN)S.en=0;
+    S.streak=0;S.b+=3;if(S.en<EN)S.en=0;
     S.miss.push({q:c.q[0].replace('___','_____'),a:c.q[1],h:c.q[3]});
     $('fb').textContent=(i<0?'Waktu habis. ':'Kurang tepat. ')+c.q[3]+' Robot mendapat dorongan.';
     sfx('Wrong',180,.3);whack();
