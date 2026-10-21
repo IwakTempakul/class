@@ -77,6 +77,41 @@ ul{margin:6px 0;padding-left:20px;line-height:1.55}
 .row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.row button{flex:1}
 .mute{background:transparent;color:#cfe3f3;font-size:.8rem;padding:4px 8px;border:1px solid #6a8aa6}
 @media(max-width:520px){.tw{top:76px}h1{font-size:1.6rem}#qt{font-size:1.1rem}.lane{height:76px}}
+
+/* ===== Tampilan HP: muat satu layar ===== */
+:root{--lh:clamp(48px,9.5dvh,84px);--dw:calc(var(--lh)*.857);--tww:calc(var(--lh)*.71)}
+html,body{height:100%}
+body{overflow:hidden;min-height:0}
+#app{height:100dvh;padding:8px 10px;display:flex;flex-direction:column}
+.scr.on{display:flex;flex-direction:column;flex:1;min-height:0}
+#menu.on,#end.on{justify-content:center;overflow:auto}
+#game.on{overflow:auto}
+.card{padding:14px;margin:6px 0}
+.lv button{min-width:0;padding:8px 4px;font-size:.9rem}
+details.card summary{cursor:pointer;color:#0b4f8a}
+details.card ul{font-size:.88rem;margin-top:8px}
+#hud{margin-bottom:4px;gap:4px;font-size:.74rem}
+#hud span{padding:3px 9px}
+.mute{padding:3px 8px}
+.lane{height:var(--lh)}
+.duck{top:calc(var(--lh)*.27);width:var(--dw)}
+.duck svg{width:var(--dw);height:auto}
+.dn{transform:translateX(calc(var(--pp,0) * -100%));transition:left .6s ease,transform .6s ease;left:calc(var(--dw) * var(--pp,0));top:calc(var(--lh)*-.21);font-size:clamp(.6rem,1.9dvh,.78rem);padding:0 7px}
+.tw{top:var(--lh);width:var(--tww);height:var(--lh)}
+.tw svg{width:var(--tww);height:var(--lh)}
+#eng{padding:6px 10px;margin:6px 0 0;gap:8px}
+#cells i{height:14px}
+#tn{padding:7px 12px;font-size:.85rem}
+#qbox{flex:1;min-height:0;display:flex;flex-direction:column;margin:6px 0 0;padding:10px 12px}
+#tbw{margin-bottom:6px;height:7px}
+#qn{font-size:.75rem}
+#qt{font-size:clamp(.95rem,2.7dvh,1.3rem);margin:2px 0 8px}
+#opts{flex:1;min-height:0;grid-auto-rows:minmax(min-content,1fr);gap:5px}
+.op{padding:4px 10px;font-size:clamp(.8rem,2.3dvh,1rem);max-height:58px}
+#fb{min-height:16px;margin-top:5px;font-size:.8rem}
+#rv{max-height:26dvh;overflow:auto}
+.st{gap:6px;margin:8px 0}.st div{padding:6px}.st b{font-size:1.15rem}
+@media(max-height:520px){#opts{grid-template-columns:1fr 1fr}.op{max-height:none}#qt{margin-bottom:4px}}
 </style>
 </head>
 <body>
@@ -100,8 +135,7 @@ ul{margin:6px 0;padding-left:20px;line-height:1.55}
 <button class="big" onclick="start()">Mulai Balapan</button>
 <button class="mbtn" onclick="toggleMusic()" style="margin-top:8px;background:#eaf1f7;color:#0b4f8a;width:100%">Musik: hidup</button>
 </div>
-<div class="card">
-<h2>Cara Bermain</h2>
+<details class="card"><summary><b>Cara Bermain</b> (ketuk untuk membaca)</summary>
 <ul>
 <li>Kamu membalap bebek kuning (beri nama sendiri, tampil di atas kepalanya) melawan bebek robot abu-abu. Siapa yang lebih dulu mencapai garis finis menang.</li>
 <li>Jawab soal pilihan ganda (A-E). Kamu harus menjawab <b>benar 25 soal</b> untuk sampai di garis finis. Setiap jawaban benar memajukan bebekmu 1/25 jarak.</li><li>Tiga jawaban benar berturut-turut memberi bonus skor.</li><li>Setiap jawaban benar berturut-turut mengisi bar <b>Energi</b>. Saat 5 petak penuh, tekan tombol <b>Tornado</b> (atau tombol T) untuk mengirim tornado yang mendorong bebek lawan mundur sejauh 3 jawaban benar. Jawaban salah mengosongkan energi yang belum penuh; energi yang sudah penuh tetap aman sampai dipakai.</li>
@@ -109,7 +143,7 @@ ul{margin:6px 0;padding-left:20px;line-height:1.55}
 <li>Bebek robot terus berenang saat kamu berpikir, jadi jawab dengan cepat dan tepat.</li>
 <li>Kamu bisa menekan tombol A sampai E di keyboard untuk menjawab.</li>
 </ul>
-</div>
+</details>
 </section>
 
 <section id="game" class="scr">
@@ -195,13 +229,13 @@ const WIND=new Audio('Wind.mp3');WIND.loop=true;WIND.preload='auto';let windT;
 function stopWind(){clearTimeout(windT);WIND.pause();try{WIND.currentTime=0}catch(e){}}
 function sfx(n,f,d){if(!snd)return;const a=SFX[n];if(a.bad){beep(f,d);return}try{a.currentTime=0}catch(e){}a.play().catch(()=>{})}
 function whack(){const d=$('dp');d.classList.remove('quack');void d.offsetWidth;d.classList.add('quack');setTimeout(()=>d.classList.remove("quack"),500)}
-function lf(p,o){return 'calc((100% - 94px) * '+Math.min(p,100)/100+' + '+o+'px)'}
+function lf(p,t){return 'calc((100% - 22px - var(--dw) * .97) * '+Math.min(p,100)/100+(t?' + (var(--dw) - var(--tww)) / 2':'')+')'}
 function tornado(){
   if(!S||S.over||S.ending||S.en<EN)return;
   S.en=0;S.tn++;hud();
-  const tw=$('tw');tw.style.transition='none';tw.style.display='block';tw.style.left='calc(100% - 82px)';
+  const tw=$('tw');tw.style.transition='none';tw.style.display='block';tw.style.left='calc(100% - 22px - var(--tww))';
   void tw.offsetWidth;
-  tw.style.transition='left 1s linear';tw.style.left=lf(S.b,6);
+  tw.style.transition='left 1s linear';tw.style.left=lf(S.b,1);
   stopWind();if(snd)WIND.play().catch(()=>{});
   setTimeout(()=>{
     if(S.over){tw.style.display='none';stopWind();return}
@@ -222,8 +256,8 @@ function start(){
   timer=setInterval(tick,100);
 }
 function pos(){
-  $('dp').style.left='calc((100% - 94px) * '+Math.min(S.p,100)/100+')';
-  $('db').style.left='calc((100% - 94px) * '+Math.min(S.b,100)/100+')';
+  $('dp').style.left=lf(S.p);$('dp').style.setProperty('--pp',Math.min(S.p,100)/100);
+  $('db').style.left=lf(S.b);$('db').style.setProperty('--pp',Math.min(S.b,100)/100);
 }
 function hud(){document.querySelectorAll('#cells i').forEach((c,i)=>c.classList.toggle('on',i<S.en));$('tn').disabled=S.en<EN||S.over;$('hs').textContent='Skor: '+S.score;$('hok').textContent='Benar: '+S.ok+'/'+NEED;$('hst').textContent='Beruntun: '+S.streak;$('ht').textContent='Waktu: '+Math.max(0,Math.ceil(S.tl))+' dtk'}
 function nextQ(){
