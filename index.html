@@ -1,214 +1,346 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="utf-8">
-<meta name="theme-color" content="#06201c">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lab Quest – Analis Kimia</title>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duck Race - Simple Present Tense</title>
 <style>
-:root{--bg1:#06201c;--bg2:#0b4a43;--card:#0d3a36;--ink:#eefcf6;--gold:#b6ff5a;--ok:#2ecc71;--bad:#ff5252;--mut:#9fd6c8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%;background:var(--bg1)}
-body{margin:0;min-height:100dvh;background:linear-gradient(var(--bg1),var(--bg2)) fixed;color:var(--ink);font-family:'Trebuchet MS',Verdana,sans-serif;display:flex;justify-content:center;touch-action:manipulation;-webkit-user-select:none;user-select:none;overflow-x:hidden}
-#app{width:100%;max-width:900px;padding:12px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#0f2a43;color:#18232e;min-height:100vh}
+#app{max-width:860px;margin:auto;padding:12px}
 .scr{display:none}.scr.on{display:block}
-h1{font-size:clamp(28px,6vw,52px);margin:8px 0;color:var(--gold);text-align:center}
-h2{font-size:clamp(14px,3vw,22px)}
-.c{text-align:center}.card{background:var(--card);border:3px solid var(--gold);border-radius:18px;padding:16px;margin:10px 0}
-button{font:inherit;cursor:pointer;color:var(--ink);touch-action:manipulation}
-button:active{transform:scale(.97)}
-.big{background:var(--gold);color:#0a2a10;border:0;border-radius:14px;padding:14px 30px;font-size:clamp(18px,3vw,28px);font-weight:bold;min-height:52px}
-.hud{display:flex;justify-content:space-between;gap:6px;font-size:clamp(15px,2.6vw,26px);font-weight:bold;white-space:nowrap}
-.sea{position:relative;height:40px;margin:8px 8px 4px;border-bottom:4px dashed var(--mut)}
-#ship{position:absolute;bottom:-6px;font-size:30px;transition:left .8s;transform:translateX(-50%)}
-#flag{position:absolute;right:-8px;bottom:0;font-size:26px}
-.dots{display:flex;gap:2px;margin-bottom:6px}.dots i{flex:1;height:7px;border-radius:4px;background:#1d6b60}
-.dots i.ok{background:var(--ok)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--gold)}
-#isl{color:var(--gold);font-size:clamp(13px,2.2vw,20px);margin:0 0 6px;font-weight:bold}
-#q{font-size:clamp(21px,4.4vw,40px);margin:6px 0 12px;line-height:1.3}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.o{background:#12594f;border:3px solid #2ba896;border-radius:14px;padding:12px 14px;font-size:clamp(18px,3.2vw,30px);text-align:left;min-height:56px;line-height:1.25;width:100%}
-.o:disabled{cursor:default}.o.ok{background:var(--ok);border-color:#fff;color:#04200f}.o.no{background:var(--bad);border-color:#fff}.o.hide{visibility:hidden}
-.tm{height:10px;background:#1d6b60;border-radius:6px;overflow:hidden;margin:4px 0 10px}#tb{height:100%;width:100%;background:var(--gold)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;bottom:0;background:var(--card);padding:10px 0 4px;margin-top:6px}
-.pw{background:transparent;border:2px solid var(--gold);border-radius:12px;padding:8px 12px;font-size:clamp(14px,2.4vw,22px);min-height:46px}.pw:disabled{opacity:.4}
-#fb{min-height:22px;font-size:clamp(15px,2.8vw,26px);margin:10px 0 4px;line-height:1.35}
-.pop{animation:p .4s}@keyframes p{50%{transform:scale(1.05)}}
-.stat{font-size:clamp(20px,4vw,34px);margin:8px 0}
-@media(max-width:600px){
- #app{padding:8px}.card{padding:12px;border-width:2px;margin:8px 0}
- .opts{grid-template-columns:1fr;gap:8px}
- .o{font-size:18px}.row .big{flex:1;padding:12px 16px;font-size:18px}
- .pw{font-size:14px}.hud{font-size:15px}
-}
-@media(max-width:360px){.hud{font-size:13px}.o{font-size:16px}#q{font-size:19px}}
-@media(max-height:520px) and (orientation:landscape){
- .sea,.dots{display:none}.opts{grid-template-columns:1fr 1fr}#q{font-size:19px;margin:2px 0 8px}.o{min-height:44px;font-size:16px;padding:8px 12px}h1{font-size:26px}.card{padding:10px}
-}
-.tt{color:var(--gold);font-size:clamp(20px,4vw,34px);margin:0 0 8px}
-.tb{font-size:clamp(16px,2.8vw,26px);line-height:1.45;text-align:left}
-.tb p{margin:6px 0}.hl{color:var(--gold);font-weight:bold}
-.ex{background:#0a2e2b;border-left:5px solid var(--gold);border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.95em}
-.ex small{color:var(--mut);display:block}
-.fm{background:#12594f;border-radius:12px;padding:8px 12px;margin:8px 0}
-.fm b{color:var(--gold)}
-table.tl{width:100%;border-collapse:collapse;font-size:.92em;margin:6px 0}
-.tl td,.tl th{border:1px solid #2ba896;padding:6px 8px;text-align:left}.tl th{background:#12594f;color:var(--gold)}
-.pg{display:flex;justify-content:center;gap:6px;margin:6px 0}.pg i{width:10px;height:10px;border-radius:50%;background:#1d6b60}.pg i.on{background:var(--gold)}
-.sk{background:transparent;border:0;color:var(--mut);text-decoration:underline;font-size:clamp(14px,2.4vw,20px);margin-top:10px;min-height:44px}
-.snd{display:flex;justify-content:flex-end;gap:8px;margin-bottom:2px}
-.snd button{background:transparent;border:2px solid var(--mut);border-radius:20px;padding:4px 12px;font-size:14px;min-height:36px}
-.snd button.off{opacity:.45;text-decoration:line-through}
-</style></head><body><div id="app">
-<div class="snd"><button id="bm" onclick="tmus()">🎵 Musik</button><button id="bs" onclick="tsfx()">🔊 Efek</button></div>
+.card{background:#fff;border-radius:14px;padding:18px;margin:10px 0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+h1{margin:0;color:#0b4f8a;font-size:2rem}
+h2{margin:0 0 8px;color:#0b4f8a}
+.sub{color:#5b6b7a;margin:2px 0 12px}
+input[type=text]{width:100%;padding:10px;font-size:1rem;border:2px solid #c9d5df;border-radius:8px}
+.lv{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lv button{flex:1;min-width:110px;background:#eaf1f7;color:#0b4f8a;border:2px solid #c9d5df}
+.lv button.sel{background:#0b4f8a;color:#fff;border-color:#0b4f8a}
+button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:11px 18px;background:#e8a317;color:#18232e}
+button:hover{filter:brightness(1.07)}
+.big{width:100%;font-size:1.15rem;padding:14px}
+ul{margin:6px 0;padding-left:20px;line-height:1.55}
+#hud{display:flex;justify-content:space-between;gap:8px;color:#fff;font-weight:700;margin-bottom:6px;flex-wrap:wrap}
+#hud span{background:#16456b;padding:5px 12px;border-radius:20px}
+#track{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.lane{position:relative;height:84px;background:linear-gradient(#63c6f5,#2b8fd6);border-bottom:3px dashed rgba(255,255,255,.55);overflow:hidden}
+.lane:last-of-type{border-bottom:0}
+.lane:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,rgba(255,255,255,.14) 0 10px,transparent 10px 36px);animation:fl 3s linear infinite}
+@keyframes fl{to{background-position:72px 0}}
+.fin{position:absolute;right:0;top:0;bottom:0;width:22px;background:repeating-conic-gradient(#fff 0 25%,#222 0 50%) 0 0/11px 11px;z-index:2}
+.dn{position:absolute;left:44px;top:-17px;transform:translateX(-50%);white-space:nowrap;font-size:.78rem;font-weight:700;color:#fff;background:rgba(10,30,50,.65);padding:1px 9px;border-radius:10px}
+.duck{position:absolute;top:22px;width:72px;transition:left .6s ease;z-index:1}
+.duck svg{width:72px;height:52px;animation:bob 1s ease-in-out infinite;display:block}
+.bot svg{animation-duration:.8s}
+.eye{animation:flash .7s steps(1) infinite}
+@keyframes flash{0%{fill:#ff3d3d;opacity:1;filter:drop-shadow(0 0 3px #ff3d3d)}50%{fill:#5c1010;opacity:.35;filter:none}}
+.bkU,.bkL{transform-origin:60px 19.5px}
+.quack .bkU{animation:bu .4s ease-in-out 1}
+.quack .bkL{animation:bl2 .4s ease-in-out 1}
+@keyframes bu{50%{transform:rotate(-24deg)}}
+@keyframes bl2{50%{transform:rotate(24deg)}}
+.tw{position:absolute;top:84px;width:60px;height:84px;display:none;z-index:4;pointer-events:none}
+.tw svg{width:60px;height:84px}
+.tw ellipse{fill:rgba(70,90,110,.6);stroke:#eaf3fa;stroke-width:1.5;animation:sw .25s ease-in-out infinite alternate}
+.tw ellipse:nth-child(2){animation-delay:-.08s}.tw ellipse:nth-child(3){animation-delay:-.16s}.tw ellipse:nth-child(4){animation-delay:-.05s}.tw ellipse:nth-child(5){animation-delay:-.12s}
+@keyframes sw{from{transform:translateX(-5px)}to{transform:translateX(5px)}}
+.spin svg{animation:sp .9s ease-out 1}
+@keyframes sp{to{transform:rotate(720deg)}}
+#eng{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:10px 0 0}
+#eng b{color:#0b4f8a}
+#cells{display:flex;gap:4px;flex:1}
+#cells i{flex:1;height:18px;border-radius:4px;background:#dbe5ee;transition:background .3s}
+#cells i.on{background:linear-gradient(#ffd23f,#e8a317)}
+#tn{opacity:.45}
+#tn:not(:disabled){opacity:1;background:#0b4f8a;color:#fff;animation:pulse .8s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(11,79,138,.3)}}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.tag{position:absolute;left:8px;top:4px;font-size:.78rem;font-weight:700;color:#fff;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:10px;z-index:3}
+#qbox{position:relative}
+#tbw{height:8px;background:#dbe5ee;border-radius:5px;overflow:hidden;margin-bottom:10px}
+#tb{height:100%;width:100%;background:#1e8e4e;transition:width .1s linear,background .3s}
+#qn{color:#5b6b7a;font-size:.85rem;font-weight:700}
+#qt{font-size:1.3rem;font-weight:700;margin:4px 0 12px}
+.bl{display:inline-block;min-width:70px;border-bottom:3px solid #0b4f8a}
+#opts{display:grid;gap:8px}
+.op{display:flex;gap:10px;align-items:center;text-align:left;background:#f1f6fa;border:2px solid #c9d5df;color:#18232e;font-weight:600}
+.op b{background:#0b4f8a;color:#fff;border-radius:6px;min-width:26px;text-align:center;padding:2px 0}
+.op.ok{background:#d9f3e3;border-color:#1e8e4e}
+.op.no{background:#fbe0dd;border-color:#c0392b}
+#fb{min-height:24px;margin-top:10px;font-weight:600}
+.res{font-size:1.6rem;font-weight:800;margin:0}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}
+.st div{background:#eaf1f7;border-radius:10px;padding:10px;text-align:center}
+.st b{display:block;font-size:1.4rem;color:#0b4f8a}
+.rv{border-left:4px solid #c0392b;background:#fff6f5;padding:6px 10px;margin:6px 0;font-size:.92rem}
+.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.row button{flex:1}
+.mute{background:transparent;color:#cfe3f3;font-size:.8rem;padding:4px 8px;border:1px solid #6a8aa6}
+@media(max-width:520px){.tw{top:76px}h1{font-size:1.6rem}#qt{font-size:1.1rem}.lane{height:76px}}
+
+/* ===== Tampilan HP: muat satu layar ===== */
+:root{--lh:clamp(48px,9.5dvh,84px);--bw:calc(var(--lh)*.9 + 10px);--dw:calc(var(--lh)*.857);--tww:calc(var(--lh)*.71)}
+html,body{height:100%}
+body{overflow:hidden;min-height:0}
+#app{height:100dvh;padding:8px 10px;display:flex;flex-direction:column}
+.scr.on{display:flex;flex-direction:column;flex:1;min-height:0}
+#menu.on,#end.on{justify-content:center;overflow:auto}
+#game.on{overflow:auto}
+.card{padding:14px;margin:6px 0}
+.lv button{min-width:0;padding:8px 4px;font-size:.9rem}
+details.card summary{cursor:pointer;color:#0b4f8a}
+details.card ul{font-size:.88rem;margin-top:8px}
+#hud{margin-bottom:4px;gap:4px;font-size:.74rem}
+#hud span{padding:3px 9px}
+.mute{padding:3px 8px}
+.lane{height:var(--lh)}
+.duck{top:calc(var(--lh)*.27);width:var(--dw)}
+.duck svg{width:var(--dw);height:auto}
+.dn{transform:translateX(calc(var(--pp,0) * -100%));transition:left .6s ease,transform .6s ease;left:calc(var(--dw) * var(--pp,0));top:calc(var(--lh)*-.21);font-size:clamp(.6rem,1.9dvh,.78rem);padding:0 7px}
+.tw{top:var(--lh);width:var(--tww);height:var(--lh)}
+.tw svg{width:var(--tww);height:var(--lh)}
+#eng{padding:6px 10px;margin:6px 0 0;gap:8px}
+#cells i{height:14px}
+#tn{padding:7px 12px;font-size:.85rem}
+#qbox{flex:1;min-height:0;display:flex;flex-direction:column;margin:6px 0 0;padding:10px 12px}
+#tbw{margin-bottom:6px;height:7px}
+#qn{font-size:.75rem}
+#qt{font-size:clamp(.95rem,2.7dvh,1.3rem);margin:2px 0 8px}
+#opts{flex:1;min-height:0;grid-auto-rows:minmax(min-content,1fr);gap:5px}
+.op{padding:4px 10px;font-size:clamp(.8rem,2.3dvh,1rem);max-height:58px}
+#fb{min-height:16px;margin-top:5px;font-size:.8rem}
+#rv{max-height:26dvh;overflow:auto}
+.st{gap:6px;margin:8px 0}.st div{padding:6px}.st b{font-size:1.15rem}
+@media(max-height:520px){#opts{grid-template-columns:1fr 1fr}.op{max-height:none}#qt{margin-bottom:4px}}
+
+/* ===== Hutan terbakar di garis awal ===== */
+.burn{position:absolute;left:0;top:0;bottom:0;width:calc(var(--lh)*.9);z-index:0;pointer-events:none;overflow:hidden}
+.burn:after{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:repeating-linear-gradient(#fff 0 6px,transparent 6px 12px);opacity:.9}
+.burn svg{position:relative;display:block;width:100%;height:100%}
+.glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 70%,rgba(255,140,0,.5),rgba(255,70,0,.2) 45%,transparent 75%);animation:glw 1.1s ease-in-out infinite alternate}
+@keyframes glw{from{opacity:.5}to{opacity:1}}
+.fl{transform-box:fill-box;transform-origin:50% 100%;animation:flk .55s ease-in-out infinite alternate}
+.fl.r{fill:#e8321a}.fl.o{fill:#ff8c1a}.fl.y{fill:#ffe45c}
+@keyframes flk{0%{transform:scale(1,1) skewX(0)}35%{transform:scale(.88,1.22) skewX(-6deg)}70%{transform:scale(1.08,.9) skewX(5deg)}100%{transform:scale(.94,1.15) skewX(-3deg)}}
+.em{fill:#ffb02e;animation:emb 2s linear infinite;opacity:0}
+@keyframes emb{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(10px,-34px);opacity:0}}
+.sm{fill:#6b6b6b;opacity:0;transform-box:fill-box;transform-origin:center;animation:smk 3.2s ease-out infinite}
+@keyframes smk{0%{transform:translate(0,0) scale(.5);opacity:0}25%{opacity:.4}100%{transform:translate(8px,-26px) scale(1.7);opacity:0}}
+@media(prefers-reduced-motion:reduce){.fl,.em,.sm,.glow{animation:none}.em,.sm{opacity:0}}
+</style>
+</head>
+<body>
 <audio id="bgm" src="BG.mp3" loop preload="auto"></audio>
+<div id="app">
 
-<section id="s0" class="scr on c">
-<h1>🧪 LAB QUEST</h1>
-<h2 style="margin:0;color:var(--mut)">Misi Analis Kimia • Simple Present Tense</h2>
+<section id="menu" class="scr on">
 <div class="card">
-<p style="font-size:clamp(18px,3vw,28px)">Kamu <b>analis laboratorium</b>! Ada <b>25 sampel</b> yang harus dianalisis. Jawab soal <b>Simple Present Tense</b> dengan benar agar analisis berlanjut sampai <b>laporan hasil</b> selesai.</p>
-<p style="color:var(--mut);font-size:clamp(15px,2.4vw,22px)">⏱ 20 detik per soal • ❤️ 5 nyawa (keselamatan lab) • ⭐ poin bonus kalau cepat & beruntun • ⚗️ Sampel ke-5, 10, 15, 20, 25 = <b>STASIUN INSTRUMEN (poin x2)</b> • 🔬 2x bantuan Filtrasi 50:50</p>
-<button class="big" onclick="theory()">📖 Belajar Teori Dulu</button><br><button class="sk" onclick="start()">Sudah paham? Langsung main ➜</button></div>
-</section>
-
-<section id="s1" class="scr">
-<div class="hud"><span id="hl"></span><span id="hg"></span><span id="hs"></span></div>
-<div class="sea"><span id="ship">🧪</span><span id="flag">📋</span></div>
-<div class="dots" id="dots"></div>
-<div class="card">
-<p id="isl"></p><div class="tm"><div id="tb"></div></div>
-<div id="q"></div><div class="opts" id="opts"></div>
-<div id="fb"></div>
-<div class="row"><button class="pw" id="p5" onclick="fifty()">🔬 Filtrasi 50:50 (<span id="pc">2</span>)</button><button class="big" id="nx" style="display:none" onclick="next()">Lanjut ➜</button></div>
-</div></section>
-
-<section id="s3" class="scr">
-<div class="card"><p id="tn" style="color:var(--mut);margin:0 0 4px;font-size:clamp(13px,2.2vw,18px)"></p>
-<h2 class="tt" id="tt"></h2><div class="tb" id="tbd"></div>
-<div class="pg" id="pg"></div>
-<div class="row"><button class="pw" id="tp" onclick="tgo(-1)">⬅ Kembali</button><button class="big" id="tx" onclick="tgo(1)">Lanjut ➜</button></div></div>
-</section>
-<section id="s2" class="scr c">
-<h1 id="et"></h1>
-<div class="card"><div style="font-size:70px" id="ei"></div>
-<div class="stat" id="e1"></div><div class="stat" id="e2"></div><div class="stat" id="e3"></div>
-<button class="big" onclick="start()">🔁 Analisis Lagi</button><br><button class="sk" onclick="theory()">📖 Buka teori lagi</button></div>
-</section>
+<h1>Duck Race</h1>
+<p class="sub">Simple Present Tense - konteks PT Gaya Makmur Mobil (GMM)</p>
+<label for="nm"><b>Beri nama bebekmu</b></label>
+<input type="text" id="nm" maxlength="14" placeholder="Ayang Beb" value="">
+<label for="nr" style="display:block;margin-top:10px"><b>Beri nama bebek robot</b></label>
+<input type="text" id="nr" maxlength="14" placeholder="Bebek Nakal" value="">
+<p style="margin:12px 0 0"><b>Tingkat kesulitan</b></p>
+<div class="lv" id="lv">
+<button data-l="easy">Mudah<br><small>20 detik / soal</small></button>
+<button data-l="med" class="sel">Sedang<br><small>15 detik / soal</small></button>
+<button data-l="hard">Sulit<br><small>10 detik / soal</small></button>
 </div>
+<button class="big" onclick="start()">Mulai Balapan</button>
+<button class="mbtn" onclick="toggleMusic()" style="margin-top:8px;background:#eaf1f7;color:#0b4f8a;width:100%">Musik: hidup</button>
+</div>
+<details class="card"><summary><b>Cara Bermain</b> (ketuk untuk membaca)</summary>
+<ul>
+<li>Kamu membalap bebek kuning (beri nama sendiri, tampil di atas kepalanya) melawan bebek robot abu-abu. Siapa yang lebih dulu mencapai garis finis menang.</li>
+<li>Jawab soal pilihan ganda (A-E). Kamu harus menjawab <b>benar 25 soal</b> untuk sampai di garis finis. Setiap jawaban benar memajukan bebekmu 1/25 jarak.</li><li>Tiga jawaban benar berturut-turut memberi bonus skor.</li><li>Setiap jawaban benar berturut-turut mengisi bar <b>Energi</b>. Saat 5 petak penuh, tekan tombol <b>Tornado</b> (atau tombol T) untuk mengirim tornado yang mendorong bebek lawan mundur sejauh 3 jawaban benar. Jawaban salah mengosongkan energi yang belum penuh; energi yang sudah penuh tetap aman sampai dipakai.</li>
+<li>Jawaban salah atau waktu habis tidak memajukan bebekmu dan membuat bebek robot mendapat dorongan.</li>
+<li>Bebek robot terus berenang saat kamu berpikir, jadi jawab dengan cepat dan tepat.</li>
+<li>Kamu bisa menekan tombol A sampai E di keyboard untuk menjawab.</li>
+</ul>
+</details>
+</section>
+
+<section id="game" class="scr">
+<div id="hud"><span id="hs">Skor: 0</span><span id="hok">Benar: 0/25</span><span id="hst">Beruntun: 0</span><span id="ht">Waktu: 0</span><button class="mute" onclick="snd=!snd;this.textContent='Efek: '+(snd?'hidup':'mati')">Efek: hidup</button><button class="mute mbtn" onclick="toggleMusic()">Musik: hidup</button></div>
+<div id="track">
+<div class="lane"><div class="burn"><div class="glow"></div><svg viewBox="0 0 76 84" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><rect x="0" y="0" width="72" height="84" fill="#2a1c13"/><rect x="0" y="76" width="72" height="8" fill="#1d130c"/><rect x="8" y="44.4" width="4" height="8.1" fill="#4a2c17"/><polygon points="10,10.0 16.0,27.6 4.0,27.6" fill="#1f4d24"/><polygon points="10,18.4 18.4,37.7 1.6,37.7" fill="#1a4220"/><polygon points="10,26.8 20.0,48.6 0.0,48.6" fill="#163a1b"/><rect x="34" y="41.2" width="4" height="7.3" fill="#4a2c17"/><polygon points="36,10.0 41.4,26.0 30.6,26.0" fill="#1f4d24"/><polygon points="36,17.6 43.6,35.1 28.4,35.1" fill="#1a4220"/><polygon points="36,25.2 45.0,45.0 27.0,45.0" fill="#163a1b"/><rect x="58" y="46.8" width="4" height="7.7" fill="#4a2c17"/><polygon points="60,14.0 65.7,30.8 54.3,30.8" fill="#1f4d24"/><polygon points="60,22.0 68.0,40.4 52.0,40.4" fill="#1a4220"/><polygon points="60,30.0 69.5,50.8 50.5,50.8" fill="#163a1b"/><rect x="20" y="69.9" width="4" height="10.6" fill="#4a2c17"/><polygon points="22,24.0 29.8,47.5 14.2,47.5" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="22,35.2 32.9,61.0 11.1,61.0" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="22,46.4 35.0,75.5 9.0,75.5" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><rect x="48" y="71.6" width="4" height="10.9" fill="#4a2c17"/><polygon points="50,24.0 57.8,48.4 42.2,48.4" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="50,35.6 60.9,62.3 39.1,62.3" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="50,47.2 63.0,77.4 37.0,77.4" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><rect x="65" y="71.8" width="4" height="7.7" fill="#4a2c17"/><polygon points="67,39.0 72.1,55.8 61.9,55.8" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="67,47.0 74.1,65.4 59.9,65.4" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="67,55.0 75.5,75.8 58.5,75.8" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><circle class="sm" cx="10" cy="8" r="3.4" style="animation-delay:0s"/><circle class="sm" cx="36" cy="6" r="3.4" style="animation-delay:1.2s"/><circle class="sm" cx="60" cy="10" r="3.4" style="animation-delay:2.1s"/><circle class="sm" cx="24" cy="2" r="3.4" style="animation-delay:0.6s"/><g transform="translate(17 18) scale(0.9)"><path class="fl r" style="animation-delay:0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.15s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.3s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(45 16) scale(1.0)"><path class="fl r" style="animation-delay:0.35s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.6499999999999999s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(5 20) scale(0.8)"><path class="fl r" style="animation-delay:0.7s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.85s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(57 26) scale(0.85)"><path class="fl r" style="animation-delay:0.2s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.35s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(10 44) scale(0.9)"><path class="fl r" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.65s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.8s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(36 40) scale(1.0)"><path class="fl r" style="animation-delay:0.9s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:1.05s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.2s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(60 50) scale(0.9)"><path class="fl r" style="animation-delay:0.1s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.25s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.4s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(28 60) scale(0.85)"><path class="fl r" style="animation-delay:0.6s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.75s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.8999999999999999s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(62 66) scale(0.8)"><path class="fl r" style="animation-delay:1.0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:1.15s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.3s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><circle class="em" cx="14" cy="34" r="1" style="animation-delay:0s;animation-duration:1.8s"/><circle class="em" cx="40" cy="30" r="1" style="animation-delay:0.6s;animation-duration:2.2s"/><circle class="em" cx="56" cy="40" r="1" style="animation-delay:1.2s;animation-duration:1.6s"/><circle class="em" cx="26" cy="52" r="1" style="animation-delay:0.3s;animation-duration:2.0s"/><circle class="em" cx="66" cy="56" r="1" style="animation-delay:1.5s;animation-duration:2.4s"/><circle class="em" cx="8" cy="48" r="1" style="animation-delay:0.9s;animation-duration:2.1s"/></svg></div><div class="duck" id="dp"></div></div>
+<div class="lane"><div class="burn"><div class="glow"></div><svg viewBox="0 0 76 84" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><rect x="0" y="0" width="72" height="84" fill="#2a1c13"/><rect x="0" y="76" width="72" height="8" fill="#1d130c"/><rect x="8" y="44.4" width="4" height="8.1" fill="#4a2c17"/><polygon points="10,10.0 16.0,27.6 4.0,27.6" fill="#1f4d24"/><polygon points="10,18.4 18.4,37.7 1.6,37.7" fill="#1a4220"/><polygon points="10,26.8 20.0,48.6 0.0,48.6" fill="#163a1b"/><rect x="34" y="41.2" width="4" height="7.3" fill="#4a2c17"/><polygon points="36,10.0 41.4,26.0 30.6,26.0" fill="#1f4d24"/><polygon points="36,17.6 43.6,35.1 28.4,35.1" fill="#1a4220"/><polygon points="36,25.2 45.0,45.0 27.0,45.0" fill="#163a1b"/><rect x="58" y="46.8" width="4" height="7.7" fill="#4a2c17"/><polygon points="60,14.0 65.7,30.8 54.3,30.8" fill="#1f4d24"/><polygon points="60,22.0 68.0,40.4 52.0,40.4" fill="#1a4220"/><polygon points="60,30.0 69.5,50.8 50.5,50.8" fill="#163a1b"/><rect x="20" y="69.9" width="4" height="10.6" fill="#4a2c17"/><polygon points="22,24.0 29.8,47.5 14.2,47.5" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="22,35.2 32.9,61.0 11.1,61.0" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="22,46.4 35.0,75.5 9.0,75.5" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><rect x="48" y="71.6" width="4" height="10.9" fill="#4a2c17"/><polygon points="50,24.0 57.8,48.4 42.2,48.4" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="50,35.6 60.9,62.3 39.1,62.3" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="50,47.2 63.0,77.4 37.0,77.4" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><rect x="65" y="71.8" width="4" height="7.7" fill="#4a2c17"/><polygon points="67,39.0 72.1,55.8 61.9,55.8" fill="#3c9a42" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="67,47.0 74.1,65.4 59.9,65.4" fill="#2e7d32" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><polygon points="67,55.0 75.5,75.8 58.5,75.8" fill="#256628" stroke="#ff7a1a" stroke-opacity=".55" stroke-width=".8"/><circle class="sm" cx="10" cy="8" r="3.4" style="animation-delay:0s"/><circle class="sm" cx="36" cy="6" r="3.4" style="animation-delay:1.2s"/><circle class="sm" cx="60" cy="10" r="3.4" style="animation-delay:2.1s"/><circle class="sm" cx="24" cy="2" r="3.4" style="animation-delay:0.6s"/><g transform="translate(17 18) scale(0.9)"><path class="fl r" style="animation-delay:0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.15s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.3s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(45 16) scale(1.0)"><path class="fl r" style="animation-delay:0.35s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.6499999999999999s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(5 20) scale(0.8)"><path class="fl r" style="animation-delay:0.7s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.85s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(57 26) scale(0.85)"><path class="fl r" style="animation-delay:0.2s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.35s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(10 44) scale(0.9)"><path class="fl r" style="animation-delay:0.5s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.65s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.8s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(36 40) scale(1.0)"><path class="fl r" style="animation-delay:0.9s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:1.05s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.2s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(60 50) scale(0.9)"><path class="fl r" style="animation-delay:0.1s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.25s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.4s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(28 60) scale(0.85)"><path class="fl r" style="animation-delay:0.6s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:0.75s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:0.8999999999999999s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><g transform="translate(62 66) scale(0.8)"><path class="fl r" style="animation-delay:1.0s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/><g transform="translate(1.8 4.5) scale(.64)"><path class="fl o" style="animation-delay:1.15s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g><g transform="translate(3 8.5) scale(.36)"><path class="fl y" style="animation-delay:1.3s" d="M5 0C6 5 10 7 10 11C10 14 8 16 5 16C2 16 0 14 0 11C0 8 3 6 5 0Z"/></g></g><circle class="em" cx="14" cy="34" r="1" style="animation-delay:0s;animation-duration:1.8s"/><circle class="em" cx="40" cy="30" r="1" style="animation-delay:0.6s;animation-duration:2.2s"/><circle class="em" cx="56" cy="40" r="1" style="animation-delay:1.2s;animation-duration:1.6s"/><circle class="em" cx="26" cy="52" r="1" style="animation-delay:0.3s;animation-duration:2.0s"/><circle class="em" cx="66" cy="56" r="1" style="animation-delay:1.5s;animation-duration:2.4s"/><circle class="em" cx="8" cy="48" r="1" style="animation-delay:0.9s;animation-duration:2.1s"/></svg></div><div class="duck bot" id="db"></div></div>
+<div class="tw" id="tw"><svg viewBox="0 0 60 84"><ellipse cx="30" cy="10" rx="28" ry="7"/><ellipse cx="30" cy="28" rx="22" ry="6"/><ellipse cx="30" cy="44" rx="16" ry="5"/><ellipse cx="30" cy="59" rx="11" ry="4.5"/><ellipse cx="30" cy="73" rx="6" ry="4"/></svg></div>
+<div class="fin"></div>
+</div>
+<div class="card" id="eng"><b>Energi</b><div id="cells"><i></i><i></i><i></i><i></i><i></i></div><button id="tn" onclick="tornado()" disabled>Tornado (T)</button></div>
+<div class="card" id="qbox">
+<div id="tbw"><div id="tb"></div></div>
+<div id="qn"></div>
+<div id="qt"></div>
+<div id="opts"></div>
+<div id="fb"></div>
+</div>
+</section>
+
+<section id="end" class="scr">
+<div class="card">
+<p class="res" id="rt"></p>
+<p class="sub" id="rs"></p>
+<div class="st" id="rst"></div>
+<div id="rv"></div>
+<div class="row"><button onclick="start()">Main Lagi</button><button onclick="show('menu')" style="background:#0b4f8a;color:#fff">Menu Utama</button></div>
+</div>
+</section>
+
+</div>
+
 <script>
+// [soal, jawaban benar, [4 pengecoh], petunjuk]
 const Q=[
-["The analyst ___ the sample every morning.",["weigh","weighs","weighing","weighed"],1,"The analyst = he/she → verb + s: weighs."],
-["Students ___ lab coats in the laboratory.",["wears","wear","wearing","is wear"],1,"Students (jamak) → verb dasar: wear."],
-["A pH meter ___ the acidity of a solution.",["measure","measuring","measures","measured"],2,"A pH meter = it → measures."],
-["Water ___ at 100°C.",["boil","boils","boiling","is boil"],1,"Fakta ilmiah pakai Simple Present; water = it → boils."],
-["We ___ not use cracked glassware.",["does","am","do","is"],2,"Negatif dengan we → do not (don't)."],
-["The technician ___ not mix acids carelessly.",["do","does","is","are"],1,"Negatif dengan he/she/it → does not (doesn't)."],
-["___ you wash the burette after titration?",["Do","Does","Are","Is"],0,"Pertanyaan dengan you → Do you ...?"],
-["___ she calibrate the balance every day?",["Do","Is","Does","Are"],2,"Pertanyaan dengan she → Does she ...? (verb kembali dasar)."],
-["Litmus paper ___ red in acid.",["turn","turns","turning","turned"],1,"Fakta kimia; litmus paper = it → turns."],
-["My partner and I ___ the data in a logbook.",["records","recording","record","recordes"],2,"My partner and I = we → record."],
-["The centrifuge ___ the mixture at high speed.",["spin","spins","spinning","spinned"],1,"The centrifuge = it → spins."],
-["Choose the correct sentence.",["The analyst don't heat the sample.","The analyst doesn't heats the sample.","The analyst doesn't heat the sample.","The analyst not heat the sample."],2,"Setelah doesn't, verb tetap bentuk dasar: heat."],
-["Choose the correct sentence.",["She always is careful in the lab.","She is always careful in the lab.","Always she is careful in the lab.","She is careful always in the lab."],1,"Adverb frekuensi (always) diletakkan setelah to be."],
-["Sodium chloride ___ in water.",["dissolve","dissolving","dissolves","dissolved"],2,"Sodium chloride = it → dissolves."],
-["Acids ___ with metals.",["reacts","react","reacting","is react"],1,"Acids (jamak) → react tanpa s."],
-["The lab assistant ___ the filtration process.",["watchs","watch","watches","watching"],2,"Verb berakhiran -ch → tambah es: watches."],
-["He ___ a blank test before each analysis.",["do","does","doing","dos"],1,"Do untuk he/she/it menjadi does."],
-["The student ___ the test tube carefully.",["carries","carrys","carry","carryes"],0,"Konsonan + y → y jadi ies: carries."],
-["The analyst ___ the glassware with distilled water.",["wash","washs","washes","washing"],2,"Verb berakhiran -sh → tambah es: washes."],
-["The assistant ___ use the oven without gloves. (negative)",["don't","doesn't","isn't","not"],1,"The assistant = he/she → doesn't + verb dasar."],
-["___ your teacher explain the titration method?",["Do","Are","Is","Does"],3,"Your teacher = he/she → Does ... explain?"],
-["Which sentence expresses a scientific fact?",["The sample is heating now.","Water freezes at 0°C.","He is mixing the reagent.","They tested the sample yesterday."],1,"Fakta/kebenaran umum memakai Simple Present: freezes."],
-["Does the chemical react with water? – Yes, it ___.",["do","is","does","reacts"],2,"Jawaban singkat: Yes, it does."],
-["Simple Present is usually used with ___.",["now","yesterday","every day","last week"],2,"Keterangan kebiasaan: every day, always, usually, often."],
-["The analyst ___ the sample and ___ the result every day.",["prepare – record","prepares – records","prepares – record","preparing – records"],1,"The analyst = he/she → kedua verb pakai s: prepares, records."]
+["GMM ___ FAW trucks in Indonesia.","distributes",["distribute","distributed","distributing","to distribute"],"Subjek tunggal (GMM) memakai verb + s."],
+["The JH6 truck ___ a six-cylinder engine.","has",["have","having","had","haves"],"Have menjadi has untuk subjek tunggal."],
+["Mechanics at GMM ___ every truck before delivery.","check",["checks","checked","checking","is check"],"Subjek jamak (mechanics) memakai verb tanpa s."],
+["___ the J5P have a 12-speed transmission?","Does",["Do","Is","Are","Did"],"Subjek it memakai Does, lalu verb bentuk dasar."],
+["The technician does not ___ any inspection step.","skip",["skips","skipped","skipping","is skip"],"Setelah does not, verb kembali ke bentuk dasar."],
+["The service centre ___ at 8 a.m. every day.","opens",["open","opened","opening","is open"],"Jadwal tetap, subjek tunggal: verb + s."],
+["Rudi ___ the brakes every morning.","tests",["test","tested","testing","are test"],"Kebiasaan, subjek tunggal: verb + s."],
+["The cabin ___ a sleeper bed and air conditioning.","has",["have","had","haves","is having"],"Subjek tunggal memakai has."],
+["Drivers ___ safe driving training at GMM.","take",["takes","took","taking","is take"],"Subjek jamak memakai verb tanpa s."],
+["Where ___ the spare parts come from?","do",["does","is","are","did"],"Spare parts jamak, gunakan do."],
+["The engine ___ 380 PS of power.","produces",["produce","produced","producing","are produce"],"The engine tunggal: produces."],
+["GMM Teletech ___ owners manage their fleet.","helps",["help","helped","helping","to help"],"GMM Teletech = it, jadi helps."],
+["Which sentence is correct?","The mechanic always checks the oil.",["Always the mechanic checks the oil.","The mechanic checks always the oil.","The mechanic always check the oil.","The always mechanic checks the oil."],"Adverb frekuensi berada sebelum verb biasa."],
+["The brakes ___ safe.","are",["is","am","does","do"],"Brakes jamak, to be yang tepat adalah are."],
+["FAW ___ a Chinese truck maker.","is",["are","am","do","does"],"FAW tunggal, to be yang tepat adalah is."],
+["My father ___ a truck driver.","is",["are","am","do","has"],"My father tunggal: is."],
+["Customers ___ spare parts at the branch.","buy",["buys","bought","buying","is buy"],"Subjek jamak: verb tanpa s."],
+["She ___ the truck engine every week.","fixes",["fix","fixed","fixing","fixs"],"Verb berakhiran -x ditambah -es."],
+["They do not ___ old parts.","use",["uses","used","using","is use"],"Setelah do not, gunakan verb dasar."],
+["___ customers need after-sales service?","Do",["Does","Is","Are","Did"],"Customers jamak, gunakan Do."],
+["The company ___ technical training twice a year.","offers",["offer","offered","offering","are offer"],"The company tunggal: offers."],
+["A tipper truck ___ sand quickly.","unloads",["unload","unloaded","unloading","are unload"],"A tipper truck tunggal: unloads."],
+["The fleet manager ___ GMM Teletech every day.","uses",["use","used","using","are use"],"The fleet manager tunggal: uses."],
+["Everdigm hydraulic breakers ___ from South Korea.","come",["comes","came","coming","is come"],"Breakers jamak: come."],
+["He ___ not work on Sunday.","does",["do","is","are","did"],"He memakai does not + verb dasar."],
+["How often ___ the driver rest?","does",["do","is","are","did"],"The driver tunggal memakai does."],
+["The driver ___ the truck back to work.","takes",["take","took","taking","are take"],"The driver tunggal: takes."],
+["The company ___ many trucks every year.","delivers",["deliver","delivered","delivering","are deliver"],"The company tunggal: delivers."],
+["Water ___ at 100 degrees Celsius.","boils",["boil","boiled","boiling","are boil"],"Fakta umum, subjek tunggal: boils."],
+["The workshop usually ___ spare parts on Monday.","orders",["order","ordered","ordering","are order"],"Kebiasaan, subjek tunggal: orders."]
 ];
+const NEED=25,EN=5;
+const LV={easy:{t:20,r:.495},med:{t:15,r:.63},hard:{t:10,r:.795}};
 const $=id=>document.getElementById(id);
-let S,opts,t,iv,locked;
-const T=[
-["Apa itu Simple Present?",`<p>Simple Present dipakai untuk menyatakan:</p>
-<div class="ex"><span class="hl">1. Kebiasaan / rutinitas</span><br>The analyst weighs the sample every morning.<small>Analis menimbang sampel setiap pagi.</small></div>
-<div class="ex"><span class="hl">2. Fakta / kebenaran umum</span><br>Water boils at 100°C.<small>Air mendidih pada 100°C.</small></div>
-<div class="ex"><span class="hl">3. Jadwal tetap</span><br>The laboratory opens at 7 a.m.<small>Laboratorium buka jam 7 pagi.</small></div>`],
-["Rumus Kalimat (+ ) Positif",`<div class="fm"><b>I / You / We / They</b> + V1<br><b>He / She / It</b> + V1 <b>+ s/es</b></div>
-<div class="ex">We <b>wear</b> lab coats.<br>She <b>measures</b> the pH.<small>Subjek he/she/it (termasuk nama orang & benda tunggal) → verb diberi s/es.</small></div>
-<p>Kalimat tanpa kata kerja memakai <span class="hl">to be</span>:</p>
-<div class="ex">I <b>am</b> / He, She, It <b>is</b> / You, We, They <b>are</b><br>She <b>is</b> careful in the lab.</div>`],
-["Rumus Negatif (–) & Tanya (?)",`<div class="fm"><b>(–)</b> S + do/does + <b>not</b> + V1</div>
-<div class="ex">They <b>do not (don't)</b> mix acids.<br>He <b>does not (doesn't)</b> heat it.</div>
-<div class="fm"><b>(?)</b> Do/Does + S + V1 ... ?</div>
-<div class="ex"><b>Does</b> she calibrate the balance?<br>Yes, she <b>does</b>. / No, she <b>doesn't</b>.</div>
-<p class="hl">Ingat: setelah does / doesn't, verb kembali bentuk dasar (tanpa s)!</p>`],
-["Aturan Menambah -s / -es",`<table class="tl"><tr><th>Aturan</th><th>Contoh</th></tr>
-<tr><td>Umumnya + <b>s</b></td><td>measure → measures<br>record → records</td></tr>
-<tr><td>-s, -sh, -ch, -x, -o → + <b>es</b></td><td>wash → washes<br>watch → watches<br>mix → mixes<br>go → goes, do → does</td></tr>
-<tr><td>Konsonan + y → <b>ies</b></td><td>carry → carries<br>study → studies</td></tr>
-<tr><td>Vokal + y → + <b>s</b></td><td>play → plays</td></tr>
-<tr><td>Khusus</td><td>have → <b>has</b></td></tr></table>`],
-["Kata Keterangan (Signal Words)",`<p>Sering muncul bersama Simple Present:</p>
-<div class="ex"><b>every day / morning / week</b>, once a week, on Mondays</div>
-<table class="tl"><tr><th>Adverb</th><th>Arti</th></tr>
-<tr><td>always</td><td>selalu (100%)</td></tr><tr><td>usually</td><td>biasanya</td></tr>
-<tr><td>often</td><td>sering</td></tr><tr><td>sometimes</td><td>kadang-kadang</td></tr>
-<tr><td>rarely</td><td>jarang</td></tr><tr><td>never</td><td>tidak pernah (0%)</td></tr></table>
-<div class="ex">She <b>always</b> checks the label. (sebelum verb)<br>She is <b>always</b> careful. (setelah to be)</div>`],
-["Tips Cepat Menjawab 🎯",`<div class="fm"><b>1.</b> Lihat subjeknya: siapa?<br><b>2.</b> He / She / It? → verb + s/es<br><b>3.</b> Ada does / doesn't? → verb dasar<br><b>4.</b> Ada do / don't? → verb dasar<br><b>5.</b> Fakta atau kebiasaan? → Simple Present ✔</div>
-<div class="ex">The analyst ___ the sample every day.<br>→ analyst = he/she → <b>prepares</b> ✔</div>
-<p>Siap jadi analis kimia? Ayo mulai misi! 🧪</p>`]
-];
-
-let AC,sOn=true,mOn=true,bgOk=true,lt=0;
-try{const p=JSON.parse(localStorage.getItem('lq')||'{}');if(p.s===false)sOn=false;if(p.m===false)mOn=false}catch(e){}
-function pref(){try{localStorage.setItem('lq',JSON.stringify({s:sOn,m:mOn}))}catch(e){}$('bm').classList.toggle('off',!mOn);$('bs').classList.toggle('off',!sOn)}
-function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state=='suspended')AC.resume();return AC}
-function bp(f,d,ty,v,dl){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t0=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(v||.2,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(a.destination);o.start(t0);o.stop(t0+d+.05)}
-function sfx(n){if(!sOn)return;const m={click:()=>bp(660,.08,'square',.08),tick:()=>bp(900,.06,'square',.07),
- ok:()=>[523,659,784].forEach((f,i)=>bp(f,.18,'triangle',.22,i*.09)),
- boss:()=>[523,659,784,1047,1319].forEach((f,i)=>bp(f,.2,'triangle',.22,i*.08)),
- bad:()=>{bp(180,.35,'sawtooth',.18);bp(130,.4,'sawtooth',.18,.12)},
- time:()=>{bp(300,.2,'square',.15);bp(200,.35,'square',.15,.18)},
- power:()=>[400,600,900].forEach((f,i)=>bp(f,.1,'sine',.15,i*.06)),
- win:()=>[523,659,784,659,784,1047].forEach((f,i)=>bp(f,.22,'triangle',.22,i*.13)),
- lose:()=>[392,330,262,196].forEach((f,i)=>bp(f,.3,'sawtooth',.14,i*.2))};
- try{m[n]()}catch(e){}}
-const bg=$('bgm');bg.volume=.35;
-bg.addEventListener('error',()=>{bgOk=false;$('bm').style.display='none'});
-function mplay(){if(mOn&&bgOk&&bg.paused){const p=bg.play();if(p&&p.catch)p.catch(()=>{})}}
-function tmus(){mOn=!mOn;if(mOn)mplay();else bg.pause();pref()}
-function tsfx(){sOn=!sOn;pref();sfx('click')}
-function tk(){const c=Math.ceil(t);if(t>0&&t<=5&&c!=lt){lt=c;sfx('tick')}}
-document.addEventListener('pointerdown',()=>{ac();mplay()});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)bg.pause();else mplay()});
-pref();
-let ti=0;
-function theory(){sfx('click');ti=0;show('s3');trender()}
-function trender(){$('tn').textContent='📖 Teori '+(ti+1)+' / '+T.length;$('tt').textContent=T[ti][0];$('tbd').innerHTML=T[ti][1];
- $('pg').innerHTML=T.map((_,k)=>'<i class="'+(k==ti?'on':'')+'"></i>').join('');
- $('tp').style.visibility=ti?'visible':'hidden';$('tx').textContent=ti==T.length-1?'🥽 Mulai Game!':'Lanjut ➜';window.scrollTo(0,0)}
-function tgo(d){sfx('click');if(d>0&&ti==T.length-1){start();return}ti=Math.max(0,ti+d);trender()}
-
-function show(id){document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==id));window.scrollTo(0,0)}
-function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
-function start(){sfx('click');S={i:0,l:5,g:0,s:0,f:2,c:0,m:0,r:[]};show('s1');load()}
-function hud(){$('hl').textContent='❤️'.repeat(S.l)+'🖤'.repeat(5-S.l);$('hg').textContent='⭐ '+S.g;$('hs').textContent='🔥 Beruntun: '+S.s;$('pc').textContent=S.f;$('p5').disabled=S.f<1||locked;
- $('dots').innerHTML=Q.map((_,k)=>'<i class="'+(k<S.r.length?(S.r[k]?'ok':'no'):k==S.i?'cur':'')+'"></i>').join('');
- $('ship').style.left=(S.i/25*96+2)+'%'}
-function load(){locked=false;const q=Q[S.i];opts=shuf(q[1].map((x,k)=>({x,ok:k==q[2]})));
- const boss=(S.i+1)%5==0;$('isl').textContent=(boss?'⚗️ STASIUN INSTRUMEN – Sampel ':'🧫 Sampel ')+(S.i+1)+' / 25'+(boss?' (poin x2)':'');
- $('q').textContent=q[0];$('fb').textContent='';$('nx').style.display='none';
- $('opts').innerHTML=opts.map((o,k)=>'<button class="o" onclick="ans('+k+')">'+'ABCD'[k]+'. '+o.x+'</button>').join('');
- window.scrollTo(0,0);lt=0;hud();t=20;$('tb').style.width='100%';clearInterval(iv);
- iv=setInterval(()=>{t-=.1;tk();$('tb').style.width=Math.max(t,0)/20*100+'%';if(t<=0)ans(-1)},100)}
-function fifty(){if(S.f<1||locked)return;S.f--;sfx('power');let w=opts.map((o,k)=>k).filter(k=>!opts[k].ok);shuf(w).slice(0,2).forEach(k=>document.querySelectorAll('.o')[k].classList.add('hide'));hud()}
-function ans(k){if(locked)return;locked=true;clearInterval(iv);const q=Q[S.i],b=document.querySelectorAll('.o');
- b.forEach((e,j)=>{e.disabled=true;if(opts[j].ok)e.classList.add('ok');else if(j==k)e.classList.add('no')});
- const ok=k>=0&&opts[k].ok;S.r.push(ok);sfx(ok?((S.i+1)%5==0?'boss':'ok'):(k<0?'time':'bad'));
- if(ok){S.c++;S.s++;S.m=Math.max(S.m,S.s);let g=10+Math.ceil(t)+(S.s>=3?5:0);if((S.i+1)%5==0)g*=2;S.g+=g;
-  $('fb').innerHTML='✅ Hasil valid! +'+g+' ⭐ — '+q[3];$('fb').classList.add('pop')}
- else{S.s=0;S.l--;$('fb').innerHTML=(k<0?'⏰ Waktu habis! ':'💥 Reaksi tidak terkendali! ')+'Jawaban benar: <b>'+q[1][q[2]]+'</b>. '+q[3]}
- try{navigator.vibrate&&navigator.vibrate(ok?30:[60,40,60])}catch(e){}setTimeout(()=>$('fb').classList.remove('pop'),500);hud();$('p5').disabled=true;
- const n=$('nx');n.style.display='';n.textContent=(S.l<=0||S.i==24)?'Lihat Hasil ➜':'Lanjut ➜'}
-function next(){sfx('click');S.i++;if(S.l<=0||S.i>=25){end();return}load()}
-function end(){const w=S.l>0;let r=S.c>=23?'Analis Senior 🥇':S.c>=17?'Analis Junior 🔬':S.c>=10?'Laboran Tangguh 🥽':'Praktikan Baru 🐣';
- $('et').textContent=w?'📋 LAPORAN ANALISIS SELESAI!':'💥 Laboratorium Darurat!';$('ei').textContent=w?'🏅':'🚨';
- $('e1').textContent='Benar: '+S.c+' / '+S.r.length+' soal';$('e2').textContent='⭐ Total poin: '+S.g+' • 🔥 Beruntun terbaik: '+S.m;$('e3').textContent='Pangkat: '+r;show('s2');sfx(w?'win':'lose')}
-</script></body></html>
+let lv='med',S,timer,snd=true,music=true;
+const bgm=$('bgm');bgm.volume=.35;
+function playBGM(){if(music)bgm.play().catch(()=>{})}
+function toggleMusic(){music=!music;if(music)playBGM();else bgm.pause();document.querySelectorAll('.mbtn').forEach(b=>b.textContent='Musik: '+(music?'hidup':'mati'))}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)bgm.pause();else if(S&&!S.over||$('menu').classList.contains('on')||$('end').classList.contains('on'))playBGM()});
+const duckSVG=r=>r?
+'<svg viewBox="0 0 72 52"><line x1="50" y1="6" x2="50" y2="0" stroke="#555" stroke-width="2"/><circle cx="50" cy="0" r="2.2" fill="#e53935"/><rect x="8" y="22" width="46" height="22" rx="6" fill="#8f9eac"/><rect x="40" y="6" width="22" height="18" rx="4" fill="#b7c2cc"/><circle class="eye" cx="53" cy="14" r="3.4" fill="#e53935"/><polygon points="62,13 70,17 62,21" fill="#e8a317"/><rect x="16" y="28" width="22" height="9" rx="3" fill="#6f7f8e"/><circle cx="14" cy="26" r="1.8" fill="#dfe6ec"/><circle cx="48" cy="40" r="1.8" fill="#dfe6ec"/><path d="M2 46 Q10 42 18 46 T34 46 T50 46 T66 46" stroke="#fff" fill="none" opacity=".7"/></svg>':
+'<svg viewBox="0 0 72 52"><path d="M12 30 L2 22 L14 36Z" fill="#ffd23f"/><ellipse cx="32" cy="33" rx="22" ry="13" fill="#ffd23f"/><circle cx="52" cy="18" r="10" fill="#ffd23f"/><polygon class="bkU" points="60,16 70,19.5 60,19.5" fill="#ff8c1a"/><polygon class="bkL" points="60,19.5 70,19.5 60,23" fill="#e87400"/><circle cx="55" cy="15" r="1.9" fill="#222"/><path d="M18 31 Q29 42 41 31 Q30 25 18 31Z" fill="#f0b400"/><path d="M2 46 Q10 42 18 46 T34 46 T50 46 T66 46" stroke="#fff" fill="none" opacity=".7"/></svg>';
+document.querySelectorAll('#lv button').forEach(b=>b.onclick=()=>{lv=b.dataset.l;document.querySelectorAll('#lv button').forEach(x=>x.classList.toggle('sel',x===b))});
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id===id))}
+function beep(f,d){if(!snd)return;try{const c=beep.c||(beep.c=new(window.AudioContext||window.webkitAudioContext)());const o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d)}catch(e){}}
+const SFX={};['Correct','Wrong','Win','Lose','Hit'].forEach(n=>{const a=new Audio(n+'.mp3');a.preload='auto';a.onerror=()=>{a.bad=1};SFX[n]=a});
+const WIND=new Audio('Wind.mp3');WIND.loop=true;WIND.preload='auto';let windT;
+function stopWind(){clearTimeout(windT);WIND.pause();try{WIND.currentTime=0}catch(e){}}
+function sfx(n,f,d){if(!snd)return;const a=SFX[n];if(a.bad){beep(f,d);return}try{a.currentTime=0}catch(e){}a.play().catch(()=>{})}
+function whack(){const d=$('dp');d.classList.remove('quack');void d.offsetWidth;d.classList.add('quack');setTimeout(()=>d.classList.remove("quack"),500)}
+function lf(p,t){return 'calc(var(--bw) + (100% - 22px - var(--dw) * .97 - var(--bw)) * '+Math.min(p,100)/100+(t?' + (var(--dw) - var(--tww)) / 2':'')+')'}
+function tornado(){
+  if(!S||S.over||S.ending||S.en<EN)return;
+  S.en=0;S.tn++;hud();
+  const tw=$('tw');tw.style.transition='none';tw.style.display='block';tw.style.left='calc(100% - 22px - var(--tww))';
+  void tw.offsetWidth;
+  tw.style.transition='left 1s linear';tw.style.left=lf(S.b,1);
+  stopWind();if(snd)WIND.play().catch(()=>{});
+  setTimeout(()=>{
+    if(S.over){tw.style.display='none';stopWind();return}
+    sfx('Hit',150,.3);windT=setTimeout(stopWind,500);
+    S.b=Math.max(0,S.b-3*100/NEED);
+    $('db').classList.add('spin');pos();
+    setTimeout(()=>{$('db').classList.remove('spin');tw.style.display='none'},900);
+  },1000);
+}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(){
+  clearInterval(timer);bgm.volume=.35;playBGM();
+  const name=$('nm').value.trim()||'Ayang Beb',rn=$('nr').value.trim()||'Bebek Nakal';
+  S={en:0,tn:0,name,rn,p:0,b:0,score:0,streak:0,best:0,ok:0,n:0,miss:[],queue:[],cur:null,tl:0,lock:false,t0:Date.now(),over:false};
+  $('dp').innerHTML='';const dn=document.createElement('span');dn.className='dn';dn.textContent=name;$('dp').appendChild(dn);const rd=document.createElement('span');rd.className='dn';rd.textContent=rn;$('db').innerHTML='';$('db').appendChild(rd);$('db').insertAdjacentHTML('beforeend',duckSVG(1));$('dp').insertAdjacentHTML('beforeend',duckSVG(0));
+  stopWind();$('tw').style.display='none';$('db').classList.remove('spin');
+  show('game');pos();hud();nextQ();
+  timer=setInterval(tick,100);
+}
+function pos(){
+  $('dp').style.left=lf(S.p);$('dp').style.setProperty('--pp',Math.min(S.p,100)/100);
+  $('db').style.left=lf(S.b);$('db').style.setProperty('--pp',Math.min(S.b,100)/100);
+}
+function hud(){document.querySelectorAll('#cells i').forEach((c,i)=>c.classList.toggle('on',i<S.en));$('tn').disabled=S.en<EN||S.over;$('hs').textContent='Skor: '+S.score;$('hok').textContent='Benar: '+S.ok+'/'+NEED;$('hst').textContent='Beruntun: '+S.streak;$('ht').textContent='Waktu: '+Math.max(0,Math.ceil(S.tl))+' dtk'}
+function nextQ(){
+  if(!S.queue.length)S.queue=shuf(Q);
+  const q=S.queue.pop();
+  const opts=shuf([q[1],...q[2]]);
+  S.cur={q,opts,ans:opts.indexOf(q[1])};
+  S.tl=LV[lv].t;S.lock=false;S.n++;
+  $('qn').textContent='Soal '+S.n;
+  $('qt').innerHTML=q[0].replace('___','<span class="bl"></span>');
+  $('fb').textContent='';
+  $('opts').innerHTML=opts.map((o,i)=>'<button class="op" data-i="'+i+'"><b>'+'ABCDE'[i]+'</b><span>'+o+'</span></button>').join('');
+  document.querySelectorAll('.op').forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  hud();
+}
+function tick(){
+  if(S.over||S.ending)return;
+  S.b+=LV[lv].r*.1;
+  if(!S.lock){
+    S.tl-=.1;
+    const w=Math.max(0,S.tl/LV[lv].t*100);
+    $('tb').style.width=w+'%';
+    $('tb').style.background=w>50?'#1e8e4e':w>25?'#e8a317':'#c0392b';
+    if(S.tl<=0)pick(-1);
+  }
+  pos();hud();
+  if(S.b>=100){S.b=100;S.ending=1;S.lock=true;pos();setTimeout(()=>finish(false),700)}
+}
+function pick(i){
+  if(S.lock||S.over)return;
+  S.lock=true;
+  const c=S.cur,right=i===c.ans;
+  const btns=document.querySelectorAll('.op');
+  btns[c.ans].classList.add('ok');
+  if(right){
+    S.ok++;S.streak++;S.best=Math.max(S.best,S.streak);
+    $('fb').textContent=S.streak>=3?'Benar! Bonus beruntun +5 skor. Sisa '+Math.max(0,NEED-S.ok)+' soal.':'Benar! Sisa '+Math.max(0,NEED-S.ok)+' soal lagi.';
+    S.en=Math.min(EN,S.en+1);S.p=S.ok*100/NEED;if(S.en===EN)$('fb').textContent+=' Energi penuh, aktifkan Tornado!';S.score+=10+Math.ceil(S.tl)+(S.streak>=3?5:0);
+    sfx('Correct',660,.15);
+  }else{
+    if(i>=0)btns[i].classList.add('no');
+    S.streak=0;S.b+=3;if(S.en<EN)S.en=0;
+    S.miss.push({q:c.q[0].replace('___','_____'),a:c.q[1],h:c.q[3]});
+    $('fb').textContent=(i<0?'Waktu habis. ':'Kurang tepat. ')+c.q[3]+' Robot mendapat dorongan.';
+    sfx('Wrong',180,.3);whack();
+  }
+  pos();hud();
+  if(S.ok>=NEED){S.ending=1;setTimeout(()=>finish(true),700);return}
+  setTimeout(()=>{if(!S.over&&!S.ending)nextQ()},right?900:1900);
+}
+function finish(win){
+  if(S.over)return;S.over=true;clearInterval(timer);pos();$('tn').disabled=true;$('tw').style.display='none';stopWind();
+  const sec=Math.round((Date.now()-S.t0)/1000);
+  $('rt').textContent=win?S.name+' Menang!':S.rn+' Menang';
+  $('rt').style.color=win?'#1e8e4e':'#c0392b';
+  $('rs').textContent=win?'Kamu menjawab benar 25 soal dan lebih dulu mencapai garis finis. Kerja bagus!':S.rn+' lebih dulu sampai. Kamu menjawab benar '+S.ok+' dari 25 soal yang dibutuhkan. Pelajari petunjuk di bawah lalu coba lagi.';
+  const ans=S.ok+S.miss.length;
+  $('rst').innerHTML=[['Skor',S.score],['Benar',S.ok+' / '+ans],['Beruntun terbaik',S.best],['Tornado',S.tn],['Waktu',sec+' dtk']].map(x=>'<div>'+x[0]+'<b>'+x[1]+'</b></div>').join('');
+  $('rv').innerHTML=S.miss.length?'<h2>Yang perlu dipelajari</h2>'+S.miss.map(m=>'<div class="rv"><b>'+m.q+'</b><br>Jawaban: '+m.a+'<br>'+m.h+'</div>').join(''):'<p><b>Tidak ada jawaban yang salah. Sempurna!</b></p>';
+  bgm.volume=.12;sfx(win?'Win':'Lose',win?880:220,.5);
+  show('end');
+}
+document.addEventListener('keydown',e=>{
+  if(!$('game').classList.contains('on'))return;
+  if(e.key.toLowerCase()==='t'){tornado();return}
+  const i='abcde'.indexOf(e.key.toLowerCase());
+  if(i>=0&&e.key.length===1)pick(i);
+});
+</script>
+</body>
+</html>
