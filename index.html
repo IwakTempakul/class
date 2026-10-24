@@ -286,7 +286,7 @@ html.sp{overflow:hidden}
 #snav button{min-width:96px}
 #sprev{background:#eaf1f7;color:#0b4f8a}
 #snext{flex:1}
-#snext.fin{animation:pulse .8s infinite;background:#1e8e4e;color:#fff;font-size:1.1rem}
+#snext.go{animation:pulse .8s infinite;background:#1e8e4e;color:#fff;font-size:1.1rem}
 #sdots{display:flex;gap:6px;justify-content:center;flex:0 0 auto}
 #sdots i{width:10px;height:10px;border-radius:50%;background:#c9b88c}
 #sdots i.on{background:#e63b2e;transform:scale(1.25)}
@@ -294,6 +294,22 @@ html.sp{overflow:hidden}
 @media(prefers-reduced-motion:reduce){#cm,.cp,.sb,.fx,.stamp,#cm .art svg{animation:none}}
 #splashAuthor{margin-top:6px;text-align:center;color:#fff;font:700 clamp(.85rem,2.6vw,1.15rem) Segoe UI,Arial,sans-serif;letter-spacing:.06em;text-shadow:0 2px 6px #000,0 0 12px rgba(0,0,0,.8);background:rgba(8,20,40,.55);padding:6px 18px;border-radius:20px;border:1px solid rgba(255,233,176,.5)}
 #splashAuthor small{display:block;font-weight:600;font-size:.72em;letter-spacing:.18em;text-transform:uppercase;color:#ffe9b0}
+
+/* ===== Komik: tata letak portrait (HP) ===== */
+@media (max-width:700px) and (max-aspect-ratio:1/1){
+#app{padding:6px}
+#story .paper{padding:6px;border-radius:10px}
+#cm{display:flex;flex-direction:column;aspect-ratio:auto;min-height:calc(100vh - 96px);min-height:calc(100dvh - 96px);border-width:4px;box-shadow:3px 3px 0 #111}
+#cm .art{position:relative;inset:auto;flex:0 0 auto;width:100%;max-height:41vh;max-height:41dvh;overflow:hidden;border-bottom:4px solid #111}
+#cm .tx{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:12px 10px 16px;background:#fff6dc;position:relative;z-index:3}
+#cm .tx .cp{position:relative;max-width:100%;font-size:clamp(.98rem,4.4vw,1.2rem);padding:8px 12px}
+#cm .tx .sb{position:relative;max-width:90%;align-self:flex-start;font-size:clamp(1rem,4.6vw,1.3rem);padding:10px 16px;border-radius:24px;margin-bottom:16px}
+#cm .tx .sb.r{align-self:flex-end}
+#cm .art .fx{top:8px;right:10px;left:auto;bottom:auto}
+#cm .art .stamp{top:10px;right:10px}
+#snav{margin-top:6px}
+#snav button{min-height:48px;font-size:1rem}
+}
 </style>
 </head>
 <body>
@@ -751,8 +767,8 @@ function river(y0,c1,c2,wave){var o='<defs><linearGradient id="rvg" x1="0" y1="0
 function sparkles(n,col){var o='';for(var i=0;i<n;i++){var x=(i*173+60)%780,y=(i*97+30)%260;o+='<circle cx="'+x+'" cy="'+y+'" r="'+(1+i%3)+'" fill="'+col+'"/>'}return o}
 
 var ART={
-a1:function(){
- return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0f5"/><stop offset=".6" stop-color="#ffe0a3"/><stop offset="1" stop-color="#ffc47a"/></linearGradient></defs><rect width="800" height="500" fill="url(#s1)"/><circle cx="610" cy="150" r="64" fill="#fff3b0"/><circle cx="610" cy="150" r="46" fill="#ffd84a"/><path d="M0 250 Q120 170 260 235 T520 220 T800 240 L800 330 L0 330Z" fill="#6aa98a"/>'+pines(range(20,780,34),330,120,34,'#2e7d32','#256628')+pines(range(40,780,52),330,170,48,'#1f5e25','#2a7a30')+river(330,'#4db4ec','#1f78c4')+'<g fill="none" stroke="#223" stroke-width="3" stroke-linecap="round"><path d="M110 90q10-12 20 0q10-12 20 0"/><path d="M200 60q8-9 16 0q8-9 16 0"/></g><text x="400" y="395" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="34" fill="rgba(255,255,255,.75)">Sungai Mahakam</text>'+duckG(0,120,420,1,0)+duckG(0,640,440,1.3,1)+'</svg>'},
+a1:function(P){
+ return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0f5"/><stop offset=".6" stop-color="#ffe0a3"/><stop offset="1" stop-color="#ffc47a"/></linearGradient></defs><rect width="800" height="500" fill="url(#s1)"/><circle cx="610" cy="150" r="64" fill="#fff3b0"/><circle cx="610" cy="150" r="46" fill="#ffd84a"/><path d="M0 250 Q120 170 260 235 T520 220 T800 240 L800 330 L0 330Z" fill="#6aa98a"/>'+pines(range(20,780,34),330,120,34,'#2e7d32','#256628')+pines(range(40,780,52),330,170,48,'#1f5e25','#2a7a30')+river(330,'#4db4ec','#1f78c4')+'<g fill="none" stroke="#223" stroke-width="3" stroke-linecap="round"><path d="M110 90q10-12 20 0q10-12 20 0"/><path d="M200 60q8-9 16 0q8-9 16 0"/></g><text x="'+(P?560:400)+'" y="395" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="34" fill="rgba(255,255,255,.75)">Sungai Mahakam</text>'+duckG(0,120,420,1,0)+duckG(0,640,440,1.3,1)+'</svg>'},
 a2:function(){
  var fig=function(x,y,s){return '<g transform="translate('+x+' '+y+') scale('+s+')"><path d="M0 0Q-48 10-52 110L52 110Q48 10 0 0Z" fill="#0b0712"/><path d="M-26 8Q0-36 26 8Q0 24-26 8Z" fill="#0b0712"/><ellipse cx="-9" cy="2" rx="5" ry="3" fill="#ff3d3d"/><ellipse cx="9" cy="2" rx="5" ry="3" fill="#ff3d3d"/></g>'};
  return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="g2" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#4a1630"/><stop offset="1" stop-color="#0c0612"/></radialGradient></defs><rect width="800" height="500" fill="url(#g2)"/><polygon points="360,0 440,0 560,330 240,330" fill="rgba(255,90,60,.08)"/><rect x="190" y="70" width="420" height="215" rx="12" fill="#14101c" stroke="#ff3d3d" stroke-width="6"/><rect x="206" y="86" width="388" height="183" fill="#2a0a12"/><g transform="translate(400 150)"><polygon points="0,-50 44,-25 44,25 0,50 -44,25 -44,-25" fill="#6b0f15" stroke="#ff3d3d" stroke-width="5"/><path d="M0 28C-22 22-26-6-8-20C-2-8 4-4 14-6C22 6 18 24 0 28Z" fill="#3c9a42"/><path d="M-22 -22L22 22M22 -22L-22 22" stroke="#ff3d3d" stroke-width="8" stroke-linecap="round"/></g><text x="400" y="248" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="46" letter-spacing="10" fill="#ff3d3d">HERANI</text><rect x="0" y="360" width="800" height="140" fill="#08050d"/><rect x="120" y="350" width="560" height="26" rx="6" fill="#241a30"/>'+fig(180,262,1.1)+fig(400,300,.95)+fig(620,262,1.1)+'</svg>'},
@@ -762,13 +778,18 @@ a3:function(){
 a4:function(){
  var d='';[[60,330,1.1],[210,365,1.3],[360,320,1],[130,420,1.2],[300,430,1.4]].forEach(function(p,i){d+=duckG(1,p[0],p[1],p[2],0)+laser(p[0]+(52*p[2]),p[1]+18*p[2],700,300+i*8)});
  return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a0d18"/><stop offset=".55" stop-color="#c0481e"/><stop offset="1" stop-color="#ffb347"/></linearGradient></defs><rect width="800" height="500" fill="url(#g4)"/><circle cx="170" cy="140" r="50" fill="#ffcf6a" opacity=".85"/><g fill="#1a0a10">'+range(0,800,70).map(function(x,i){return '<ellipse cx="'+x+'" cy="'+(190+(i%3)*10)+'" rx="46" ry="30"/>'}).join('')+'</g>'+river(270,'#8a3a28','#401418','rgba(255,150,90,.35)')+'<g>'+pines(range(660,800,26),270,150,36,'#163a1b','#1d4a23')+'</g>'+flame(690,170,3.2,0)+flame(735,196,2.6,.3)+flame(660,206,2.2,.6)+d+'</svg>'},
-a5:function(){
- return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd8f7"/><stop offset="1" stop-color="#d9f2ff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g5)"/><path d="M0 250Q150 190 300 240T600 230T800 250V330H0Z" fill="#7bb892"/>'+river(310,'#4db4ec','#1f78c4')+'<g transform="translate(95 0)"><g style="animation:shk .18s linear infinite alternate">'+duckG(1,40,260,3,0)+'</g><path d="M60 240q-22 -10 -30 8M300 270q10 -20 -4 -34" fill="none" stroke="#223" stroke-width="4"/><path d="M185 235q8 22 0 30q-8 -8 0 -30Z" fill="#6ec6ff" stroke="#1f78c4" stroke-width="2"/></g>'+duckG(0,430,230,4.2,1)+'<g stroke="#223" stroke-width="5" stroke-linecap="round"><path d="M410 230l-34 -26M420 210l-26 -34"/></g></svg>'},
-a6:function(){
- return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58b9ee"/><stop offset="1" stop-color="#cdeeff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g6)"/><rect x="540" y="180" width="260" height="160" fill="#6aa98a"/>'+pines(range(560,800,30),340,170,36,'#2e7d32','#256628')+river(340,'#4db4ec','#1f78c4')+'<path d="M0 340Q60 310 130 340V500H0Z" fill="#8a6a3a"/><path d="M0 340Q60 310 130 340" fill="none" stroke="#5c7d3a" stroke-width="12"/><g transform="translate(18 255)"><path d="M30 38Q-12 40 -8 100L30 70Z" fill="#e63b2e"/>'+duckG(0,10,50,2.6,0).replace('translate(10 50)','translate(10 40)')+'</g><g fill="#ff3d3d">'+[0,1,2,3].map(function(i){return '<circle cx="'+(330+i*30)+'" cy="'+(420+(i%2)*14)+'" r="7"/>'}).join('')+'</g><text x="660" y="160" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="28" fill="#1d4a23">Hutan Kalimantan</text></svg>'},
-a7:function(){
- var chk='';for(var i=0;i<10;i++)chk+='<rect x="'+(716+(i%2)*28)+'" y="'+(i*50)+'" width="28" height="50" fill="#111"/>';
- return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58b9ee"/><stop offset="1" stop-color="#d7f0ff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g7)"/>'+river(160,'#4db4ec','#1f78c4')+'<rect x="716" y="0" width="56" height="500" fill="#fff"/>'+chk+'<rect x="772" y="0" width="28" height="500" fill="#2e7d32"/><line x1="130" y1="160" x2="130" y2="500" stroke="#fff" stroke-width="4" stroke-dasharray="14 10"/>'+duckG(0,40,300,2.3,0)+duckG(1,40,200,1.7,0)+'<g transform="translate(560 90)">'+flame(0,0,1.4,0)+'</g></svg>'}
+a5:function(P){
+ var defs='<defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd8f7"/><stop offset="1" stop-color="#d9f2ff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g5)"/>';
+ if(P)return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">'+defs+'<path d="M0 230Q100 190 220 225T440 215V300H0Z" fill="#7bb892"/>'+river(290,'#4db4ec','#1f78c4')+'<g style="animation:shk .18s linear infinite alternate">'+duckG(1,10,170,2.8,0)+'</g><path d="M100 150q-22 -10 -30 8M215 190q10 -20 -4 -34" fill="none" stroke="#223" stroke-width="4"/><path d="M208 150q8 22 0 30q-8 -8 0 -30Z" fill="#6ec6ff" stroke="#1f78c4" stroke-width="2"/>'+duckG(0,200,320,3.2,1)+'<g stroke="#223" stroke-width="5" stroke-linecap="round"><path d="M215 340l-30 -22M225 325l-20 -30"/></g></svg>';
+ return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">'+defs+'<path d="M0 250Q150 190 300 240T600 230T800 250V330H0Z" fill="#7bb892"/>'+river(310,'#4db4ec','#1f78c4')+'<g transform="translate(95 0)"><g style="animation:shk .18s linear infinite alternate">'+duckG(1,40,260,3,0)+'</g><path d="M60 240q-22 -10 -30 8M300 270q10 -20 -4 -34" fill="none" stroke="#223" stroke-width="4"/><path d="M185 235q8 22 0 30q-8 -8 0 -30Z" fill="#6ec6ff" stroke="#1f78c4" stroke-width="2"/></g>'+duckG(0,430,230,4.2,1)+'<g stroke="#223" stroke-width="5" stroke-linecap="round"><path d="M410 230l-34 -26M420 210l-26 -34"/></g></svg>'},
+a6:function(P){
+ var F=P?300:540,hx=P?345:660,pn=P?range(310,440,28):range(560,800,30),hero='<g transform="translate('+(P?8:18)+' '+(P?250:255)+')"><path d="M30 38Q-12 40 -8 100L30 70Z" fill="#e63b2e"/>'+duckG(0,10,50,2.6,0).replace('translate(10 50)','translate(10 40)')+'</g>',
+ lbl=P?'<text x="'+hx+'" y="150" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="24" fill="#1d4a23">Hutan</text><text x="'+hx+'" y="178" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="24" fill="#1d4a23">Kalimantan</text>':'<text x="'+hx+'" y="160" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="28" fill="#1d4a23">Hutan Kalimantan</text>',
+ rb=[0,1,2,3].map(function(k){return '<circle cx="'+((P?170:330)+k*30)+'" cy="'+(420+(k%2)*14)+'" r="7"/>'}).join('');
+ return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58b9ee"/><stop offset="1" stop-color="#cdeeff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g6)"/><rect x="'+F+'" y="180" width="'+(800-F)+'" height="160" fill="#6aa98a"/>'+pines(pn,340,170,36,'#2e7d32','#256628')+river(340,'#4db4ec','#1f78c4')+'<path d="M0 340Q60 310 130 340V500H0Z" fill="#8a6a3a"/><path d="M0 340Q60 310 130 340" fill="none" stroke="#5c7d3a" stroke-width="12"/>'+hero+'<g fill="#ff3d3d">'+rb+'</g>'+lbl+'</svg>'},
+a7:function(P){
+ var F=P?356:716,chk='',k;for(k=0;k<10;k++)chk+='<rect x="'+(F+(k%2)*28)+'" y="'+(k*50)+'" width="28" height="50" fill="#111"/>';
+ return '<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58b9ee"/><stop offset="1" stop-color="#d7f0ff"/></linearGradient></defs><rect width="800" height="500" fill="url(#g7)"/>'+river(160,'#4db4ec','#1f78c4')+'<rect x="'+F+'" y="0" width="56" height="500" fill="#fff"/>'+chk+'<rect x="'+(F+56)+'" y="0" width="44" height="500" fill="#2e7d32"/><line x1="130" y1="160" x2="130" y2="500" stroke="#fff" stroke-width="4" stroke-dasharray="14 10"/>'+duckG(0,40,300,2.3,0)+duckG(1,40,200,1.7,0)+'<g transform="translate('+(P?250:560)+' 90)">'+flame(0,0,1.4,0)+'</g></svg>'}
 };
 
 var SL=[
@@ -789,19 +810,32 @@ var SL=[
 
 var i=0,cm=document.getElementById('cm'),dots=document.getElementById('sdots'),nx=document.getElementById('snext'),pv=document.getElementById('sprev');
 SL.forEach(function(){dots.appendChild(document.createElement('i'))});
+var AN=['YMax','YMid','YMax','YMax','YMax','YMax','YMid'];
+var PV=[[340,440],[180,440],[190,440],[300,500],[0,440],[0,440],[0,440]];
+var mq=window.matchMedia?matchMedia('(max-width:700px) and (max-aspect-ratio:1/1)'):{matches:false};
 function render(){
-  var s=SL[i],o='<div class="art">'+ART[s.a]()+'</div>',d=.2;
-  (s.h||[]).forEach(function(c){o+='<div class="'+c[0]+'" style="'+c[1]+';animation-delay:'+(d)+'s">'+c[2]+'</div>';d+=.25});
-  (s.b||[]).forEach(function(c){o+='<div class="'+c[0]+'" style="'+c[1]+';animation-delay:'+(d+.2)+'s">'+c[2]+'</div>';d+=.45});
-  (s.fx||[]).forEach(function(c){o+='<div class="fx" style="'+c[0]+';animation-delay:'+(d+.3)+'s">'+c[1]+'</div>'});
-  if(s.stamp)o+='<div class="stamp" style="animation-delay:'+(d+.3)+'s">'+s.stamp+'</div>';
+  var P=mq.matches,s=SL[i],vb=PV[i],svg=ART[s.a](P),d=.2,o='',fx='',tx='';
+  if(P)svg=svg.replace('viewBox="0 0 800 500"','viewBox="'+vb[0]+' 0 '+vb[1]+' 500"').replace('preserveAspectRatio="xMidYMid slice"','preserveAspectRatio="xMid'+AN[i]+' slice"');
+  function cp(c){var h='<div class="'+c[0]+'"'+(P?'':' style="'+c[1]+'"')+' data-d="1">'+c[2]+'</div>';return h}
+  function dl(h,t){return h.replace(' data-d="1"',(h.indexOf(' style="')>-1?'':' style=""')).replace(/style="([^"]*)"/,function(m,a){return 'style="'+a+(a?';':'')+'animation-delay:'+t.toFixed(2)+'s"'})}
+  function bb(c){var cl=c[0]+(c[3]?' '+c[3]:'');return '<div class="'+cl+'"'+(P?'':' style="'+c[1]+'"')+' data-d="1">'+c[2]+'</div>'}
+  var H=s.h||[],B=s.b||[],seq=[];
+  if(P){if(H[0])seq.push(cp(H[0]));B.forEach(function(c){seq.push(bb(c))});H.slice(1).forEach(function(c){seq.push(cp(c))})}
+  else{H.forEach(function(c){seq.push(cp(c))});B.forEach(function(c){seq.push(bb(c))})}
+  seq.forEach(function(h,k){tx+=dl(h,d+k*.35)});
+  var td=d+seq.length*.35;
+  (s.fx||[]).forEach(function(c){fx+='<div class="fx" style="'+(P?'':c[0]+';')+'animation-delay:'+(td+.2).toFixed(2)+'s">'+c[1]+'</div>'});
+  if(s.stamp)fx+='<div class="stamp" style="animation-delay:'+(td+.2).toFixed(2)+'s">'+s.stamp+'</div>';
+  if(P)o='<div class="art" style="aspect-ratio:'+vb[1]+'/500">'+svg+fx+'</div><div class="tx">'+tx+'</div>';
+  else o='<div class="art">'+svg+'</div>'+tx+fx;
   cm.style.animation='none';void cm.offsetWidth;cm.style.animation='';
   cm.innerHTML=o;
   cm.setAttribute('aria-label','Halaman '+(i+1)+' dari '+SL.length);
   Array.prototype.forEach.call(dots.children,function(x,k){x.classList.toggle('on',k===i)});
   pv.style.visibility=i?'visible':'hidden';
-  var last=i===SL.length-1;nx.classList.toggle('fin',last);nx.innerHTML=last?'MULAI MISI! &#9654;':'Lanjut &#9654;';
+  var last=i===SL.length-1;nx.classList.toggle('go',last);nx.innerHTML=last?'MULAI MISI! &#9654;':'Lanjut &#9654;';
 }
+if(mq.addEventListener)mq.addEventListener('change',function(){render()});else if(mq.addListener)mq.addListener(function(){render()});
 function finish(){show('menu');window.scrollTo(0,0)}
 function next(){if(i<SL.length-1){i++;render()}else finish()}
 function prev(){if(i>0){i--;render()}}
