@@ -313,7 +313,7 @@ html.sp{overflow:hidden}
 #cm .tx .sb.r{align-self:flex-end}
 #cm .sb.at{position:absolute;max-width:48%;margin:0;align-self:auto;font-size:var(--fs,15px);line-height:1.25;padding:6px 14px;border-radius:20px;z-index:4}
 #cm .sb.at:before,#cm .sb.at:after{left:calc(var(--tl,30%) - 9px);right:auto}
-#cm .tx .stamp{position:relative;right:auto;top:auto;align-self:flex-end;font-size:calc(var(--fs,15px)*2);padding:0 14px}
+#cm .tx .stamp{position:relative;right:auto;top:auto;align-self:flex-end;font-size:calc(var(--fs,15px)*2);padding:0 14px;margin:2px 12px 8px 0}
 #cm .art .fx{position:absolute;left:auto;right:10px;bottom:auto;top:calc(var(--tz,40%) + 6px);font-size:clamp(1.4rem,7vw,2.2rem)}
 #snav{flex:0 0 auto;margin-top:6px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
 #snav button{min-height:48px;font-size:1rem;white-space:nowrap}
@@ -1029,9 +1029,9 @@ function portrait(s){
   var T=TTA[s.a],k=(760-T)/500;return '<svg viewBox="0 0 400 760" preserveAspectRatio="xMidYMax slice"><rect width="400" height="'+(T+10)+'" fill="'+TOPC[s.a]+'"/>'+DECO[s.a]()+'<g transform="translate(0 '+T+') scale('+k.toFixed(4)+') translate('+(-VXA[s.a])+' 0)">'+inner+'</g>'+(FADEC[s.a]?fadeSvg(FADEC[s.a],T):'')+'</svg>'}
 function setVh(){document.documentElement.style.setProperty('--vh',(window.innerHeight*.01)+'px')}
 function aimL(){var W=cm.clientWidth;Array.prototype.forEach.call(cm.querySelectorAll('.sb.aim'),function(el){var bw=el.offsetWidth,px=(+el.getAttribute('data-ax'))*W/800-el.offsetLeft;el.style.setProperty('--tl',Math.min(Math.max(px,18),bw-18)+'px')})}
-function layoutP(){
+var lpT=0;function layoutP(){
   if(!mq.matches){aimL();return}
-  var W=cm.clientWidth,H=cm.clientHeight;if(!W||!H)return;
+  var W=cm.clientWidth,H=cm.clientHeight;if(!W||!H){if(lpT++<30)setTimeout(layoutP,60);return}lpT=0;
   var k=Math.max(W/400,H/760),tz=Math.max(0,H-(760-TTA[cur[i].a])*k);
   cm.style.setProperty('--tz',tz+'px');
   var tx=cm.querySelector('.tx');if(!tx)return;
@@ -1048,6 +1048,13 @@ function layoutP(){
     if(top<txb||top+bh+14>py+4)ok=false;
     if(ok){el.style.left=left+'px';el.style.top=top+'px';el.style.setProperty('--tl',Math.min(Math.max(px-left,18),bw-18)+'px');placed.push({x:left,y:top,w:bw,h:bh})}
     else{el.classList.remove('at');el.style.left='';el.style.top='';tx.appendChild(el)}
+  });
+  Array.prototype.forEach.call(cm.querySelectorAll('.art .fx'),function(f){
+    f.style.top='';
+    var w=f.offsetWidth,h=f.offsetHeight,l=f.offsetLeft,t=f.offsetTop,q=0,r;
+    function hit(){var z=null;placed.forEach(function(p){if(l<p.x+p.w+6&&l+w>p.x-6&&t<p.y+p.h+6&&t+h>p.y-6)z=p});return z}
+    while(q++<4&&(r=hit())){var up=r.y-h-8;t=up>=txb?up:r.y+r.h+12}
+    f.style.top=t+'px';
   });
 }
 function render(){
@@ -1082,8 +1089,8 @@ function done(){show(mode==='end'?'end':'menu');window.scrollTo(0,0)}
 function next(){if(i<cur.length-1){i++;render()}else done()}
 function prev(){if(i>0){i--;render()}}
 nx.onclick=next;pv.onclick=prev;
-window.storyOpen=function(){cur=SL;mode='intro';buildDots();i=0;render();show('story');window.scrollTo(0,0)};
-window.epilogue=function(win){cur=win?EW:EL;mode='end';buildDots();i=0;render();show('story');window.scrollTo(0,0)};
+window.storyOpen=function(){cur=SL;mode='intro';buildDots();i=0;show('story');render();window.scrollTo(0,0)};
+window.epilogue=function(win){cur=win?EW:EL;mode='end';buildDots();i=0;show('story');render();window.scrollTo(0,0)};
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('story').classList.contains('on'))return;
   if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();
